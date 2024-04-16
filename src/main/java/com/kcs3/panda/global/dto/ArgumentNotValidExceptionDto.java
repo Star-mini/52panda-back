@@ -1,6 +1,6 @@
 package com.kcs3.panda.global.dto;
 
-import com.kcs.stepstory.exception.ErrorCode;
+import com.kcs3.panda.global.exception.ErrorCode;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.kcs3.panda.global.exception;
 
-import com.kcs.stepstory.dto.global.ResponseDto;
+import com.kcs3.panda.global.dto.ResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;

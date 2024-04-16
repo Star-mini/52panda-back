@@ -5,6 +5,10 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### Setting ###
+application.properties
+
+
 ### STS ###
 .apt_generated
 .classpath

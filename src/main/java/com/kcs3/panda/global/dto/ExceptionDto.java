@@ -1,6 +1,6 @@
 package com.kcs3.panda.global.dto;
 
-import com.kcs.stepstory.exception.ErrorCode;
+import com.kcs3.panda.global.exception.ErrorCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

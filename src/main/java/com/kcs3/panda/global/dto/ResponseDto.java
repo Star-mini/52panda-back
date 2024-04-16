@@ -1,8 +1,8 @@
 package com.kcs3.panda.global.dto;
-
+import com.kcs3.panda.global.exception.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kcs.stepstory.exception.CommonException;
-import com.kcs.stepstory.exception.ErrorCode;
+import com.kcs3.panda.global.exception.CommonException;
+import com.kcs3.panda.global.exception.ErrorCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
