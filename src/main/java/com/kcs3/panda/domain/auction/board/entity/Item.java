@@ -1,6 +1,7 @@
 package com.kcs3.panda.domain.auction.board.entity;
 
 import com.kcs3.panda.domain.model.BaseEntity;
+import com.kcs3.panda.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
