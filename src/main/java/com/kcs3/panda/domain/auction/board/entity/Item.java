@@ -8,20 +8,21 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 public class Item extends BaseEntity {
     @ManyToOne
     @JoinColumn(name="sellerId")
     private User seller;
-    @Column(nullable = false)
-    @OneToOne
-    @JoinColumn(name="categoryId")
+    @ManyToOne
+    @JoinColumn(name="categoryId" ,nullable = false)
     private Category category;
     @ManyToOne
-    @JoinColumn(name = "tradingMethodId")
+    @JoinColumn(name = "tradingMethodId",nullable = false)
     private TradingMethod tradingMethod;
     @Column(nullable = false)
     private boolean isAuctionComplete;
