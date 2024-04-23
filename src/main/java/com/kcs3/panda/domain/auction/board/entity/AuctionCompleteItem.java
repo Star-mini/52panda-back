@@ -1,23 +1,29 @@
 package com.kcs3.panda.domain.auction.board.entity;
 
+import com.kcs3.panda.domain.model.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import java.time.LocalDateTime;
+import lombok.Data;
+
 
 @Entity
-@Getter
-@Setter
-public class AuctionCompleteItem extends Item {
-    @Id
+@Data
+public class AuctionCompleteItem extends BaseEntity {
 
-    private Long id;
     private Item item;
+    @Column(nullable = false)
     private String ItemTitle;
+    @Column(nullable=false)
     private int starPrice;
     private int buyNowPrice;
-    //경매완료시간 넣어야함
+    private LocalDateTime bidFinishTime;
+    @Column(nullable=false)
     private String location;
+    @Column(nullable=false)
     private int maxPrice;
-//  최고입찰자아이디 논의 String maxPersonID;
+    private String maxPersonID;
 }

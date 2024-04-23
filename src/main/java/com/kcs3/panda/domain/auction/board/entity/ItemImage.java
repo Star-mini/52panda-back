@@ -1,15 +1,21 @@
 package com.kcs3.panda.domain.auction.board.entity;
 
+import com.kcs3.panda.domain.model.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.Data;
+
 
 @Entity
-@Getter
-@Setter
-public class ItemImage {
-    private Long id;
+@Data
+public class ItemImage extends BaseEntity {
+
+    @ManyToOne
+    @JoinColumn(name = "itemDetailId")
     private ItemDetail itemDetail;
+    @Column(nullable = false)
     private String imageURL;
 
 }

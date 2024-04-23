@@ -1,15 +1,18 @@
 package com.kcs3.panda.domain.auction.board.entity;
 
+import com.kcs3.panda.domain.model.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.Getter;
-import lombok.Setter;
+import java.time.LocalDateTime;
+import lombok.Data;
+
 
 @Entity
-@Getter
-@Setter
-public class QnaComment {
-    private long id;
+@Data
+public class QnaComment extends BaseEntity {
+
     private ItemQuestion itemQuestion;
-//    댓글등록시간
+    private LocalDateTime commentTime;
+    @Column(nullable=false)
     private String comment;
 }

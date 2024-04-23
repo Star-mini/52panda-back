@@ -1,14 +1,15 @@
 package com.kcs3.panda.domain.auction.board.entity;
 
+import com.kcs3.panda.domain.model.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+
 
 @Entity
-@Getter
-@Setter
-public class Category {
-    private Long id;
+@Data
+public class Category extends BaseEntity {
+    @Column(nullable = false)
     private String category;
 
 }
