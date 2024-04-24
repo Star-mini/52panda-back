@@ -15,4 +15,14 @@ public class User extends BaseEntity {
 
     @Column(nullable = false, columnDefinition = "int default 0")  // NOT NULL, 기본값 0
     private int userPoint;  // 포인트, INT 타입
+    @Id
+    private Long id;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
