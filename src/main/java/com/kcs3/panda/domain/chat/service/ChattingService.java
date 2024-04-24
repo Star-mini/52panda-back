@@ -7,6 +7,7 @@ import com.kcs3.panda.domain.chat.entity.ChattingRoom;
 import com.kcs3.panda.domain.chat.repository.ChattingContentRepository;
 import com.kcs3.panda.domain.chat.repository.ChattingRoomRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,9 +47,17 @@ public class ChattingService {
         List<ChattingRoom> chattingRooms = chattingRoomRepository.findByBuyerIdOrSellerId(userId,userId);
 
         return chattingRooms.stream()
-                .map(chattingRoom -> ChatRoomDto.builder()
-                        .id(chattingRoom.getId())
-                        .build())
+                .map(chattingRoom -> {
+                    ChattingContent recentChattingContent = chattingContentRepository.findTopByChattingRoomOrderByCreatedAtDesc(chattingRoom);
+                    String recentContent = recentChattingContent != null ? recentChattingContent.getChatContent() : null;
+                    LocalDateTime recentDateTime = recentChattingContent != null ? recentChattingContent.getCreatedAt() : null;
+
+                    return ChatRoomDto.builder()
+                            .roomId(chattingRoom.getId())
+                            .recentContent(recentContent)
+                            .recentDateTime(recentDateTime)
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
