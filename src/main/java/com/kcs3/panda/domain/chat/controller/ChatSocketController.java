@@ -13,7 +13,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-public class ChattingController {
+public class ChatSocketController {
     private final ChattingService chattingService;
     @MessageMapping("/{roomId}")
     @SendTo("/room/{roomId}")

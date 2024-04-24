@@ -17,6 +17,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ChattingRoom extends BaseEntity {
 
+    private Long buyerId;
+    private Long sellerId;
+
     @OneToMany(mappedBy = "chattingRoom", cascade = {CascadeType.PERSIST,
             CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ChattingContent> chattingContents = new ArrayList<>();
