@@ -1,4 +1,4 @@
-package com.kcs3.panda.domain.auction.board.entity;
+package com.kcs3.panda.domain.auction.entity;
 
 import com.kcs3.panda.domain.model.BaseEntity;
 import jakarta.persistence.Column;
