@@ -14,9 +14,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 public class AuctionCompleteItem extends BaseEntity {
-    @OneToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "itemId", nullable = true)
-    private Item item;
+
     @Column(nullable = false)
     private String ItemTitle;
     @Column(nullable=false)
