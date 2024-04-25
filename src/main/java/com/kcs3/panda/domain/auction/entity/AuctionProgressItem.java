@@ -4,6 +4,7 @@ import com.kcs3.panda.domain.model.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import lombok.Data;
@@ -16,8 +17,6 @@ import lombok.EqualsAndHashCode;
 public class AuctionProgressItem extends BaseEntity {
 
 
-    @OneToOne(fetch = FetchType.LAZY, optional = true)
-    private Item item;
     @Column(nullable = false)
     private String ItemTitle;
     @Column(nullable = false)
