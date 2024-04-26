@@ -16,7 +16,6 @@ import lombok.EqualsAndHashCode;
 @Data
 public class AuctionProgressItem extends BaseEntity {
 
-
     @Column(nullable = false)
     private String ItemTitle;
     @Column(nullable = false)

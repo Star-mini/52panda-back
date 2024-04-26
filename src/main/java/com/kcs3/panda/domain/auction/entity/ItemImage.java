@@ -15,6 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class ItemImage extends BaseEntity {
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemDetailId")
     private ItemDetail itemDetail;

@@ -11,6 +11,8 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 public class TradingMethod extends BaseEntity {
+
+
     @Column(nullable = false)
     private int traingMethod;
 }

@@ -15,6 +15,8 @@ import lombok.EqualsAndHashCode;
 @Data
 
 public class AuctionInfo extends BaseEntity {
+
+
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;

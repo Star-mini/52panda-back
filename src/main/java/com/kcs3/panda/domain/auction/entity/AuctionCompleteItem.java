@@ -15,6 +15,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class AuctionCompleteItem extends BaseEntity {
 
+
     @Column(nullable = false)
     private String ItemTitle;
     @Column(nullable=false)

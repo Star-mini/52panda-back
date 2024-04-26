@@ -15,6 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class QnaComment extends BaseEntity {
 
+
     @OneToOne(fetch = FetchType.LAZY, optional = true)
     private ItemQuestion itemQuestion;
     private LocalDateTime commentTime;

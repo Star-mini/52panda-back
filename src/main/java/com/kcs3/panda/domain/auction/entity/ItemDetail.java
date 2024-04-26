@@ -15,6 +15,8 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 public class ItemDetail extends BaseEntity {
+
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId",nullable = false)
     private Item item;

@@ -11,6 +11,8 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 public class Category extends BaseEntity {
+
+
     @Column(nullable = false)
     private String category;
 
