@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
 
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
@@ -29,6 +30,14 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "sellerId")
     private User seller;
 
+    @ManyToOne
+    @JoinColumn(name = "categoryId", nullable = false)
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "tradingMethodId", nullable = false)
+    private TradingMethod tradingMethod;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AuctionProgressItemId", nullable = true)
     private AuctionProgressItem auctionProgressItem;
@@ -38,16 +47,11 @@ public class Item extends BaseEntity {
     private AuctionCompleteItem auctionCompleteItem;
 
     @ManyToOne
-    @JoinColumn(name = "categoryId", nullable = false)
-    private Category category;
-
-    @ManyToOne
-    @JoinColumn(name = "categoryId", nullable = false)
-    private TradingMethod tradingMethod;
-
-    @ManyToOne
     @JoinColumn(name = "locationId", nullable = false)
-    private Location location;
+    private Region region;
+
+    @Column(nullable = false)
+    private String thumbnail;
 
     @Column(nullable = false)
     private boolean isAuctionComplete;
