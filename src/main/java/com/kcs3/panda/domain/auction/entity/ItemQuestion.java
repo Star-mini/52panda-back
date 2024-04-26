@@ -4,12 +4,20 @@ import com.kcs3.panda.domain.model.BaseEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@DynamicUpdate
+@Table(name = "ItemQuestion")
 public class ItemQuestion extends BaseEntity {
 
     @Id
