@@ -10,6 +10,11 @@ import lombok.EqualsAndHashCode;
 @Entity  // JPA 엔터티임을 나타냅니다.
 public class User extends BaseEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="userId", nullable = false)
+    private Long userId;
+
     @Column(nullable = false, length = 255)  // NOT NULL, VARCHAR(255)
     private String userNickname;  // 닉네임
 
