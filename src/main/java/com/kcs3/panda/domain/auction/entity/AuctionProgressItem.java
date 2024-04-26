@@ -21,10 +21,12 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "AuctionProgressItem")
 public class AuctionProgressItem extends BaseEntity {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="auctionProgressItemId", nullable = false)
     private Long auctionProgressItemId;
+
 
     @Column(nullable = false)
     private String ItemTitle;

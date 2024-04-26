@@ -18,6 +18,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "ItemImage")
 public class ItemImage extends BaseEntity {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="itemImageId", nullable = false)

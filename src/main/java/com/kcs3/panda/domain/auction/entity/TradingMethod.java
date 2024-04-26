@@ -15,6 +15,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "TradingMethod")
 public class TradingMethod extends BaseEntity {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="tradingMethodId", nullable = false)

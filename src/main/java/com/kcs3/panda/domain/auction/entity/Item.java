@@ -19,6 +19,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "Item")
 public class Item extends BaseEntity {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="itemId", nullable = false)
@@ -27,16 +28,27 @@ public class Item extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sellerId")
     private User seller;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AuctionProgressItemId", nullable = true)
     private AuctionProgressItem auctionProgressItem;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AuctionCompleteItemId", nullable = true)
     private AuctionCompleteItem auctionCompleteItem;
+
     @ManyToOne
     @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "categoryId", nullable = false)
     private TradingMethod tradingMethod;
+
+    @ManyToOne
+    @JoinColumn(name = "locationId", nullable = false)
+    private Location location;
+
     @Column(nullable = false)
     private boolean isAuctionComplete;
 

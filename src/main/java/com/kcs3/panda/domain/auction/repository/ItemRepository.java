@@ -19,12 +19,17 @@ public interface  ItemRepository extends JpaRepository<Item, Long> {
     @Query("select u.userId from Friend f join f.user1 u where f.user2.id = :userId and f.status = 1")
     List<Long> findByReceiveFriendList1(@Param("userId") Long userId);
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
-    public interface AuctionRepository extends JpaRepository<AuctionItem, Long> {
+
+    public interface AuctionRepository extends JpaRepository<Item, Long> {
+        @Query("SELECT i FROM Item i " +
+                "JOIN FETCH i.category c " +
+                "JOIN FETCH i.tradingMethod tm " +
+                "LEFT JOIN FETCH i.seller " +
+                "LEFT JOIN FETCH i.auctionProgressItem " +
+                "LEFT JOIN FETCH i.auctionCompleteItem " +
+                "WHERE i.isAuctionComplete = :isAuctionComplete")
+        List<Item> findItemsWithDetails(@Param("isAuctionComplete") boolean isAuctionComplete);
 
 
     }

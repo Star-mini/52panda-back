@@ -21,6 +21,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "ItemDetail")
 public class ItemDetail extends BaseEntity {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="itemDetailId", nullable = false)

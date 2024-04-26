@@ -21,6 +21,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "QnaComment")
 public class QnaComment extends BaseEntity {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="qnaCommentId", nullable = false)
