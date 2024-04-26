@@ -1,11 +1,7 @@
 package com.kcs3.panda.domain.auction.entity;
 
 import com.kcs3.panda.domain.model.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,6 +10,11 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 public class ItemImage extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="itemImageId", nullable = false)
+    private Long itemImageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemDetailId")
