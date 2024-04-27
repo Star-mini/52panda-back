@@ -13,8 +13,7 @@ public record ProgressItemsDto(
         String thumbnail,
         int startPrice,
         int currentPrice,
-        boolean isAuctionComplete,
-        String progressItemTitle // AuctionProgressItem의 ItemTitle 필드를 저장하기 위한 추가 필드
+        boolean isAuctionComplete
 ) {
     public static ProgressItemsDto fromEntity(Item item) {
 
@@ -31,7 +30,6 @@ public record ProgressItemsDto(
                 .startPrice(item.getAuctionProgressItem().getStarPrice())
                 .currentPrice(item.getAuctionProgressItem().getMaxPrice())
                 .isAuctionComplete(item.isAuctionComplete())
-                .progressItemTitle(item.getAuctionProgressItem().getItemTitle())
                 .build();
     }
 

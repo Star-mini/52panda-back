@@ -26,10 +26,10 @@ public class ProgressItemsService {
      * 경매진행중인 아이템 목록 조회 - 서비스 로직
      */
     public ProgressItemListDto getProgressItems(String category, Integer method, String region, Pageable pageable) {
-        Slice<Item> ProgressItems = itemRepository.findByProgressItemsWithLocationAndmethodAndRegion(category, method, region, pageable);
+        Slice<Item> progressItems = itemRepository.findByProgressItemsWithLocationAndMethodAndRegion(category, method, region, pageable);
         List<ProgressItemsDto> progressItemDtoList = new ArrayList<>();
 
-        for(Item item : ProgressItems) {
+        for(Item item : progressItems) {
             ProgressItemsDto progressItemsDto = ProgressItemsDto.fromEntity(item);
             progressItemDtoList.add(progressItemsDto);
         }
@@ -39,6 +39,45 @@ public class ProgressItemsService {
                 .progressItemListDto(progressItemDtoList)
                 .build();
     }
+
+
+    /**
+     * 경매완료된 아이템 목록 조회 - 서비스 로직
+     */
+    public ProgressItemListDto getCompletionsItems(String category, Integer method, String region, Pageable pageable) {
+        Slice<Item> completionItems = itemRepository.findByCompleteItemsWithLocationAndMethodAndRegion(category, method, region, pageable);
+        List<ProgressItemsDto> completionItemDtoList = new ArrayList<>();
+
+        for(Item item : completionItems) {
+            ProgressItemsDto progressItemsDto = ProgressItemsDto.fromEntity(item);
+            completionItemDtoList.add(progressItemsDto);
+        }
+
+
+        return ProgressItemListDto.builder()
+                .progressItemListDto(completionItemDtoList)
+                .build();
+    }
+
+
+    /**
+     * 모든 경매 아이템 목록 조회 - 서비스 로직
+     */
+    public ProgressItemListDto getAllItems(String category, Integer method, String region, Pageable pageable) {
+        Slice<Item> allItems = itemRepository.findByAllItemsWithLocationAndMethodAndRegion(category, method, region, pageable);
+        List<ProgressItemsDto> allItemDtoList = new ArrayList<>();
+
+        for(Item item : allItems) {
+            ProgressItemsDto progressItemsDto = ProgressItemsDto.fromEntity(item);
+            allItemDtoList.add(progressItemsDto);
+        }
+
+
+        return ProgressItemListDto.builder()
+                .progressItemListDto(allItemDtoList)
+                .build();
+    }
+
 
 
 }
