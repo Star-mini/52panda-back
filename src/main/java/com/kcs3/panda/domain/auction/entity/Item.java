@@ -39,11 +39,11 @@ public class Item extends BaseEntity {
     private TradingMethod tradingMethod;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "AuctionProgressItemId", nullable = true)
+    @JoinColumn(name = "auctionProgressItemId", nullable = true)
     private AuctionProgressItem auctionProgressItem;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "AuctionCompleteItemId", nullable = true)
+    @JoinColumn(name = "auctionCompleteItemId", nullable = true)
     private AuctionCompleteItem auctionCompleteItem;
 
     @ManyToOne
