@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Item extends BaseEntity {
     @ManyToOne
-    @JoinColumn(name="sellerId")
+    @JoinColumn
     private User seller;
     @ManyToOne
     @JoinColumn(name="categoryId" ,nullable = false)

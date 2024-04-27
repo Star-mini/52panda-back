@@ -7,6 +7,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,4 +24,13 @@ public class ChattingRoom extends BaseEntity {
     @OneToMany(mappedBy = "chattingRoom", cascade = {CascadeType.PERSIST,
             CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ChattingContent> chattingContents = new ArrayList<>();
+
+    @Builder
+    public ChattingRoom(Long buyerId, Long sellerId, List<ChattingContent> chattingContents) {
+        this.buyerId = buyerId;
+        this.sellerId = sellerId;
+        if (chattingContents != null) {
+            this.chattingContents = chattingContents;
+        }
+    }
 }
