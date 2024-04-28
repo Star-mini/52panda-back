@@ -14,18 +14,7 @@ public interface  ItemRepository extends JpaRepository<Item, Long> {
 
 
 
-    public interface AuctionRepository extends JpaRepository<Item, Long> {
-        @Query("SELECT i FROM Item i " +
-                "JOIN FETCH i.category c " +
-                "JOIN FETCH i.tradingMethod tm " +
-                "LEFT JOIN FETCH i.seller " +
-                "LEFT JOIN FETCH i.auctionProgressItem " +
-                "LEFT JOIN FETCH i.auctionCompleteItem " +
-                "WHERE i.isAuctionComplete = :isAuctionComplete")
-        List<Item> findItemsWithDetails(@Param("isAuctionComplete") boolean isAuctionComplete);
 
-
-    }
 
 
 }
