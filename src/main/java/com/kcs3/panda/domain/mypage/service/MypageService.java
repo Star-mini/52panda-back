@@ -14,7 +14,7 @@ public class MypageService {
     }
 
     public List<String> getAll(){
-
+        return null;
     }
 
 }

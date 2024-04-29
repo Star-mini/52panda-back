@@ -20,7 +20,7 @@ public class MypageController {
     @RequestMapping("") //Like Item
     public ResponseEntity<List<Item>> getUserLikes(@PathVariable Long userId){
 
-        return ResponseEntity.ok.build();
+        return ResponseEntity.ok().build();
     }
     @RequestMapping("") //등록아이템 조회
     public ResponseEntity<List<Item>> getPostItem(@PathVariable Long uerId){
