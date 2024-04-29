@@ -17,12 +17,12 @@ public class LikeItem extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private Long likeid; //찜 id
+    private Long likeId; //찜 id
     @JoinColumn(name ="userId")
     @Column(nullable = false)
     @ManyToOne(cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY) // 부모인자가 삭제되면 자동 삭제
-    private User userid; //User정보 중 id
+    private User user; //User정보 중 id
     @ManyToOne(cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY) // 부모인자가 삭제되면 자동 삭제
-    @Column(nullable = false)
-    private Item itemid;
+    @JoinColumn (name="item_id")
+    private Item item;
 }
