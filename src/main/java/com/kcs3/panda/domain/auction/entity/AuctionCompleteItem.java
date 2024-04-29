@@ -25,5 +25,6 @@ public class AuctionCompleteItem extends BaseEntity {
     private String location;
     @Column(nullable=false)
     private int maxPrice;
+
     private String maxPersonID;
 }

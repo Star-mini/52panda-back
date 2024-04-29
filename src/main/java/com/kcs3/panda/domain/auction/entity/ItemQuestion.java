@@ -18,9 +18,7 @@ public class ItemQuestion extends BaseEntity {
     @JoinColumn(name = "itemId",nullable = false)
     private ItemDetail itemDetail;
     @Column(nullable = false)
-    private String questionUserId;
-    @Column(nullable = false)
-    private LocalDateTime questionTime;
+    private Long questionUserId;
     @Column(nullable = false)
     private String questionContents;
 }

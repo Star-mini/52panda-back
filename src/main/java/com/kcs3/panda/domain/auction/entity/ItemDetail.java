@@ -18,7 +18,6 @@ public class ItemDetail extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId",nullable = false)
     private Item item;
-    private LocalDateTime itmeCreateTime;
     @Column(nullable = false)
     private String itemDetailContent;
 }

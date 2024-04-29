@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,6 +20,6 @@ public class ItemImage extends BaseEntity {
     @JoinColumn(name = "itemDetailId")
     private ItemDetail itemDetail;
     @Column(nullable = false)
-    private String imageURL;
+    private List<String> imageUrls;
 
 }
