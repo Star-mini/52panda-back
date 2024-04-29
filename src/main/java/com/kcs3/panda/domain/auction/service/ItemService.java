@@ -1,6 +1,7 @@
 package com.kcs3.panda.domain.auction.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.kcs3.panda.domain.auction.dto.AuctionItemRequest;
 import com.kcs3.panda.domain.auction.dto.CommentRequest;
@@ -34,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class ItemService {
-    private final AmazonS3 amazonS3;
+    private final AmazonS3Client amazonS3Client;
     @Value("${cloud.aws.s3.bucketName}")
     private String bucket;
     @Autowired
@@ -131,8 +132,8 @@ public class ItemService {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.getSize());
             metadata.setContentType(file.getContentType());
-            amazonS3.putObject(bucket,fileName,file.getInputStream(),metadata);
-            urls.add(amazonS3.getUrl(bucket,fileName).toString());
+            amazonS3Client.putObject(bucket,fileName,file.getInputStream(),metadata);
+            urls.add(amazonS3Client.getUrl(bucket,fileName).toString());
         }
         return urls;
     }
