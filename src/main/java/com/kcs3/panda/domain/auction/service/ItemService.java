@@ -18,6 +18,8 @@ import com.kcs3.panda.domain.auction.repository.ItemDetailRepository;
 import com.kcs3.panda.domain.auction.repository.ItemQuestionRepository;
 import com.kcs3.panda.domain.auction.repository.ItemRepository;
 import com.kcs3.panda.domain.auction.repository.QnaCommentRepository;
+import com.kcs3.panda.domain.user.entity.User;
+import com.kcs3.panda.domain.user.repository.UserRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,8 @@ public class ItemService {
     private final ItemQuestionRepository itemQuestionRepository;
     @Autowired
     private final QnaCommentRepository qnaCommentRepository;
+    @Autowired
+    private final UserRepository userRepository;
 
     public void postQna(QnaPostRequest request, Long itemId){
 
@@ -96,12 +100,14 @@ public class ItemService {
         auctionProgressItem.setStartPrice(request.start_price);
         auctionProgressItem.setBuyNowPrice(request.buy_now_price);
 
+
+        User user =userRepository.findByUserId(1L);
         Item item = new Item();
         item.setCategory(request.category);
         item.setTradingMethod(request.trading_method);
         item.setAuctionComplete(false);
         item.setAuctionProgressItem(auctionProgressItem);
-        item.setSeller();
+        item.setSeller(user);
 
         ItemDetail itemDetail = new ItemDetail();
         itemDetail.setItem(item);

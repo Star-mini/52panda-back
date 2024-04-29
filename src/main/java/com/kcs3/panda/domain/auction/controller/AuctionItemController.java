@@ -5,6 +5,7 @@ import com.kcs3.panda.domain.auction.dto.NormalResponse;
 import com.kcs3.panda.domain.auction.dto.QnaPostRequest;
 import com.kcs3.panda.domain.auction.dto.CommentRequest;
 import com.kcs3.panda.domain.auction.service.ItemService;
+import com.kcs3.panda.domain.auction.service.LikeService;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class AuctionItemController
 {
     @Autowired
     private final ItemService itemService;
+    @Autowired
+    private final LikeService likeService;
     @PostMapping("/{itemid}/qna/")
     public ResponseEntity<NormalResponse> postQna(@RequestBody QnaPostRequest request, @PathVariable("itemid") long id){
         itemService.postQna(request,id);
@@ -35,10 +38,19 @@ public class AuctionItemController
 
 
 
+
     @PostMapping("/{itemid}/qna/{questionid}/")
     public ResponseEntity<NormalResponse> postComment(@RequestBody CommentRequest request, @PathVariable("questionid") long id){
         itemService.postComment(request,id);
         String message = "문의댓글 등록을 성공하였습니다";
+        String status = "success";
+        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
+    }
+    @DeleteMapping("/{itemid}/qna/{questionid}/")
+    public ResponseEntity<NormalResponse> deleteComment(@PathVariable("questionid") long id)
+    {
+        itemService.deleteComment(id);
+        String message = "문의댓글을 삭제하였습니다";
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
     }
@@ -57,5 +69,22 @@ public class AuctionItemController
         String message = "물품 등록을 성공하였습니다";
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
+    }
+
+    @PostMapping("/{itemid}/like/")
+    public ResponseEntity<NormalResponse> postItemLike(@PathVariable("itemid") long itemid){
+        likeService.postLike(itemid);
+        String message = "찜목록에 등록을 성공하였습니다.";
+        String status = "success";
+        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
+
+    }
+    @DeleteMapping("/{itemid}/like/")
+    public ResponseEntity<NormalResponse> deleteItemLike(@PathVariable("itemid") long itemid){
+        likeService.deleteLike(itemid);
+        String message = "찜목록 삭제를 성공하였습니다.";
+        String status = "success";
+        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
+
     }
 }
