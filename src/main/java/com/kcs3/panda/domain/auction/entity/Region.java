@@ -2,9 +2,6 @@ package com.kcs3.panda.domain.auction.entity;
 
 import com.kcs3.panda.domain.model.BaseEntity;
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,18 +15,16 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicUpdate
-@Table(name = "ItemDetail")
-public class ItemDetail extends BaseEntity {
-
+@Table(name = "Location")
+public class Region extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="itemDetailId", nullable = false)
-    private Long itemDetailId;
+    @Column(name="regionId", nullable = false)
+    private Long regionId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "itemId",nullable = false)
-    private Item item;
     @Column(nullable = false)
-    private String itemDetailContent;
+    private String location;
+
+
 }
