@@ -46,7 +46,7 @@ public class AuctionItemController
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
     }
-    @DeleteMapping("/{itemid}/qna/{questionid}/")
+    @DeleteMapping("/{itemid}/comment/")
     public ResponseEntity<NormalResponse> deleteComment(@PathVariable("questionid") long id)
     {
         itemService.deleteComment(id);
