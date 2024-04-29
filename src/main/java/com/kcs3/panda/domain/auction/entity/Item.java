@@ -47,7 +47,7 @@ public class Item extends BaseEntity {
     private AuctionCompleteItem auctionCompleteItem;
 
     @ManyToOne
-    @JoinColumn(name = "locationId", nullable = false)
+    @JoinColumn(name = "regionId", nullable = false)
     private Region region;
 
     @Column(nullable = false)

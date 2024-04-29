@@ -4,6 +4,7 @@ import com.kcs3.panda.domain.auction.dto.ProgressItemListDto;
 import com.kcs3.panda.domain.auction.service.ProgressItemsService;
 import com.kcs3.panda.global.dto.ResponseDto;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -17,45 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RequestMapping("api/v1/no-auth")
 public class ProgressItemsController {
+
     private ProgressItemsService progressItemsService;
 
 
+
     /**
      * 경매진행중인 아이템 목록 조회 - API
      */
-    @GetMapping("/auction/progress")
+    @GetMapping("/auction")
     public ResponseDto<ProgressItemListDto> getProgressItemsApi(@PageableDefault(size = 10, sort = "isAuctionComplete",
             direction = Sort.Direction.DESC)
-            @RequestParam String category,
-            @RequestParam Integer tradingMethod,
-            @RequestParam String region,
-            Pageable pageable) {
-        return ResponseDto.ok(progressItemsService.getProgressItems(category, tradingMethod, region, pageable));
-    }
-
-
-    /**
-     * 경매진행중인 아이템 목록 조회 - API
-     */
-    @GetMapping("/auction/completion")
-    public ResponseDto<ProgressItemListDto> getCompletionItems(
-            @RequestParam String category,
-            @RequestParam Integer tradingMethod,
-            @RequestParam String region,
-            Pageable pageable) {
-        return ResponseDto.ok(progressItemsService.getCompletionsItems(category, tradingMethod, region, pageable));
-    }
-
-    /**
-     * 경매진행중인 아이템 목록 조회 - API
-     */
-    @GetMapping("/auction/everything")
-    public ResponseDto<ProgressItemListDto> getAllItems(
-            @RequestParam String category,
-            @RequestParam Integer tradingMethod,
-            @RequestParam String region,
-            Pageable pageable) {
-        return ResponseDto.ok(progressItemsService.getAllItems(category, tradingMethod, region, pageable));
+                                                                @RequestParam String category,
+                                                                @RequestParam Integer tradingMethod,
+                                                                @RequestParam String region,
+                                                                @RequestParam String status,
+                                                                Pageable pageable) {
+        return ResponseDto.ok(progressItemsService.getProgressItems(category, tradingMethod, region, status, pageable));
     }
 
 

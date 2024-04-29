@@ -15,7 +15,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicUpdate
-@Table(name = "Location")
+@Table(name = "region")
 public class Region extends BaseEntity {
 
     @Id
@@ -24,7 +24,7 @@ public class Region extends BaseEntity {
     private Long regionId;
 
     @Column(nullable = false)
-    private String location;
+    private String region;
 
 
 }
