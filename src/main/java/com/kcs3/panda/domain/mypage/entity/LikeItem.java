@@ -22,7 +22,6 @@ public class LikeItem extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long likeId; //찜 id
-    @JoinColumn(name ="userId",nullable = false)
     @ManyToOne(cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY) // 부모인자가 삭제되면 자동 삭제
     @JoinColumn(name ="userId")
     private User user;
