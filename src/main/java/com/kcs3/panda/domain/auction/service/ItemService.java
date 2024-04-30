@@ -117,7 +117,9 @@ public class ItemService {
         item.setTradingMethod(request.trading_method);
         item.setAuctionComplete(false);
         item.setSeller(user);
-        
+
+        auctionProgressItem.setItem(item);
+
         ItemDetail itemDetail = new ItemDetail();
         itemDetail.setItem(item);
         itemDetail.setItemDetailContent(request.contents);
