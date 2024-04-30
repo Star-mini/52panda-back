@@ -24,7 +24,7 @@ public class Region extends BaseEntity {
     private Long regionId;
 
     @Column(nullable = false)
-    private String location;
+    private String region;
 
 
 }
