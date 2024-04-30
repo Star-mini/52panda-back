@@ -100,6 +100,15 @@ public class ItemService {
         auctionProgressItem.setBidFinishTime(request.finish_time);
         auctionProgressItem.setStartPrice(request.start_price);
         auctionProgressItem.setBuyNowPrice(request.buy_now_price);
+        //썸네일저장.
+        if (!request.images.isEmpty()) { // 이미지 리스트가 비어있지 않은지 확인
+            MultipartFile file = request.images.get(0); // 첫 번째 이미지를 가져옴
+            // 파일을 저장하고 URL을 생성하는 로직 필요
+            String thumbnailUrl = ""; // 임시로 빈 문자열, 실제 로직에 맞게 수정 필요
+
+            // 생성된 URL을 thumbnail로 설정
+            auctionProgressItem.setThumbnail(thumbnailUrl);
+        }
 
 
         User user =userRepository.findByUserId(1L);
@@ -107,9 +116,8 @@ public class ItemService {
         item.setCategory(request.category);
         item.setTradingMethod(request.trading_method);
         item.setAuctionComplete(false);
-        item.setAuctionProgressItem(auctionProgressItem);
         item.setSeller(user);
-
+        
         ItemDetail itemDetail = new ItemDetail();
         itemDetail.setItem(item);
         itemDetail.setItemDetailContent(request.contents);
