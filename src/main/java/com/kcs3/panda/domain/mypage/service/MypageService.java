@@ -1,5 +1,4 @@
-package com.kcs3.panda.domain.mypage.service;
-
+/*
 import com.kcs3.panda.domain.mypage.repository.MypageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,4 +16,13 @@ public class MypageService {
 
     }
 
+}*/
+//수정1차
+package com.kcs3.panda.domain.mypage.service;
+import org.springframework.stereotype.Service;
+@Service
+public class MypageService {
+
 }
+
+
