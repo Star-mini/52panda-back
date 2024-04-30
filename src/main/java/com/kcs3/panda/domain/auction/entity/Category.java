@@ -22,7 +22,7 @@ public class Category extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="categoryId", nullable = false)
-    private Long auctionProgressItemId;
+    private Long categoryId;
 
     @Column(nullable = false)
     private String category;

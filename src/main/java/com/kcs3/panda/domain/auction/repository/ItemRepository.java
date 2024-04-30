@@ -18,25 +18,19 @@ import java.util.List;
 public interface  ItemRepository extends JpaRepository<Item, Long> {
 
 
-        
-        /**
-         *  모든 경매 아이템 목록 조회
-         */
-
-
 
         /**
          *  진행 경매 아이템 목록 조회
          */
-        @Query("SELECT ap.item FROM AuctionProgressItem ap " +
-                "JOIN FETCH ap.item i " +
-                "JOIN FETCH i.category c " +
-                "JOIN FETCH i.tradingMethod tm " +
-                "JOIN FETCH i.seller " +
-                "JOIN FETCH i.region r " +
-                "WHERE (:category IS NULL OR c.category = :category) " +
-                "AND (:method IS NULL OR tm.tradingMethod = :method) " +
-                "AND (:region IS NULL OR r.region = :region)")
+        @Query("SELECT ap FROM AuctionProgressItem ap " +
+                "JOIN FETCH ap.item item " +
+                "JOIN FETCH item.category category " +
+                "JOIN FETCH item.tradingMethod method " +
+                "JOIN FETCH item.region region " +
+                "WHERE (:category IS NULL OR category.category = :category) " +
+                "AND (:method IS NULL OR method.tradingMethod = :method) " +
+                "AND (:region IS NULL OR region.region = :region) " +
+                "ORDER BY item.itemId DESC")
         Slice<AuctionProgressItem> findByProgressItemWithLocationAndMethodAndRegion(
                 @Param("category") String category,
                 @Param("method") Integer method,
@@ -45,24 +39,28 @@ public interface  ItemRepository extends JpaRepository<Item, Long> {
 
 
 
+
+
+
+
+
         /**
          *  완료된 경매 아이템 목록 조회
          */
-        @Query("SELECT ac.item FROM AuctionCompleteItem ac " +
-                "JOIN FETCH ac.item i " +
-                "JOIN FETCH i.category c " +
-                "JOIN FETCH i.tradingMethod tm " +
-                "JOIN FETCH i.seller " +
-                "JOIN FETCH i.region r " +
-                "WHERE (:category IS NULL OR c.category = :category) " +
-                "AND (:method IS NULL OR tm.tradingMethod = :method) " +
-                "AND (:region IS NULL OR r.region = :region)")
+        @Query("SELECT ac FROM AuctionCompleteItem ac " +
+                "JOIN FETCH ac.item item " +
+                "JOIN FETCH item.category category " +
+                "JOIN FETCH item.tradingMethod method " +
+                "JOIN FETCH item.region region " +
+                "WHERE (:category IS NULL OR category.category = :category) " +
+                "AND (:method IS NULL OR method.tradingMethod = :method) " +
+                "AND (:region IS NULL OR region.region = :region) " +
+                "ORDER BY item.itemId DESC")
         Slice<AuctionCompleteItem> findByCompleteItemWithLocationAndMethodAndRegion(
                 @Param("category") String category,
                 @Param("method") Integer method,
                 @Param("region") String region,
                 Pageable pageable);
-
 
 
 }
