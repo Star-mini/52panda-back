@@ -38,6 +38,7 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "tradingMethodId", nullable = false)
     private TradingMethod tradingMethod;
 
+<<<<<<< HEAD
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auctionProgressItemId", nullable = true)
     private AuctionProgressItem auctionProgressItem;
@@ -46,14 +47,12 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "auctionCompleteItemId", nullable = true)
     private AuctionCompleteItem auctionCompleteItem;
 
+=======
+>>>>>>> 6764ddea836f19d2b7f03a405e7ee14044a78f5e
     @ManyToOne
     @JoinColumn(name = "regionId", nullable = false)
     private Region region;
 
     @Column(nullable = false)
-    private String thumbnail;
-
-    @Column(nullable = false)
     private boolean isAuctionComplete;
-
 }

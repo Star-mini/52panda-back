@@ -16,7 +16,7 @@ import java.util.List;
 public interface  ItemRepository extends JpaRepository<Item, Long> {
 
 
-
+        
         /**
          *  모든 경매 아이템 목록 조회
          */
@@ -72,6 +72,7 @@ public interface  ItemRepository extends JpaRepository<Item, Long> {
                 @Param("method") Integer method,
                 @Param("region") String region,
                 Pageable pageable);
+
 
 
 }
