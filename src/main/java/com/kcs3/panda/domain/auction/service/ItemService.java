@@ -110,7 +110,7 @@ public class ItemService {
             auctionProgressItem.setThumbnail(thumbnailUrl);
         }
 
-
+        //유저 관련해서 수정필요
         User user =userRepository.findByUserId(1L);
         Item item = new Item();
         item.setCategory(request.category);
@@ -128,7 +128,9 @@ public class ItemService {
         itemImage.setItemDetail(itemDetail);
         itemImage.setImageUrls(this.saveFiles(request.images));
 
-
+        itemRepository.save(item); // Item 저장
+        auctionProgressItemRepository.save(auctionProgressItem); // AuctionProgressItem 저장
+        itemDetailRepository.save(itemDetail); // ItemDetail 저장
     }
 
 //    이미지저장하고 url 반환
