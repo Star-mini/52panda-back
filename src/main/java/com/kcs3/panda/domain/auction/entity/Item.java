@@ -38,8 +38,18 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "tradingMethodId", nullable = false)
     private TradingMethod tradingMethod;
 
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auctionProgressItemId", nullable = true)
+    private AuctionProgressItem auctionProgressItem;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auctionCompleteItemId", nullable = true)
+    private AuctionCompleteItem auctionCompleteItem;
+
+
     @ManyToOne
-    @JoinColumn(name = "locationId", nullable = false)
+    @JoinColumn(name = "regionId", nullable = false)
     private Region region;
 
     @Column(nullable = false)
