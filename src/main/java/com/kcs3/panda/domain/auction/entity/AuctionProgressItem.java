@@ -5,22 +5,19 @@ import com.kcs3.panda.domain.user.entity.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Table(name = "AuctionProgressItem")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@EqualsAndHashCode(callSuper = true)
 @DynamicUpdate
-@Table(name = "AuctionProgressItem")
 public class AuctionProgressItem extends BaseEntity {
 
     @Id
@@ -39,7 +36,7 @@ public class AuctionProgressItem extends BaseEntity {
     private String thumbnail;
 
     @Column(nullable = false)
-    private int starPrice;
+    private int startPrice;
     private int buyNowPrice;
 
     @Column(nullable = false)
@@ -49,14 +46,8 @@ public class AuctionProgressItem extends BaseEntity {
     private String location;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = true)
+    @JoinColumn(name = "userId")
     private User user;
-
-
-    @Column(nullable = true)
     private String maxPersonNickName;
-
-    @Column(nullable = true)
     private Integer maxPrice;
-
 }
