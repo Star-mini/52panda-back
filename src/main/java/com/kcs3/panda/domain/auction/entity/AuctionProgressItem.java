@@ -5,6 +5,7 @@ import com.kcs3.panda.domain.user.entity.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,10 +48,15 @@ public class AuctionProgressItem extends BaseEntity {
     @Column(nullable = false)
     private String location;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = true)
-    private User user;
+    private List<User> users;
+
+
+    @Column(nullable = false)
     private String maxPersonNickName;
+
+    @Column(nullable = false)
     private Integer maxPrice;
 
 }
