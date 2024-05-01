@@ -25,7 +25,7 @@ public record ProgressItemsDto(
                 .category(progressItem.getItem().getCategory().getCategory())
                 .tradingMethod(progressItem.getItem().getTradingMethod().getTradingMethod())
                 .thumbnail(progressItem.getThumbnail())
-                .startPrice(progressItem.getStarPrice())
+                .startPrice(progressItem.getStartPrice())
                 .currentPrice(progressItem.getMaxPrice())
                 .isAuctionComplete(progressItem.getItem().isAuctionComplete())
                 .build();
