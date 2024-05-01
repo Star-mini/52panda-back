@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface AuctionProgressItemRepository extends JpaRepository<AuctionProgressItem, Long> {
+    Optional<AuctionProgressItem> findByItemId(Long itemId);
     Optional<AuctionBidHighestDto> findAuctionBidHighestByAuctionProgressItemId(Long auctionProgressItemId);
 }
 
