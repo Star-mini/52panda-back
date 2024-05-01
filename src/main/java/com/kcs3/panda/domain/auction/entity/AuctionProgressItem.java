@@ -53,10 +53,10 @@ public class AuctionProgressItem extends BaseEntity {
     private List<User> users;
 
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String maxPersonNickName;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer maxPrice;
 
 }
