@@ -36,7 +36,7 @@ public class AuctionProgressItem extends BaseEntity {
     private String thumbnail;
 
     @Column(nullable = false)
-    private int starPrice;
+    private int startPrice;
     private int buyNowPrice;
 
     @Column(nullable = false)
