@@ -51,7 +51,8 @@ public class AuctionCompleteItem extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = true)
-    private List<User> users;
+    private User user;
+
 
 
     @Column(nullable = true)
