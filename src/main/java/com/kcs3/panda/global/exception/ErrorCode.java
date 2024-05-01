@@ -16,9 +16,7 @@ public enum ErrorCode {
     NOT_FOUND_LOGIN_USER(40401, HttpStatus.NOT_FOUND, "로그인한 사용자가 존재하지 않습니다."),
     NOT_FOUND_AUTHORIZATION_HEADER(40401, HttpStatus.NOT_FOUND, "Authorization 헤더가 존재하지 않습니다."),
     NOT_FOUND_USER(40401, HttpStatus.NOT_FOUND, "해당 사용자가 존재하지 않습니다."),
-    NOT_FOUND_DIARY(40402, HttpStatus.NOT_FOUND, "해당 일기가 존재하지 않습니다."),
-    NOT_FOUND_SHARED_URL(40403, HttpStatus.NOT_FOUND, "해당 공유 URL이 존재하지 않습니다."),
-    NOT_FOUND_ALBUM(40404, HttpStatus.NOT_FOUND, "해당 앨범이 존재하지 않습니다."),
+    ITEM_NOT_FOUND(40402, HttpStatus.NOT_FOUND, "해당 경매 물품을 찾을 수 없습니다."),
 
     // Invalid Argument Error
     MISSING_REQUEST_PARAMETER(40000, HttpStatus.BAD_REQUEST, "필수 요청 파라미터가 누락되었습니다."),
@@ -29,7 +27,8 @@ public enum ErrorCode {
     BAD_REQUEST_PARAMETER(40005, HttpStatus.BAD_REQUEST, "잘못된 요청 파라미터입니다."),
     BAD_REQUEST_JSON(40006, HttpStatus.BAD_REQUEST, "잘못된 JSON 형식입니다."),
     SEARCH_SHORT_LENGTH_ERROR(40007, HttpStatus.BAD_REQUEST, "검색어는 2글자 이상이어야 합니다."),
-    ALREADY_SHARED_DIARY(40008, HttpStatus.BAD_REQUEST, "이미 공유 중인 일기입니다."),
+    BID_NOT_HIGHER(40008, HttpStatus.BAD_REQUEST, "입찰 가격이 현재 최고 입찰가보다 높아야 합니다."),
+    BIDDER_IS_SAME(40009, HttpStatus.BAD_REQUEST, "현재 최고 입찰자와 같은 사용자입니다."),
 
     // Gone Error
     GONE_SHARED_URL(41001, HttpStatus.GONE, "해당 공유 URL이 만료되었습니다."),
@@ -38,7 +37,6 @@ public enum ErrorCode {
     ACCESS_DENIED(40300, HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
     NOT_MATCH_AUTH_CODE(40301, HttpStatus.FORBIDDEN, "인증 코드가 일치하지 않습니다."),
     NOT_MATCH_USER(40302, HttpStatus.FORBIDDEN, "해당 사용자가 일치하지 않습니다."),
-
 
     // Unauthorized Error
     FAILURE_LOGIN(40100, HttpStatus.UNAUTHORIZED, "잘못된 아이디 또는 비밀번호입니다."),
