@@ -37,11 +37,9 @@ public class ProgressItemsService {
 
         if ("progress".equals(status)) {
             Slice<AuctionProgressItem> progressItems = itemRepository.findByProgressItemWithLocationAndMethodAndRegion(category, method, region, pageable);
-            log.info("테스트1");
             for (AuctionProgressItem progressItem : progressItems) {
                 ProgressItemsDto progressItemsDto = ProgressItemsDto.fromProgressEntity(progressItem);
                 itemtemDtoList.add(progressItemsDto);
-                log.info("테스트2");
             }
         } else if ("completion".equals(status)) {
             Slice<AuctionCompleteItem> completionItems = itemRepository.findByCompleteItemWithLocationAndMethodAndRegion(category, method, region, pageable);
@@ -67,7 +65,6 @@ public class ProgressItemsService {
 
         } //else
 
-        log.info("테스트3");
         return ProgressItemListDto.builder()
                 .progressItemListDto(itemtemDtoList)
                 .build();
