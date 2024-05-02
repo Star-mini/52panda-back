@@ -1,15 +1,21 @@
 package com.kcs3.panda.domain.auction.service;
 
 
+import com.kcs3.panda.domain.auction.dto.HotItemListDto;
+import com.kcs3.panda.domain.auction.dto.HotItemsDto;
 import com.kcs3.panda.domain.auction.dto.ProgressItemListDto;
 import com.kcs3.panda.domain.auction.dto.ProgressItemsDto;
 import com.kcs3.panda.domain.auction.entity.AuctionCompleteItem;
+import com.kcs3.panda.domain.auction.entity.AuctionInfo;
 import com.kcs3.panda.domain.auction.entity.AuctionProgressItem;
 import com.kcs3.panda.domain.auction.entity.Item;
+import com.kcs3.panda.domain.auction.repository.AuctionInfoRepository;
 import com.kcs3.panda.domain.auction.repository.ItemRepository;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -17,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -24,6 +31,7 @@ import java.util.List;
 public class ProgressItemsService {
 
     private final ItemRepository itemRepository;
+    private final AuctionInfoRepository auctionInfoRepository;
 
 
     /**
@@ -61,13 +69,54 @@ public class ProgressItemsService {
             }
 
 
-
-
         } //else
 
         return ProgressItemListDto.builder()
                 .progressItemListDto(itemtemDtoList)
                 .build();
     }
+
+
+
+    /**
+     * 핫아이템 Redis 저장 서비스 로직
+     */
+
+    public HotItemListDto getHotItems() {
+
+        // 최근 인기 아이템의 itemId 리스트 조회
+
+        List<Long> hotItemIdList = auctionInfoRepository.findTop10ItemIds();
+        List<AuctionProgressItem> hotItemList = new ArrayList<>();
+
+
+        for (Long itemId : hotItemIdList) {
+            System.out.println("Item ID: " + itemId);
+            AuctionProgressItem hotItem = itemRepository.findByHotItemList(itemId);
+            hotItemList.add(hotItem);
+        }
+
+
+
+
+        // 조회된 AuctionProgressItem을 HotItemsDto로 변환
+        List<HotItemsDto> hotItemsDtos = hotItemList
+                .stream()
+                .map(HotItemsDto::fromHotEntity)
+                .collect(Collectors.toList());
+
+        return HotItemListDto.builder()
+                .hotItemListDtos(hotItemsDtos)
+                .build();
+    }
+
+
+
+
+
+
+
+
+
 }
 

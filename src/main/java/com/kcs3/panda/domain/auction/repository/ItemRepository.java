@@ -27,7 +27,7 @@ public interface  ItemRepository extends JpaRepository<Item, Long> {
                 "JOIN FETCH item.category category " +
                 "JOIN FETCH item.tradingMethod method " +
                 "JOIN FETCH item.region region " +
-                "WHERE (:category IS NULL OR category.category = :category) " +
+                 "WHERE (:category IS NULL OR category.category = :category) " +
                 "AND (:method IS NULL OR method.tradingMethod = :method) " +
                 "AND (:region IS NULL OR region.region = :region) " +
                 "ORDER BY item.itemId DESC")
@@ -61,6 +61,24 @@ public interface  ItemRepository extends JpaRepository<Item, Long> {
                 @Param("method") Integer method,
                 @Param("region") String region,
                 Pageable pageable);
+
+
+        /**
+         *  Redis에  핫템 저장
+         */
+        @Query("SELECT api " +
+                "FROM AuctionProgressItem api " +
+                "JOIN FETCH api.item i " +
+                "JOIN FETCH i.category c " +
+                "WHERE (i.itemId = :itemId)")
+        AuctionProgressItem findByHotItemList(@Param("itemId") Long itemId);
+
+
+
+
+
+
+
 
 
 }
