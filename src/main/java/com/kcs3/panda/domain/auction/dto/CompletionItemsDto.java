@@ -20,7 +20,7 @@ public record CompletionItemsDto(
                 .category(completeItem.getItem().getCategory().getCategory())
                 .tradingMethod(completeItem.getItem().getTradingMethod().getTradingMethod())
                 .thumbnail(completeItem.getThumbnail())
-                .startPrice(completeItem.getStarPrice())
+                .startPrice(completeItem.getStartPrice())
                 .currentPrice(completeItem.getMaxPrice())
                 .isAuctionComplete(completeItem.getItem().isAuctionComplete())
                 .build();

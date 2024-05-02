@@ -23,7 +23,7 @@ public record ProgressItemsDto(
                 .category(progressItem.getItem().getCategory().getCategory())
                 .tradingMethod(progressItem.getItem().getTradingMethod().getTradingMethod())
                 .thumbnail(progressItem.getThumbnail())
-                .startPrice(progressItem.getStarPrice())
+                .startPrice(progressItem.getStartPrice())
                 .currentPrice(progressItem.getMaxPrice())
                 .isAuctionComplete(progressItem.getItem().isAuctionComplete())
                 .build();
@@ -35,7 +35,7 @@ public record ProgressItemsDto(
                 .category(completeItem.getItem().getCategory().getCategory())
                 .tradingMethod(completeItem.getItem().getTradingMethod().getTradingMethod())
                 .thumbnail(completeItem.getThumbnail())
-                .startPrice(completeItem.getStarPrice())
+                .startPrice(completeItem.getStartPrice())
                 .currentPrice(completeItem.getMaxPrice())
                 .isAuctionComplete(completeItem.getItem().isAuctionComplete())
                 .build();

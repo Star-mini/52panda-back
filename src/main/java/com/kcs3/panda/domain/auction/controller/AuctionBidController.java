@@ -22,7 +22,7 @@ public class AuctionBidController {
      * @return ResponseEntity<ResponseDto<String>> 입찰 결과
      */
     @PostMapping("/{itemId}/bid")
-    public ResponseEntity<ResponseDto<?>> placeBid(@PathVariable Long itemId,
+    public ResponseEntity<ResponseDto<?>> submitBid(@PathVariable Long itemId,
                                                         @RequestParam int bidPrice,
                                                         @RequestParam Long userId,
                                                         @RequestParam String nickname) {
