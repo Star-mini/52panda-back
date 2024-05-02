@@ -30,7 +30,7 @@ public class AuctionCompleteItem extends BaseEntity {
     private Item item;
 
     @Column(nullable = false)
-    private String ItemTitle;
+    private String itemTitle;
 
     @Column(nullable = false)
     private String thumbnail;
@@ -50,4 +50,7 @@ public class AuctionCompleteItem extends BaseEntity {
     private User user;
     private String maxPersonNickName;
     private Integer maxPrice;
+
+    @Column(nullable = false)
+    private boolean isBidComplete;
 }
