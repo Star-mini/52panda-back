@@ -85,8 +85,8 @@ public class ProgressItemsService {
     public HotItemListDto getHotItems() {
 
         // 최근 인기 아이템의 itemId 리스트 조회
-
-        List<Long> hotItemIdList = auctionInfoRepository.findTop10ItemIds();
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Long> hotItemIdList = auctionInfoRepository.findTop10ItemIds(pageable);
         List<AuctionProgressItem> hotItemList = new ArrayList<>();
 
 
