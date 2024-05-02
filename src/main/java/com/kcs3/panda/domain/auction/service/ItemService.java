@@ -1,24 +1,15 @@
 package com.kcs3.panda.domain.auction.service;
 
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.kcs3.panda.domain.auction.dto.AuctionItemRequest;
 import com.kcs3.panda.domain.auction.dto.CommentRequest;
 import com.kcs3.panda.domain.auction.dto.QnaPostRequest;
-import com.kcs3.panda.domain.auction.entity.AuctionCompleteItem;
-import com.kcs3.panda.domain.auction.entity.AuctionProgressItem;
-import com.kcs3.panda.domain.auction.entity.Item;
-import com.kcs3.panda.domain.auction.entity.ItemDetail;
-import com.kcs3.panda.domain.auction.entity.ItemImage;
-import com.kcs3.panda.domain.auction.entity.ItemQuestion;
-import com.kcs3.panda.domain.auction.entity.QnaComment;
-import com.kcs3.panda.domain.auction.repository.AuctionCompleteItemRepository;
-import com.kcs3.panda.domain.auction.repository.AuctionProgressItemRepository;
-import com.kcs3.panda.domain.auction.repository.ItemDetailRepository;
-import com.kcs3.panda.domain.auction.repository.ItemQuestionRepository;
-import com.kcs3.panda.domain.auction.repository.ItemRepository;
-import com.kcs3.panda.domain.auction.repository.QnaCommentRepository;
+import com.kcs3.panda.domain.auction.entity.*;
+import com.kcs3.panda.domain.auction.repository.*;
 import com.kcs3.panda.domain.user.entity.User;
 import com.kcs3.panda.domain.user.repository.UserRepository;
 import java.io.IOException;
@@ -35,7 +26,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class ItemService {
-    private final AmazonS3Client amazonS3Client;
+    private final AmazonS3 amazonS3Client = AmazonS3ClientBuilder.standard()
+            .withRegion(Regions.AP_NORTHEAST_2) // 서울 리전
+            .build();
     @Value("${cloud.aws.s3.bucketName}")
     private String bucket;
     @Autowired
@@ -52,6 +45,9 @@ public class ItemService {
     private final QnaCommentRepository qnaCommentRepository;
     @Autowired
     private final UserRepository userRepository;
+
+    @Autowired
+    private RegionRepository regionRepository;
 
     public void postQna(QnaPostRequest request, Long itemId){
 
@@ -95,30 +91,40 @@ public class ItemService {
 
 
     public void postItem(AuctionItemRequest request) throws IOException {
-        AuctionProgressItem auctionProgressItem= new AuctionProgressItem();
-        auctionProgressItem.setItemTitle(request.title);
-        auctionProgressItem.setBidFinishTime(request.finish_time);
-        auctionProgressItem.setStartPrice(request.start_price);
-        auctionProgressItem.setBuyNowPrice(request.buy_now_price);
-        //썸네일저장.
-        if (!request.images.isEmpty()) { // 이미지 리스트가 비어있지 않은지 확인
-            MultipartFile file = request.images.get(0); // 첫 번째 이미지를 가져옴
-            // 파일을 저장하고 URL을 생성하는 로직 필요
-            String thumbnailUrl = ""; // 임시로 빈 문자열, 실제 로직에 맞게 수정 필요
-
-            // 생성된 URL을 thumbnail로 설정
-            auctionProgressItem.setThumbnail(thumbnailUrl);
-        }
 
         //유저 관련해서 수정필요
         User user =userRepository.findByUserId(1L);
+
+        // "전체" 지역 찾기
+        Region region = regionRepository.findByRegion("전체");
+        if (region == null) {
+            throw new RuntimeException("Region '전체' not found");
+        }
+
         Item item = new Item();
         item.setCategory(request.category);
         item.setTradingMethod(request.trading_method);
         item.setAuctionComplete(false);
         item.setSeller(user);
+        item.setRegion(region);  // 지역 설정
 
+
+        AuctionProgressItem auctionProgressItem= new AuctionProgressItem();
+        auctionProgressItem.setItemTitle(request.title);
+        auctionProgressItem.setBidFinishTime(request.finish_time);
+        auctionProgressItem.setStartPrice(request.start_price);
+        auctionProgressItem.setBuyNowPrice(request.buy_now_price);
+        auctionProgressItem.setLocation("전체");  // 여기에 문자열로 "전체" 지정
         auctionProgressItem.setItem(item);
+
+        //썸네일 저장하기
+        ArrayList<String> imageUrls = this.saveFiles(request.images);
+        if (!imageUrls.isEmpty()) {
+            auctionProgressItem.setThumbnail(imageUrls.get(0));  // 첫 번째 이미지 URL을 썸네일로 설정
+        } else {
+            throw new IOException("이미지가 제공되지 않았습니다.");
+        }
+
 
         ItemDetail itemDetail = new ItemDetail();
         itemDetail.setItem(item);
