@@ -1,4 +1,3 @@
-
 package com.kcs3.panda.domain.mypage.entity;
 
 import com.kcs3.panda.domain.auction.entity.Item;
@@ -11,7 +10,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Getter
@@ -21,13 +19,13 @@ public class LikeItem extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private Long likeId; //찜 id
-    @ManyToOne(cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY) // 부모인자가 삭제되면 자동 삭제
-    @JoinColumn(name ="userId")
+    private Long likeId; // 찜 id
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
     private User user;
 
-    @ManyToOne(cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY) // 부모인자가 삭제되면 자동 삭제
-    @JoinColumn (name="itemId")
-    private Item item;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "itemId")
+    private Item item; // cascade 설정 제거
 }
