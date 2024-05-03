@@ -82,9 +82,8 @@ public class ProgressItemsService {
 
 
     /**
-     * 핫아이템 Redis 저장 서비스 로직
+     * 핫아이템 목록 Redis 조회 서비스 로직
      */
-
     public HotItemListDto getHotItems(){
 
         List<HotItemsDto> hotItemsDtos = new ArrayList<>();
@@ -97,6 +96,11 @@ public class ProgressItemsService {
                 .hotItemListDtos(hotItemsDtos)
                 .build();
     }
+
+
+    /**
+     * 핫아이템 Redis 저장 서비스 로직
+     */
     public void saveHotItems() {
 
         // 최근 인기 아이템의 itemId 리스트 조회
@@ -131,11 +135,6 @@ public class ProgressItemsService {
 
 
     }
-
-
-
-
-
 
 
 

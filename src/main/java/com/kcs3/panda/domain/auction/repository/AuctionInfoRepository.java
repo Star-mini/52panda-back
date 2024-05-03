@@ -18,8 +18,6 @@ public interface AuctionInfoRepository extends JpaRepository<AuctionInfo, Long> 
      * 그래서 JPQL로 구성했고, 네이티브 쿼리를 사용하여 LIMIT 10 설정함
      */
 
-
-
     @Query("SELECT DISTINCT item.itemId " +
             "FROM AuctionInfo ai " +
             "JOIN ai.item item " +
@@ -27,18 +25,6 @@ public interface AuctionInfoRepository extends JpaRepository<AuctionInfo, Long> 
             "GROUP BY item.itemId " +
             "ORDER BY COUNT(ai.user) DESC")
     List<Long> findTop10ItemIds(Pageable pageable);
-
-
-//    @Query("SELECT DISTINCT item.itemId " +
-//            "FROM AuctionInfo ai " +
-//            "JOIN ai.item item " +
-//            "WHERE item.isAuctionComplete = false " +
-//            "GROUP BY item.itemId " +
-//            "ORDER BY COUNT(ai.user) DESC")
-//    List<Long> findTop10ItemIds();
-
-
-
 
 
 
