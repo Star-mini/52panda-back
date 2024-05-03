@@ -30,30 +30,12 @@ public class AuctionItemController
     private final ItemService itemService;
     @Autowired
     private final LikeService likeService;
+
+
     @PostMapping("/{itemid}/qna/")
     public ResponseEntity<NormalResponse> postQna(@RequestBody QnaPostRequest request, @PathVariable("itemid") long id){
         itemService.postQna(request,id);
         String message = "문의글 등록을 성공하였습니다";
-        String status = "success";
-        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
-    }
-
-
-
-
-
-    @PostMapping("/{itemid}/qna/{questionid}/")
-    public ResponseEntity<NormalResponse> postComment(@RequestBody CommentRequest request, @PathVariable("questionid") long id){
-        itemService.postComment(request,id);
-        String message = "문의댓글 등록을 성공하였습니다";
-        String status = "success";
-        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
-    }
-    @DeleteMapping("/{itemid}/comment/")
-    public ResponseEntity<NormalResponse> deleteComment(@PathVariable("questionid") long id)
-    {
-        itemService.deleteComment(id);
-        String message = "문의댓글을 삭제하였습니다";
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
     }
@@ -66,6 +48,28 @@ public class AuctionItemController
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
     }
+
+
+
+
+    @PostMapping("/{itemid}/qna/{questionid}/")
+    public ResponseEntity<NormalResponse> postComment(@RequestBody CommentRequest request, @PathVariable("questionid") long id){
+        itemService.postComment(request,id);
+        String message = "문의댓글 등록을 성공하였습니다";
+        String status = "success";
+        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
+    }
+
+
+    @DeleteMapping("/{itemid}/comment/{CommentId}")
+    public ResponseEntity<NormalResponse> deleteComment(@PathVariable("CommentId") long id)
+    {
+        itemService.deleteComment(id);
+        String message = "문의댓글을 삭제하였습니다";
+        String status = "success";
+        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
+    }
+
     @PostMapping(value = "/form/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<NormalResponse> postAuctionItem(
             @RequestParam("title") String title,
