@@ -29,6 +29,7 @@ public enum ErrorCode {
     SEARCH_SHORT_LENGTH_ERROR(40007, HttpStatus.BAD_REQUEST, "검색어는 2글자 이상이어야 합니다."),
     BID_NOT_HIGHER(40008, HttpStatus.BAD_REQUEST, "입찰 가격이 현재 최고 입찰가보다 높아야 합니다."),
     BIDDER_IS_SAME(40009, HttpStatus.BAD_REQUEST, "현재 최고 입찰자와 같은 사용자입니다."),
+    ITEM_BID_FIELD_MISMATCH(40010, HttpStatus.BAD_REQUEST, "경매 아이템 입찰자 정보 필드에 일관성 문제가 발생했습니다."),
 
     // Gone Error
     GONE_SHARED_URL(41001, HttpStatus.GONE, "해당 공유 URL이 만료되었습니다."),
