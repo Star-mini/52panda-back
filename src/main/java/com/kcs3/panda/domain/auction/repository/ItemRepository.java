@@ -64,7 +64,7 @@ public interface  ItemRepository extends JpaRepository<Item, Long> {
 
 
         /**
-         *  Redis에  핫템 저장
+         *  Redis에  NEW 및 HOT 아이템 저장
          */
         @Query("SELECT api " +
                 "FROM AuctionProgressItem api " +

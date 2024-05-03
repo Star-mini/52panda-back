@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +27,8 @@ public class ProgressItemsController {
 
     /**
      * 경매진행중인 아이템 목록 조회 - API
+     * 경매완료된 아이템 목록 조회
+     * 전체 경매 아이템 목록 조회
      */
     @GetMapping("/auction")
     public ResponseDto<ProgressItemListDto> getProgressItemsApi(@PageableDefault(size = 2)Pageable pageable,
@@ -35,6 +38,7 @@ public class ProgressItemsController {
                                                                 @RequestParam String status
                                                                 ) {
         return ResponseDto.ok(progressItemsService.getProgressItems(category, tradingMethod, region, status, pageable));
+
     }
 
 
@@ -45,6 +49,18 @@ public class ProgressItemsController {
     public ResponseDto<HotItemListDto> getHotItemsSaveApi() {
         return ResponseDto.ok(progressItemsService.getHotItems());
     }
+
+    /**
+     * Redis에서 New Item 목록 조회 - API
+     */
+    @GetMapping("/new-item")
+    public ResponseDto<HotItemListDto> getNewItemsSaveApi() {
+        return ResponseDto.ok(progressItemsService.getNewItems());
+    }
+
+
+
+
 
 
 }
