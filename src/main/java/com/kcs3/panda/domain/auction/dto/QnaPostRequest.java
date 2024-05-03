@@ -6,8 +6,6 @@ import lombok.Data;
 @Data
 public class QnaPostRequest {
     @NotBlank
-    Long itemId;
-    @NotBlank
     Long questionUserId;
     @NotBlank
     String questionContents;
