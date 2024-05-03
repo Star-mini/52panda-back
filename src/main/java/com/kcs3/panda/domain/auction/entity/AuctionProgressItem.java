@@ -6,20 +6,18 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Table(name = "AuctionProgressItem")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@EqualsAndHashCode(callSuper = true)
 @DynamicUpdate
-@Table(name = "AuctionProgressItem")
 public class AuctionProgressItem extends BaseEntity {
 
     @Id
@@ -47,8 +45,8 @@ public class AuctionProgressItem extends BaseEntity {
     @Column(nullable = false)
     private String location;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
     private User user;
     private String maxPersonNickName;
     private Integer maxPrice;

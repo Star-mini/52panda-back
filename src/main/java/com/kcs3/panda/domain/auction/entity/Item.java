@@ -4,21 +4,20 @@ import com.kcs3.panda.domain.model.BaseEntity;
 import com.kcs3.panda.domain.mypage.entity.LikeItem;
 import com.kcs3.panda.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Table(name = "Item")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@EqualsAndHashCode(callSuper = true)
 @DynamicUpdate
-@Table(name = "Item")
 public class Item extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,8 +40,18 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "tradingMethodId", nullable = false)
     private TradingMethod tradingMethod;
 
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auctionProgressItemId", nullable = true)
+    private AuctionProgressItem auctionProgressItem;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auctionCompleteItemId", nullable = true)
+    private AuctionCompleteItem auctionCompleteItem;
+
+
     @ManyToOne
-    @JoinColumn(name = "locationId", nullable = false)
+    @JoinColumn(name = "regionId", nullable = false)
     private Region region;
 
     @Column(nullable = false)
