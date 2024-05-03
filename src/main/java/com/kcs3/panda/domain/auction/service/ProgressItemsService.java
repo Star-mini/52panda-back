@@ -18,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,8 @@ public class ProgressItemsService {
     private final ItemRepository itemRepository;
     private final AuctionInfoRepository auctionInfoRepository;
 
+
+    private final RedisTemplate<String, HotItemsDto> redisTemplate;
 
     /**
      * 경매진행중인 아이템 목록 조회 - 서비스 로직
@@ -82,7 +85,19 @@ public class ProgressItemsService {
      * 핫아이템 Redis 저장 서비스 로직
      */
 
-    public HotItemListDto getHotItems() {
+    public HotItemListDto getHotItems(){
+
+        List<HotItemsDto> hotItemsDtos = new ArrayList<>();
+
+        for (int i=1;i<=10;i++) {
+            hotItemsDtos.add( redisTemplate.opsForValue().get("hot_item:"+i));
+        }
+
+        return HotItemListDto.builder()
+                .hotItemListDtos(hotItemsDtos)
+                .build();
+    }
+    public void saveHotItems() {
 
         // 최근 인기 아이템의 itemId 리스트 조회
         Pageable pageable = PageRequest.of(0, 10);
@@ -91,11 +106,9 @@ public class ProgressItemsService {
 
 
         for (Long itemId : hotItemIdList) {
-            System.out.println("Item ID: " + itemId);
             AuctionProgressItem hotItem = itemRepository.findByHotItemList(itemId);
             hotItemList.add(hotItem);
         }
-
 
 
 
@@ -105,9 +118,18 @@ public class ProgressItemsService {
                 .map(HotItemsDto::fromHotEntity)
                 .collect(Collectors.toList());
 
-        return HotItemListDto.builder()
+
+        HotItemListDto hotItemListDto = HotItemListDto.builder()
                 .hotItemListDtos(hotItemsDtos)
                 .build();
+
+        int i = 1;
+        for (HotItemsDto hotItemsDto : hotItemListDto.hotItemListDtos()) {
+            redisTemplate.opsForValue().set("hot_item:" + i, hotItemsDto);
+            i++;
+        }
+
+
     }
 
 

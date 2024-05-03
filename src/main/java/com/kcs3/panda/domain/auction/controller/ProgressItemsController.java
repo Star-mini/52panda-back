@@ -38,8 +38,10 @@ public class ProgressItemsController {
     }
 
 
-
-    @GetMapping("/hotitem")
+    /**
+     * Redis에서 Hot Item 목록 조회 - API
+     */
+    @GetMapping("/hot-item")
     public ResponseDto<HotItemListDto> getHotItemsSaveApi() {
         return ResponseDto.ok(progressItemsService.getHotItems());
     }
