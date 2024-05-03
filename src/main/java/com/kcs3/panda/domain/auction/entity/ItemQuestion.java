@@ -5,21 +5,19 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-@EqualsAndHashCode(callSuper = true)
+
 @Entity
-@Data
+@Table(name = "ItemQuestion")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@EqualsAndHashCode(callSuper = true)
 @DynamicUpdate
-@Table(name = "ItemQuestion")
 public class ItemQuestion extends BaseEntity {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +27,13 @@ public class ItemQuestion extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemId",nullable = false)
     private ItemDetail itemDetail;
+
     @Column(nullable = false)
     private String questionUserId;
+
     @Column(nullable = false)
     private LocalDateTime questionTime;
+
     @Column(nullable = false)
     private String questionContents;
 }
