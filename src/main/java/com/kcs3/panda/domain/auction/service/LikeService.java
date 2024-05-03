@@ -38,7 +38,7 @@ public class LikeService {
 
     public void deleteLike(Long itemId){
 
-//유저수정하삼
+        //유저수정하삼
         User user =userRepository.findByUserId(1L);
         Optional<LikeItem> OlikeItem = likeItemRepository.findByLikeIdAndUser(itemId,user);
         if(OlikeItem.isPresent()){
