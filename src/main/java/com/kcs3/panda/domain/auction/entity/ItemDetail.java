@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
-
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
@@ -21,15 +20,15 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "ItemDetail")
 public class ItemDetail extends BaseEntity {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="itemDetailId", nullable = false)
     private Long itemDetailId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "itemId",nullable = false)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "itemId", nullable = false)
     private Item item;
+
     @Column(nullable = false)
     private String itemDetailContent;
 }
