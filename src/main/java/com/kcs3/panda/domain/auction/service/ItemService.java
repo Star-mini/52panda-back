@@ -52,11 +52,13 @@ public class ItemService {
     public void postQna(QnaPostRequest request, Long itemId){
 
         ItemQuestion itemQuestion = new ItemQuestion();
-        itemQuestion.setItemDetail(this.findDetailByItemId(itemId));
+        itemQuestion.setItemDetailId(this.findDetailByItemId(itemId));
         itemQuestion.setQuestionContents(request.getQuestionContents());
         itemQuestion.setQuestionUserId(request.getQuestionUserId());
         this.itemQuestionRepository.save(itemQuestion);
     }
+
+
     public void deleteQna(Long questionId)
     {
         ItemQuestion itemQuestion = this.findItemQuestionById(questionId);
@@ -72,17 +74,20 @@ public class ItemService {
     public void postComment(CommentRequest request, Long questionId){
 
         QnaComment comment = new QnaComment();
-        comment.setItemQuestion(this.findItemQuestionById(questionId));
+        comment.setQuestionId(this.findItemQuestionById(questionId));
         comment.setComment(request.getComment());
         this.qnaCommentRepository.save(comment);
     }
-    public void deleteComment(Long questionId)
-    {
-        ItemQuestion itemQuestion = this.findItemQuestionById(questionId);
-        if (itemQuestion!=null) {
-            this.itemQuestionRepository.delete(itemQuestion);
+
+    public boolean deleteComment(Long commentId) {
+        QnaComment qnaComment = this.findCommentById(commentId);
+        if (qnaComment != null) {
+            this.qnaCommentRepository.delete(qnaComment);
+            return true;
         }
+        return false;
     }
+
 
 
 
@@ -162,6 +167,7 @@ public class ItemService {
         }
         return null;
     }
+
     private ItemQuestion findItemQuestionById(long questionId){
         Optional<ItemQuestion> OitemQuestion= itemQuestionRepository.findById(questionId);
         if(OitemQuestion.isPresent())
@@ -169,5 +175,10 @@ public class ItemService {
             return OitemQuestion.get();
         }
         return null;
+    }
+
+    private QnaComment findCommentById(long commentId) {
+        Optional<QnaComment> optionalQnaComment = qnaCommentRepository.findById(commentId);
+        return optionalQnaComment.orElse(null);
     }
 }
