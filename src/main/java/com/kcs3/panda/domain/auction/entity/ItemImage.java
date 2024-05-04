@@ -34,7 +34,16 @@ public class ItemImage extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemDetailId")
     private ItemDetail itemDetail;
-    @Column(nullable = false)
-    private List<String> imageUrls;
 
+    @Column(name = "url", nullable = false)
+    private String url;  // URL을 저장하는 필드
+
+    @Override
+    public String toString() {
+        return "ItemImage{" +
+                "id=" + itemImage +  // BaseEntity에서 상속받은 ID
+                ", url='" + url + '\'' +
+                ", itemDetail=" + (itemDetail != null ? "ItemDetail[id=" + itemDetail.getItemDetailId() + "]" : "null") +
+                '}';
+    }
 }
