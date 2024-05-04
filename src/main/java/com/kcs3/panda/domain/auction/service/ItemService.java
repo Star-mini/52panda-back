@@ -49,6 +49,9 @@ public class ItemService {
     @Autowired
     private RegionRepository regionRepository;
 
+    @Autowired
+    private  ItemImageRepository itemImageRepository;
+
     public void postQna(QnaPostRequest request, Long itemId){
 
         ItemQuestion itemQuestion = new ItemQuestion();
@@ -96,9 +99,8 @@ public class ItemService {
 
 
     public void postItem(AuctionItemRequest request) throws IOException {
-
-        //유저 관련해서 수정필요
-        User user =userRepository.findByUserId(1L);
+        // 유저 관련해서 수정필요
+        User user = userRepository.findByUserId(1L);
 
         // "전체" 지역 찾기
         Region region = regionRepository.findByRegion("전체");
@@ -113,8 +115,7 @@ public class ItemService {
         item.setSeller(user);
         item.setRegion(region);  // 지역 설정
 
-
-        AuctionProgressItem auctionProgressItem= new AuctionProgressItem();
+        AuctionProgressItem auctionProgressItem = new AuctionProgressItem();
         auctionProgressItem.setItemTitle(request.title);
         auctionProgressItem.setBidFinishTime(request.finish_time);
         auctionProgressItem.setStartPrice(request.start_price);
@@ -122,7 +123,7 @@ public class ItemService {
         auctionProgressItem.setLocation("전체");  // 여기에 문자열로 "전체" 지정
         auctionProgressItem.setItem(item);
 
-        //썸네일 저장하기
+        // 썸네일 저장하기
         ArrayList<String> imageUrls = this.saveFiles(request.images);
         if (!imageUrls.isEmpty()) {
             auctionProgressItem.setThumbnail(imageUrls.get(0));  // 첫 번째 이미지 URL을 썸네일로 설정
@@ -130,19 +131,31 @@ public class ItemService {
             throw new IOException("이미지가 제공되지 않았습니다.");
         }
 
-
         ItemDetail itemDetail = new ItemDetail();
         itemDetail.setItem(item);
         itemDetail.setItemDetailContent(request.contents);
 
-        ItemImage itemImage = new ItemImage();
-        itemImage.setItemDetail(itemDetail);
-        itemImage.setImageUrls(this.saveFiles(request.images));
+        // URL 리스트를 ItemImage 객체 리스트로 변환
+        List<ItemImage> itemImages = new ArrayList<>();
+        for (String url : imageUrls) {
+            ItemImage itemImage = new ItemImage();
+            itemImage.setUrl(url);  // 각 ItemImage 객체에 URL 설정
+            itemImage.setItemDetail(itemDetail);  // ItemDetail 객체 설정
+            itemImages.add(itemImage);  // 생성된 ItemImage 객체를 리스트에 추가
+        }
+
+        // ItemDetail에 이미지 리스트 설정
+        itemDetail.setImages(itemImages);
 
         itemRepository.save(item); // Item 저장
         auctionProgressItemRepository.save(auctionProgressItem); // AuctionProgressItem 저장
         itemDetailRepository.save(itemDetail); // ItemDetail 저장
+        for (ItemImage itemImage : itemImages) {
+            itemImageRepository.save(itemImage); // 각 ItemImage 저장
+        }
     }
+
+
 
 //    이미지저장하고 url 반환
 
