@@ -1,7 +1,6 @@
 package com.kcs3.panda.domain.auction.dto;
 
 import com.kcs3.panda.domain.auction.entity.AuctionCompleteItem;
-import com.kcs3.panda.domain.auction.entity.AuctionProgressItem;
 
 public record CompletionItemsDto(
         String itemTitle,
@@ -20,7 +19,7 @@ public record CompletionItemsDto(
                 .category(completeItem.getItem().getCategory().getCategory())
                 .tradingMethod(completeItem.getItem().getTradingMethod().getTradingMethod())
                 .thumbnail(completeItem.getThumbnail())
-                .startPrice(completeItem.getStarPrice())
+                .startPrice(completeItem.getStartPrice())
                 .currentPrice(completeItem.getMaxPrice())
                 .isAuctionComplete(completeItem.getItem().isAuctionComplete())
                 .build();

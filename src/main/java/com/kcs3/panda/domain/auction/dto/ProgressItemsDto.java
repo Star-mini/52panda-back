@@ -3,9 +3,7 @@ package com.kcs3.panda.domain.auction.dto;
 
 import com.kcs3.panda.domain.auction.entity.AuctionCompleteItem;
 import com.kcs3.panda.domain.auction.entity.AuctionProgressItem;
-import com.kcs3.panda.domain.auction.entity.Item;
 import lombok.Builder;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 
 @Builder
 public record ProgressItemsDto(
@@ -23,7 +21,7 @@ public record ProgressItemsDto(
                 .category(progressItem.getItem().getCategory().getCategory())
                 .tradingMethod(progressItem.getItem().getTradingMethod().getTradingMethod())
                 .thumbnail(progressItem.getThumbnail())
-                .startPrice(progressItem.getStarPrice())
+                .startPrice(progressItem.getStartPrice())
                 .currentPrice(progressItem.getMaxPrice())
                 .isAuctionComplete(progressItem.getItem().isAuctionComplete())
                 .build();
@@ -35,7 +33,7 @@ public record ProgressItemsDto(
                 .category(completeItem.getItem().getCategory().getCategory())
                 .tradingMethod(completeItem.getItem().getTradingMethod().getTradingMethod())
                 .thumbnail(completeItem.getThumbnail())
-                .startPrice(completeItem.getStarPrice())
+                .startPrice(completeItem.getStartPrice())
                 .currentPrice(completeItem.getMaxPrice())
                 .isAuctionComplete(completeItem.getItem().isAuctionComplete())
                 .build();
