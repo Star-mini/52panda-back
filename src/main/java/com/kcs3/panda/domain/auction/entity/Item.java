@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(callSuper = true)
+@Setter
 @DynamicUpdate
 public class Item extends BaseEntity {
     @Id
@@ -39,16 +39,6 @@ public class Item extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "tradingMethodId", nullable = false)
     private TradingMethod tradingMethod;
-
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "auctionProgressItemId", nullable = true)
-    private AuctionProgressItem auctionProgressItem;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "auctionCompleteItemId", nullable = true)
-    private AuctionCompleteItem auctionCompleteItem;
-
 
     @ManyToOne
     @JoinColumn(name = "regionId", nullable = false)
