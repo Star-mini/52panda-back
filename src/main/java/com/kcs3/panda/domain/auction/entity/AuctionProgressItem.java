@@ -13,6 +13,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @Table(name = "AuctionProgressItem")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -30,7 +31,7 @@ public class AuctionProgressItem extends BaseEntity {
     private Item item;
 
     @Column(nullable = false)
-    private String ItemTitle;
+    private String itemTitle;
 
     @Column(nullable = false)
     private String thumbnail;
