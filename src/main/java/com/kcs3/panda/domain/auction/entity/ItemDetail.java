@@ -4,6 +4,7 @@ import com.kcs3.panda.domain.model.BaseEntity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,4 +32,16 @@ public class ItemDetail extends BaseEntity {
 
     @Column(nullable = false)
     private String itemDetailContent;
+
+    @OneToMany(mappedBy = "itemDetail", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ItemImage> images;
+
+    @Override
+    public String toString() {
+        return "ItemDetail{" +
+                "id=" + getItemDetailId() +  // BaseEntity에서 상속받은 ID
+                ", content='" + itemDetailContent + '\'' +
+                ", item=" + (item != null ? "Item[id=" + item.getItemId() + "]" : "null") +
+                '}';
+    }
 }
