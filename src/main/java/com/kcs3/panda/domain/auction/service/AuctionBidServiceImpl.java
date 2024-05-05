@@ -40,7 +40,7 @@ public class AuctionBidServiceImpl implements AuctionBidService {
 
     @Transactional
     public boolean attemptBid(Long itemId, Long userId, String nickname, int bidPrice) {
-        AuctionProgressItem progressItem = auctionProgressItemRepo.findByItemId(itemId)
+        AuctionProgressItem progressItem = auctionProgressItemRepo.findByItemItemId(itemId)
                 .orElseThrow(() -> new CommonException(ErrorCode.ITEM_NOT_FOUND));
 
         if (bidPrice >= progressItem.getBuyNowPrice()) {
