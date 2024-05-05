@@ -12,7 +12,13 @@ import java.time.LocalDateTime;
 
 public interface AuctionProgressItemRepository extends JpaRepository<AuctionProgressItem, Long> {
     Optional<AuctionProgressItem> findByItemItemId(Long itemId);
-    Optional<AuctionBidHighestDto> findAuctionBidHighestByAuctionProgressItemId(Long auctionProgressItemId);
+
+    @Query("SELECT new com.kcs3.panda.domain.auction.dto.AuctionBidHighestDto(" +
+            "api.auctionProgressItemId, user.userId, user.userNickname, api.maxPrice) " +
+            "FROM AuctionProgressItem api " +
+            "JOIN api.user user " +
+            "WHERE api.auctionProgressItemId = :auctionProgressItemId")
+    Optional<AuctionBidHighestDto> findAuctionBidHighestByAuctionProgressItemId(@Param("auctionProgressItemId") Long auctionProgressItemId);
 
     Optional<List<AuctionProgressItem>> findAllByBidFinishTimeBefore(LocalDateTime now);
 }
