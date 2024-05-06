@@ -51,7 +51,8 @@ public class AuctionProgressItem extends BaseEntity {
     private String maxPersonNickName;
     private Integer maxPrice;
 
-    public void updateAuctionMaxBid(String nickname, int price) {
+    public void updateAuctionMaxBid(User user, String nickname, int price) {
+        this.user = user;
         this.maxPersonNickName = nickname;
         this.maxPrice = price;
     }
