@@ -3,9 +3,7 @@ package com.kcs3.panda.domain.auction.dto;
 
 import com.kcs3.panda.domain.auction.entity.AuctionCompleteItem;
 import com.kcs3.panda.domain.auction.entity.AuctionProgressItem;
-import com.kcs3.panda.domain.auction.entity.Item;
 import lombok.Builder;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 
 @Builder
 public record ProgressItemsDto(
