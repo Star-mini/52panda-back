@@ -11,7 +11,8 @@ public record HotItemsDto(
         String itemTitle,
         String category,
         String thumbnail,
-        int startPrice
+        int startPrice,
+        int buyNowPrice
 
 ) {
 
@@ -22,6 +23,7 @@ public record HotItemsDto(
                 .category(auctionProgressItem.getItem().getCategory().getCategory())
                 .thumbnail(auctionProgressItem.getThumbnail())
                 .startPrice(auctionProgressItem.getStartPrice())
+                .buyNowPrice(auctionProgressItem.getBuyNowPrice())
                 .build();
     }
 }
