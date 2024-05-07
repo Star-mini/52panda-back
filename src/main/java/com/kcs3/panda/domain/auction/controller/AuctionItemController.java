@@ -31,7 +31,7 @@ public class AuctionItemController
     @Autowired
     private final LikeService likeService;
 
-
+    //문의글 등록
     @PostMapping("/{itemid}/qna/")
     public ResponseEntity<NormalResponse> postQna(@RequestBody QnaPostRequest request, @PathVariable("itemid") long id){
         itemService.postQna(request,id);
