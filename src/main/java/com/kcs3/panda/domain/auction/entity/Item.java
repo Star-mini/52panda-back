@@ -19,6 +19,7 @@ import java.util.List;
 @Setter
 @DynamicUpdate
 public class Item extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="itemId", nullable = false)
@@ -31,7 +32,6 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "sellerId")
     private User seller;
 
-
     @ManyToOne
     @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
@@ -39,6 +39,8 @@ public class Item extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "tradingMethodId", nullable = false)
     private TradingMethod tradingMethod;
+
+
 
     @ManyToOne
     @JoinColumn(name = "regionId", nullable = false)
