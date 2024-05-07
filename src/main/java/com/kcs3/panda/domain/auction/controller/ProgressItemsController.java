@@ -31,7 +31,7 @@ public class ProgressItemsController {
      * 전체 경매 아이템 목록 조회
      */
     @GetMapping("/auction")
-    public ResponseDto<ProgressItemListDto> getProgressItemsApi(@PageableDefault(size = 2)Pageable pageable,
+    public ResponseDto<ProgressItemListDto> getProgressItemsApi(@PageableDefault(size = 10)Pageable pageable,
                                                                 @RequestParam(required = false) String category,
                                                                 @RequestParam(required = false) Integer tradingMethod,
                                                                 @RequestParam(required = false) String region,
@@ -59,6 +59,16 @@ public class ProgressItemsController {
     }
 
 
+    @GetMapping("/hot-save")
+    public void testtHotItemsSaveApi() {
+        progressItemsService.saveHotItems();
+    }
+
+
+    @GetMapping("/new-save")
+    public void testtNewItemsSaveApi() {
+        progressItemsService.saveHotItems();
+    }
 
 
 
