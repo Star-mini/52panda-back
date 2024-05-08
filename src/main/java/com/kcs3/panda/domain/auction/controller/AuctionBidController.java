@@ -1,5 +1,6 @@
 package com.kcs3.panda.domain.auction.controller;
 
+import com.kcs3.panda.domain.auction.dto.AuctionBidRequestDto;
 import com.kcs3.panda.domain.auction.dto.AuctionInfosDto;
 import com.kcs3.panda.domain.auction.service.AuctionBidService;
 import com.kcs3.panda.domain.auction.service.AuctionInfoService;
@@ -45,11 +46,12 @@ public class AuctionBidController {
      */
     @PostMapping("/{itemId}/bid")
     public ResponseDto<?> submitBid(@PathVariable Long itemId,
-                                    @RequestParam int bidPrice,
-                                    @RequestParam Long userId,
-                                    @RequestParam String nickname) {
+                                    @RequestBody AuctionBidRequestDto auctionBidRequestDto) {
         try {
-            auctionBidService.attemptBid(itemId, userId, nickname, bidPrice);
+            auctionBidService.attemptBid(itemId,
+                                        auctionBidRequestDto.userId(),
+                                        auctionBidRequestDto.nickname(),
+                                        auctionBidRequestDto.bidPrice());
             return ResponseDto.ok("입찰에 성공하였습니다.");
         } catch (CommonException e) {
             return ResponseDto.fail(e);
