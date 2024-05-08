@@ -16,30 +16,39 @@ public record MypageListDto(
             boolean isAuctionComplete
  )
 {
-    public static MypageListDto fromEntity(Item item) {
+    //like & progressitem
+    public static MypageListDto fromProgressEntity(Item item,AuctionProgressItem progressItem) {
         if (item == null || item.getCategory() == null || item.getTradingMethod() == null) {
             return null; // Null 체크 추가
         }
 
         String itemTitle;
         int startPrice;
-        if (item.getAuctionProgressItem() != null) {
-            itemTitle = item.getAuctionProgressItem().getItemTitle();
-            startPrice = item.getAuctionProgressItem().getStartPrice();
-        } else if (item.getAuctionCompleteItem() != null) {
-            itemTitle = item.getAuctionCompleteItem().getItemTitle();
-            startPrice = item.getAuctionCompleteItem().getStartPrice();
-        } else {
-            // 어떤 경우에도 progressItem이나 completeItem이 없으면 처리할 수 없음
-            return null;
-        }
 
         return MypageListDto.builder()
-                .itemTitle(itemTitle)
+                .itemTitle(progressItem.getItemTitle())
                 .category(item.getCategory().getCategory())
-                .thumbnail(item.getAuctionProgressItem().getThumbnail())
-                .startPrice(startPrice)
-                .currentPrice(item.getAuctionProgressItem() != null ? item.getAuctionProgressItem().getMaxPrice() : 0)
+                .thumbnail(progressItem.getThumbnail())
+                .startPrice(progressItem.getStartPrice())
+                .currentPrice(progressItem.getMaxPrice() )
+                .isAuctionComplete(item.isAuctionComplete())
+                .build();
+    }
+    //like&completeItem
+    public static MypageListDto fromCompleteEntity(Item item,AuctionCompleteItem completeItem) {
+        if (item == null || item.getCategory() == null || item.getTradingMethod() == null) {
+            return null; // Null 체크 추가
+        }
+
+        String itemTitle;
+        int startPrice;
+
+        return MypageListDto.builder()
+                .itemTitle(completeItem.getItemTitle())
+                .category(item.getCategory().getCategory())
+                .thumbnail(completeItem.getThumbnail())
+                .startPrice(completeItem.getStartPrice())
+                .currentPrice(completeItem.getMaxPrice() )
                 .isAuctionComplete(item.isAuctionComplete())
                 .build();
     }
@@ -58,9 +67,9 @@ public record MypageListDto(
                    .itemTitle(progressItem.getItemTitle())
                    .category(item.getCategory().getCategory())
                    .tradingMethod(item.getTradingMethod().getTradingMethod())
-                   .thumbnail(item.getAuctionProgressItem().getThumbnail())
-                   .startPrice(item.getAuctionProgressItem().getStartPrice())
-                   .currentPrice(item.getAuctionProgressItem().getMaxPrice())
+                   .thumbnail(progressItem.getThumbnail())
+                   .startPrice(progressItem.getStartPrice())
+                   .currentPrice(progressItem.getMaxPrice())
                    .isAuctionComplete(item.isAuctionComplete())
                    .build();
     }
@@ -75,9 +84,9 @@ public record MypageListDto(
                 .itemTitle(completeItem.getItemTitle())
                 .category(item.getCategory().getCategory())
                 .tradingMethod(item.getTradingMethod().getTradingMethod())
-                .thumbnail(item.getAuctionCompleteItem().getThumbnail())
-                .startPrice(item.getAuctionProgressItem().getStartPrice())
-                .currentPrice(item.getAuctionProgressItem().getMaxPrice())
+                .thumbnail(completeItem.getThumbnail())
+                .startPrice(completeItem.getStartPrice())
+                .currentPrice(completeItem.getMaxPrice())
                 .isAuctionComplete(item.isAuctionComplete())
                 .build();
     }

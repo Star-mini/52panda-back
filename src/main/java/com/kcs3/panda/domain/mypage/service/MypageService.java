@@ -23,11 +23,18 @@ public class MypageService {
         // DTO 설정이 안되어있어서 error 터짐!
         for(LikeItem likeItem: likedItems){
             Item item = likeItem.getItem();
-            if(item!=null){
-                likedItem.add(MypageListDto.fromEntity(item));
+            if(item!=null&item.isAuctionComplete()==false){
+               //ProgressItem
+                AuctionProgressItem progressItem = auctionItemRepository.findProgressByItemId(item.getItemId());
+                likedItem.add(MypageListDto.fromProgressEntity(item,progressItem));
             }
+            else if(item!=null&item.isAuctionComplete()==true){
+                //CompleteItem
+                AuctionCompleteItem completeItem = auctionItemRepository.findCompleteByItemid(item.getItemId());
+                likedItem.add(MypageListDto.fromCompleteEntity(item,completeItem));
+            }
+
         }
-        // itemdto -> 아이템 이름, 현재가격, 시작가, 즉시입찰가 등등을 담을 dto
 
         return likedItem;
     }
@@ -39,13 +46,16 @@ public class MypageService {
 
         //입찰 &낙찰 아이템 조회
         List<MypageListDto> auctionItems = new ArrayList<>();
+
         for (Item item : userItems) {
-            AuctionProgressItem progressItem = auctionItemRepository.findProgressByItemId(item.getItemId());
-            AuctionCompleteItem completeItem = auctionItemRepository.findCompleteByItemid(item.getItemId());
-            if(progressItem!=null)
-                auctionItems.add(MypageListDto.fromEntity(progressItem));
-            if(completeItem!=null)
-                auctionItems.add(MypageListDto.fromEntity(completeItem));
+            if(item!=null&item.isAuctionComplete()==false) {
+                AuctionProgressItem progressItem = auctionItemRepository.findProgressByItemId(item.getItemId());
+                auctionItems.add(MypageListDto.fromProgressEntity(item,progressItem));
+            }
+            else if(item !=null&item.isAuctionComplete()==true){
+                AuctionCompleteItem completeItem = auctionItemRepository.findCompleteByItemid(item.getItemId());
+                auctionItems.add(MypageListDto.fromCompleteEntity(item,completeItem));
+            }
         }
 
         return auctionItems;
@@ -61,7 +71,7 @@ public class MypageService {
                 getMyBids.add(MypageListDto.fromEntity(progressItem));
 
         }
-        //Q. 낙착완료된건 조회?
+        //현재 입찰 진행중인것만 조회 하도록 기능 설정
         return getMyBids;
     }
 
