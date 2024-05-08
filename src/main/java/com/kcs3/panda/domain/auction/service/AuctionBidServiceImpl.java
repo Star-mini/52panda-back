@@ -40,14 +40,19 @@ public class AuctionBidServiceImpl implements AuctionBidService {
 
     @Transactional
     public boolean attemptBid(Long itemId, Long userId, String nickname, int bidPrice) {
-        AuctionProgressItem progressItem = auctionProgressItemRepo.findByItemId(itemId)
+        AuctionProgressItem progressItem = auctionProgressItemRepo.findByItemItemId(itemId)
                 .orElseThrow(() -> new CommonException(ErrorCode.ITEM_NOT_FOUND));
 
+        Long sellerId = itemRepository.findSellerIdByItemId(itemId);
+        if (sellerId.equals(userId)) {
+            throw new CommonException(ErrorCode.BIDDER_IS_SELLER);
+        }
+
         if (bidPrice >= progressItem.getBuyNowPrice()) {
-            log.info("User {}가 Item {}을 즉시 구매 - 가격: {}", itemId, userId, bidPrice);
+            log.debug("User {}가 Item {}을 즉시 구매 - 가격: {}", itemId, userId, bidPrice);
 
             saveAuctionInfo(itemId, userId, bidPrice);
-            updateAuctionProgressItemMaxBid(progressItem, nickname, bidPrice);
+            updateAuctionProgressItemMaxBid(progressItem, userId, nickname, bidPrice);
             transferItemToComplete(progressItem);
             return true;
         }
@@ -65,7 +70,7 @@ public class AuctionBidServiceImpl implements AuctionBidService {
         });
 
         saveAuctionInfo(itemId, userId, bidPrice);
-        updateAuctionProgressItemMaxBid(progressItem, nickname, bidPrice);
+        updateAuctionProgressItemMaxBid(progressItem, userId, nickname, bidPrice);
         return true;
     }//end attemptBid()
 
@@ -88,15 +93,16 @@ public class AuctionBidServiceImpl implements AuctionBidService {
         auctionInfoRepo.save(auctionInfo);
     }//end saveAuctionInfo()
 
-    private void updateAuctionProgressItemMaxBid(AuctionProgressItem progressItem, String nickname, int price) {
-        progressItem.updateAuctionMaxBid(nickname, price);
+    private void updateAuctionProgressItemMaxBid(AuctionProgressItem progressItem, Long userId, String nickname, int bidPrice) {
+        User user = userRepository.getReferenceById(userId);
+        progressItem.updateAuctionMaxBid(user, nickname, bidPrice);
         auctionProgressItemRepo.save(progressItem);
     }//end updateAuctionProgressItemMaxBid()
 
 
     @Transactional
     @Scheduled(cron = "0 0 * * * *")  // 매 시간 정각에 실행
-    public void transferCompletedAuctions() {
+    public void finishAuctionsByTime() {
         LocalDateTime now = LocalDateTime.now();
         Optional<List<AuctionProgressItem>> completedItemsOptional = auctionProgressItemRepo.findAllByBidFinishTimeBefore(now);
 
@@ -112,6 +118,11 @@ public class AuctionBidServiceImpl implements AuctionBidService {
         try {
             boolean isComplete = checkBidCompletionStatus(item);
             AuctionCompleteItem completeItem = buildAuctionCompleteItem(item, isComplete);
+
+            Item auctionItem = item.getItem();
+            auctionItem.endAuction();
+
+            itemRepository.save(auctionItem);
             auctionCompleteItemRepo.save(completeItem);
             auctionProgressItemRepo.delete(item);
         } catch (CommonException e) {

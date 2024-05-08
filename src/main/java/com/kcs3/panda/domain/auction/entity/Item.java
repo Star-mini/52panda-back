@@ -40,4 +40,8 @@ public class Item extends BaseEntity {
 
     @Column(nullable = false)
     private boolean isAuctionComplete;
+
+    public void endAuction() {
+        this.isAuctionComplete = true;
+    }
 }
