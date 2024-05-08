@@ -49,7 +49,17 @@ public class AuctionProgressItem extends BaseEntity {
     @JoinColumn(name = "userId")
     private User user;
     private String maxPersonNickName;
+
+    //@Column(nullable = false)
     private Integer maxPrice;
+
+    public static class AuctionProgressItemBuilder {
+        public AuctionProgressItemBuilder startPrice(int startPrice) {
+            this.startPrice = startPrice;
+            this.maxPrice = startPrice;
+            return this;
+        }
+    }
 
     public void updateAuctionMaxBid(User user, String nickname, int price) {
         this.user = user;
