@@ -97,7 +97,7 @@ public class AuctionBidServiceImpl implements AuctionBidService {
 
     @Transactional
     @Scheduled(cron = "0 0 * * * *")  // 매 시간 정각에 실행
-    public void transferCompletedAuctions() {
+    public void finishAuctionsByTime() {
         LocalDateTime now = LocalDateTime.now();
         Optional<List<AuctionProgressItem>> completedItemsOptional = auctionProgressItemRepo.findAllByBidFinishTimeBefore(now);
 
