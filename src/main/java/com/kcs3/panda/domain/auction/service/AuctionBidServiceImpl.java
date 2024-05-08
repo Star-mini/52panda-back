@@ -113,6 +113,11 @@ public class AuctionBidServiceImpl implements AuctionBidService {
         try {
             boolean isComplete = checkBidCompletionStatus(item);
             AuctionCompleteItem completeItem = buildAuctionCompleteItem(item, isComplete);
+
+            Item auctionItem = item.getItem();
+            auctionItem.endAuction();
+
+            itemRepository.save(auctionItem);
             auctionCompleteItemRepo.save(completeItem);
             auctionProgressItemRepo.delete(item);
         } catch (CommonException e) {
