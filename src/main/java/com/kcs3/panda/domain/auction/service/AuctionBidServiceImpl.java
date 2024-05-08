@@ -43,6 +43,11 @@ public class AuctionBidServiceImpl implements AuctionBidService {
         AuctionProgressItem progressItem = auctionProgressItemRepo.findByItemItemId(itemId)
                 .orElseThrow(() -> new CommonException(ErrorCode.ITEM_NOT_FOUND));
 
+        Long sellerId = itemRepository.findSellerIdByItemId(itemId);
+        if (sellerId.equals(userId)) {
+            throw new CommonException(ErrorCode.BIDDER_IS_SELLER);
+        }
+
         if (bidPrice >= progressItem.getBuyNowPrice()) {
             log.debug("User {}가 Item {}을 즉시 구매 - 가격: {}", itemId, userId, bidPrice);
 
