@@ -30,7 +30,7 @@ public class AuctionCompleteItem extends BaseEntity {
     private Item item;
 
     @Column(nullable = false)
-    private String itemTitle;
+    private String ItemTitle;
 
     @Column(nullable = false)
     private String thumbnail;
