@@ -33,7 +33,7 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        String originToken = accessToken.substring(6);
+        String originToken = accessToken.substring(7);
 
         log.info("오리진토큰확인"+originToken);
         if(jwtUtil.isExpired(originToken)){
