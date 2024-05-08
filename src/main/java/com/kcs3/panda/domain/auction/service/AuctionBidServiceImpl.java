@@ -58,7 +58,7 @@ public class AuctionBidServiceImpl implements AuctionBidService {
         }
 
         Optional<AuctionBidHighestDto> highestBid
-                = auctionProgressItemRepo.findAuctionBidHighestByAuctionProgressItemId(progressItem.getAuctionProgressItemId());
+                = auctionProgressItemRepo.findHighestBidByAuctionProgressItemId(progressItem.getAuctionProgressItemId());
 
         highestBid.ifPresent(bid -> {
             if (bidPrice <= bid.maxPrice()) {
