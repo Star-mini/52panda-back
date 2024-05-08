@@ -8,7 +8,6 @@ import com.kcs3.panda.domain.auction.repository.AuctionCompleteItemRepository;
 import com.kcs3.panda.domain.auction.repository.AuctionInfoRepository;
 import com.kcs3.panda.domain.auction.repository.AuctionProgressItemRepository;
 import com.kcs3.panda.domain.auction.repository.ItemRepository;
-import com.kcs3.panda.domain.user.repository.UserRepository;
 import com.kcs3.panda.global.exception.CommonException;
 import com.kcs3.panda.global.exception.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 @Slf4j
