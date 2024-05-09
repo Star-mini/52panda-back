@@ -39,7 +39,7 @@ public class AuctionItemController
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
     }
-
+    //문의글 삭제
     @DeleteMapping("/{itemid}/qna/{questionid}/")
     public ResponseEntity<NormalResponse> deleteQna(@PathVariable("questionid") long questionid)
     {
@@ -51,7 +51,7 @@ public class AuctionItemController
 
 
 
-
+    //문의댓글 등록
     @PostMapping("/{itemid}/qna/{questionid}/")
     public ResponseEntity<NormalResponse> postComment(@RequestBody CommentRequest request, @PathVariable("questionid") long id){
         itemService.postComment(request,id);
@@ -60,7 +60,7 @@ public class AuctionItemController
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
     }
 
-
+    //문의댓글 삭제
     @DeleteMapping("/{itemid}/comment/{CommentId}")
     public ResponseEntity<NormalResponse> deleteComment(@PathVariable("CommentId") long id)
     {
@@ -69,7 +69,7 @@ public class AuctionItemController
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
     }
-
+    //물품등록
     @PostMapping(value = "/form/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<NormalResponse> postAuctionItem(
             @RequestParam("title") String title,
@@ -99,7 +99,7 @@ public class AuctionItemController
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
 
-
+    //찜목록에 등록
     @PostMapping("/{itemid}/like/")
     public ResponseEntity<NormalResponse> postItemLike(@PathVariable("itemid") long itemid){
         likeService.postLike(itemid);
@@ -108,6 +108,7 @@ public class AuctionItemController
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
 
     }
+    //찜목록 삭제
     @DeleteMapping("/{itemid}/like/")
     public ResponseEntity<NormalResponse> deleteItemLike(@PathVariable("itemid") long itemid){
         likeService.deleteLike(itemid);
