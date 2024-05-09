@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class LikeRequest {
     @NotBlank
-    Long questionUserId;
+    Long likeUserId;
 
 }

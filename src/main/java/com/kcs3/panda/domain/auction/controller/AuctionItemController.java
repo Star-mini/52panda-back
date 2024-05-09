@@ -25,8 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth/auction")
-public class AuctionItemController
-{
+public class AuctionItemController {
     @Autowired
     private final ItemService itemService;
     @Autowired
@@ -34,42 +33,41 @@ public class AuctionItemController
 
     //문의글 등록
     @PostMapping("/{itemid}/qna/")
-    public ResponseEntity<NormalResponse> postQna(@RequestBody QnaPostRequest request, @PathVariable("itemid") long id){
-        itemService.postQna(request,id);
+    public ResponseEntity<NormalResponse> postQna(@RequestBody QnaPostRequest request, @PathVariable("itemid") long id) {
+        itemService.postQna(request, id);
         String message = "문의글 등록을 성공하였습니다";
         String status = "success";
-        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
+
     //문의글 삭제
     @DeleteMapping("/{itemid}/qna/{questionid}/")
-    public ResponseEntity<NormalResponse> deleteQna(@PathVariable("questionid") long questionid)
-    {
+    public ResponseEntity<NormalResponse> deleteQna(@PathVariable("questionid") long questionid) {
         itemService.deleteQna(questionid);
         String message = "문의글 삭제를 성공하였습니다";
         String status = "success";
-        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
-
 
 
     //문의댓글 등록
     @PostMapping("/{itemid}/qna/{questionid}/")
-    public ResponseEntity<NormalResponse> postComment(@RequestBody CommentRequest request, @PathVariable("questionid") long id){
-        itemService.postComment(request,id);
+    public ResponseEntity<NormalResponse> postComment(@RequestBody CommentRequest request, @PathVariable("questionid") long id) {
+        itemService.postComment(request, id);
         String message = "문의댓글 등록을 성공하였습니다";
         String status = "success";
-        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
 
     //문의댓글 삭제
     @DeleteMapping("/{itemid}/comment/{CommentId}")
-    public ResponseEntity<NormalResponse> deleteComment(@PathVariable("CommentId") long id)
-    {
+    public ResponseEntity<NormalResponse> deleteComment(@PathVariable("CommentId") long id) {
         itemService.deleteComment(id);
         String message = "문의댓글을 삭제하였습니다";
         String status = "success";
-        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
+
     //물품등록
     @PostMapping(value = "/form/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<NormalResponse> postAuctionItem(
@@ -103,7 +101,7 @@ public class AuctionItemController
     //찜목록에 등록
     @PostMapping("/{itemid}/like/")
     public ResponseEntity<NormalResponse> postItemLike(@PathVariable("itemid") long itemid, @RequestBody LikeRequest likeRequest) {
-        boolean isLiked = likeService.postLike(itemid, likeRequest.getQuestionUserId());
+        boolean isLiked = likeService.postLike(itemid, likeRequest.getLikeUserId());
         String message;
         HttpStatus status;
 
@@ -119,11 +117,10 @@ public class AuctionItemController
 
     //찜목록 삭제
     @DeleteMapping("/{itemid}/like/")
-    public ResponseEntity<NormalResponse> deleteItemLike(@PathVariable("itemid") long itemid){
-        likeService.deleteLike(itemid);
-        String message = "찜목록 삭제를 성공하였습니다.";
-        String status = "success";
-        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
-
+    public ResponseEntity<NormalResponse> deleteItemLike(@PathVariable("itemid") long itemid) {
+        boolean isDeleted = likeService.deleteLike(itemid);
+        String message = isDeleted ? "찜목록 삭제를 성공하였습니다." : "찜목록 삭제를 실패하였습니다.";
+        String status = isDeleted ? "success" : "fail";
+        return ResponseEntity.status(HttpStatus.OK).body(new NormalResponse(status, message));
     }
 }
