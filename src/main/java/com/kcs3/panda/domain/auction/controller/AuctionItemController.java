@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.kcs3.panda.domain.mypage.dto.LikeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -101,8 +102,8 @@ public class AuctionItemController
 
     //찜목록에 등록
     @PostMapping("/{itemid}/like/")
-    public ResponseEntity<NormalResponse> postItemLike(@PathVariable("itemid") long itemid) {
-        boolean isLiked = likeService.postLike(itemid);
+    public ResponseEntity<NormalResponse> postItemLike(@PathVariable("itemid") long itemid, @RequestBody LikeRequest likeRequest) {
+        boolean isLiked = likeService.postLike(itemid, likeRequest.getQuestionUserId());
         String message;
         HttpStatus status;
 

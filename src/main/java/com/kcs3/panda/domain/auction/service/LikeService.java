@@ -20,9 +20,11 @@ public class LikeService {
     private final LikeItemRepository likeItemRepository;
     @Autowired
     private final UserRepository userRepository;
-    public boolean postLike(Long itemId) {
-        User user = userRepository.findByUserId(1L);
-        Item item = this.findById(itemId);
+
+
+    public boolean postLike(Long itemId, Long userId) {
+        User user = userRepository.findByUserId(userId);
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException("Invalid item ID"));
 
         // 중복 체크
         if (likeItemRepository.existsByUserAndItem(user, item)) {
