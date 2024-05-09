@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class AuctionCompleteItemFixture {
     public static AuctionCompleteItem  createAuctionCompleteItem(Item item, User user) {
         return AuctionCompleteItem.builder()
-                .auctionCompleteItemId(2L)
+                .auctionCompleteItemId(1L)
                 .item(item)
                 .ItemTitle("완료된 경매물품1")
                 .thumbnail("thumbnail_image_url")

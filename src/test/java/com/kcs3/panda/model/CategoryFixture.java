@@ -8,7 +8,8 @@ import com.kcs3.panda.domain.user.entity.User;
 
 public class CategoryFixture {
 
-    public static Category createPhoneCategory() {
+    public static Category
+    createPhoneCategory() {
         return Category.builder()
                 .categoryId(1L)
                 .category("phone")
