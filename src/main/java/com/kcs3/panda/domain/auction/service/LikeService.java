@@ -20,20 +20,21 @@ public class LikeService {
     private final LikeItemRepository likeItemRepository;
     @Autowired
     private final UserRepository userRepository;
-    public void postLike(Long itemId){
+    public boolean postLike(Long itemId) {
+        User user = userRepository.findByUserId(1L);
+        Item item = this.findById(itemId);
+
+        // 중복 체크
+        if (likeItemRepository.existsByUserAndItem(user, item)) {
+            return false; // 이미 찜 목록에 있음
+        }
 
         LikeItem likeItem = new LikeItem();
-
-        likeItem.setItem(this.findById(itemId));
-//        유저수정하삼
-        User user =userRepository.findByUserId(1L);
+        likeItem.setItem(item);
         likeItem.setUser(user);
         likeItemRepository.save(likeItem);
-
-
+        return true; // 찜 목록에 새로 추가됨
     }
-
-
 
 
     public void deleteLike(Long itemId){

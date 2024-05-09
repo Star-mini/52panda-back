@@ -101,13 +101,21 @@ public class AuctionItemController
 
     //찜목록에 등록
     @PostMapping("/{itemid}/like/")
-    public ResponseEntity<NormalResponse> postItemLike(@PathVariable("itemid") long itemid){
-        likeService.postLike(itemid);
-        String message = "찜목록에 등록을 성공하였습니다.";
-        String status = "success";
-        return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status,message));
+    public ResponseEntity<NormalResponse> postItemLike(@PathVariable("itemid") long itemid) {
+        boolean isLiked = likeService.postLike(itemid);
+        String message;
+        HttpStatus status;
 
+        if (isLiked) {
+            message = "찜목록에 등록을 성공하였습니다.";
+            status = HttpStatus.CREATED;
+        } else {
+            message = "이미 찜목록에 등록된 아이템입니다.";
+            status = HttpStatus.OK;
+        }
+        return ResponseEntity.status(status).body(new NormalResponse("success", message));
     }
+
     //찜목록 삭제
     @DeleteMapping("/{itemid}/like/")
     public ResponseEntity<NormalResponse> deleteItemLike(@PathVariable("itemid") long itemid){
