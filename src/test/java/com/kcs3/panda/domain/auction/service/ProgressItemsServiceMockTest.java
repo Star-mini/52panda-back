@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
 import java.util.ArrayList;
@@ -125,7 +126,8 @@ class ProgressItemsServiceMockTest {
 
     @Test
     @DisplayName("전체 경매아이템 목록 조회 - 로직 검증")
-    public void saveAllItem() {
+    public void testGetProgressItems() {
+        // Given
         User user1 = UserFixture.createUser();
         Category category = CategoryFixture.createPhoneCategory();
         TradingMethod tradingMethod = TradingMethodFixture.createBothTradingMethod();
@@ -135,23 +137,18 @@ class ProgressItemsServiceMockTest {
 
         AuctionProgressItem progressItem = AuctionProgressItemFixture.createAuctionProgressItem(progressItem1, user1);
         AuctionCompleteItem completeItem = AuctionCompleteItemFixture.createAuctionCompleteItem(completeItem1, user1);
-        List<AuctionProgressItem> auctionProgressItemList = List.of(progressItem);
-        List<AuctionCompleteItem> auctionCompleteItemList = List.of(completeItem);
 
-        List<Object> itemList = new ArrayList<>();
-        itemList.addAll(auctionProgressItemList);
-        itemList.addAll(auctionCompleteItemList);
-
-        String status = "null";
+        // Mock 데이터 설정
         Pageable pageable = PageRequest.of(0, 10);
-        SliceImpl result = new SliceImpl(itemList, pageable, false);
+        Slice<AuctionProgressItem> progressItemsSlice = new SliceImpl<>(List.of(progressItem), pageable, false);
+        Slice<AuctionCompleteItem> completeItemsSlice = new SliceImpl<>(List.of(completeItem), pageable, false);
+        when(itemRepository.findByProgressItemWithLocationAndMethodAndRegion("phone", 2, "jung", pageable)).thenReturn(progressItemsSlice);
+        when(itemRepository.findByCompleteItemWithLocationAndMethodAndRegion("phone", 2, "jung", pageable)).thenReturn(completeItemsSlice);
 
-        // Given 에서 만들어진 예측값
-        when(itemRepository.findByProgressItemWithLocationAndMethodAndRegion("phone", 2, "jung", pageable)).thenReturn(result);
-        when(itemRepository.findByCompleteItemWithLocationAndMethodAndRegion("phone", 2, "jung", pageable)).thenReturn(result);
 
-        // When -> 실제 serivce 메서드 호출하여 예측값과 비교한다.
+        // When
         ProgressItemListDto savedProgressItemListDto = progressItemsService.getProgressItems("phone", 2, "jung", "null", pageable);
+
 
         // Then
         assertEquals(2, savedProgressItemListDto.progressItemListDto().size()); // 두 개의 아이템이 반환되는지 확인
@@ -179,6 +176,7 @@ class ProgressItemsServiceMockTest {
         verify(itemRepository, times(1)).findByProgressItemWithLocationAndMethodAndRegion("phone", 2, "jung", pageable);
         verify(itemRepository, times(1)).findByCompleteItemWithLocationAndMethodAndRegion("phone", 2, "jung", pageable);
     }
+
 
 
 
