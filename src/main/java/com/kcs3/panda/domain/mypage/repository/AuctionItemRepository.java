@@ -1,16 +1,21 @@
-package com.kcs3.panda.domain.mypage.repository;
+/*package com.kcs3.panda.domain.mypage.repository;
 
 import com.kcs3.panda.domain.auction.entity.AuctionCompleteItem;
 import com.kcs3.panda.domain.auction.entity.AuctionInfo;
 import com.kcs3.panda.domain.auction.entity.AuctionProgressItem;
 import com.kcs3.panda.domain.auction.entity.Item;
 import com.kcs3.panda.domain.mypage.entity.LikeItem;
+import jakarta.persistence.Id;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-
-public interface AuctionItemRepository {
+@Repository
+public interface AuctionItemRepository extends JpaRepository<Item,Long> {
     //service.getMyLike
     //userId -> likeItem
     //SELECT l FROM LikeItem l WHERE l.userId = :userId 을 jpql로 자동 생성
@@ -51,4 +56,4 @@ public interface AuctionItemRepository {
     @Query("SELECT ac FROM AuctionCompleteItem ac where ac.item.itemId =:itemId")
     Optional<AuctionCompleteItem> findCompleteItemByItemId(Long itemId);
 }
-
+*/

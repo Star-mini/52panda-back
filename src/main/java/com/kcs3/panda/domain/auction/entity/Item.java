@@ -34,9 +34,6 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "tradingMethodId", nullable = false)
     private TradingMethod tradingMethod;
 
-
-
-
     @ManyToOne
     @JoinColumn(name = "regionId", nullable = false)
     private Region region;

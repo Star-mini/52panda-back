@@ -21,11 +21,11 @@ public class LikeItem extends BaseEntity{
     @Column(name = "likeId",nullable = false)
     private Long likeId;
 
-    @ManyToOne(cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY) // 부모인자가 삭제되면 자동 삭제
+    @ManyToOne( fetch = FetchType.LAZY) // 부모인자가 삭제되면 자동 삭제
     @JoinColumn(name ="userId")
     private User user;
 
-    @ManyToOne(cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY) // 부모인자가 삭제되면 자동 삭제
+    @ManyToOne( fetch = FetchType.LAZY) // 부모인자가 삭제되면 자동 삭제
     @JoinColumn (name="itemId")
     private Item item;
 
