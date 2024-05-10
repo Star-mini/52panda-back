@@ -13,6 +13,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @Table(name = "AuctionProgressItem")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

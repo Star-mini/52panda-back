@@ -64,4 +64,22 @@ public interface  ItemRepository extends JpaRepository<Item, Long> {
                 Pageable pageable);
 
 
+        /**
+         *  Redis에  NEW 및 HOT 아이템 저장
+         */
+        @Query("SELECT api " +
+                "FROM AuctionProgressItem api " +
+                "JOIN FETCH api.item i " +
+                "JOIN FETCH i.category c " +
+                "WHERE (i.itemId = :itemId)")
+        AuctionProgressItem findByHotItemList(@Param("itemId") Long itemId);
+
+
+
+
+
+
+
+
+
 }

@@ -86,7 +86,7 @@ class AuctionBidServiceImplTest {
                 .maxPrice(highestBidAmount)
                 .build();
         when(auctionProgressItemRepo.findByItemItemId(itemId)).thenReturn(Optional.of(progressItem));
-        when(auctionProgressItemRepo.findAuctionBidHighestByAuctionProgressItemId(progressItem.getAuctionProgressItemId())).thenReturn(Optional.of(highestBidDto));
+        when(auctionProgressItemRepo.findHighestBidByAuctionProgressItemId(progressItem.getAuctionProgressItemId())).thenReturn(Optional.of(highestBidDto));
     }
 
     @Test

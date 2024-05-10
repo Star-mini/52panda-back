@@ -12,6 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @Table(name = "QnaComment")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -24,10 +25,10 @@ public class QnaComment extends BaseEntity {
     @Column(name="qnaCommentId", nullable = false)
     private Long qnaCommentId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private ItemQuestion itemQuestion;
-    private LocalDateTime commentTime;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "questionId", nullable = false)
+    private ItemQuestion questionId;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String comment;
 }
