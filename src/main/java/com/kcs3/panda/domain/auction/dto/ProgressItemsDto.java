@@ -9,6 +9,7 @@ import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 
 @Builder
 public record ProgressItemsDto(
+        Long itemId,
         String itemTitle,
         String category,
         int tradingMethod,
@@ -19,6 +20,7 @@ public record ProgressItemsDto(
 ) {
     public static ProgressItemsDto fromProgressEntity(AuctionProgressItem progressItem) {
         return ProgressItemsDto.builder()
+                .itemId(progressItem.getItem().getItemId())
                 .itemTitle(progressItem.getItemTitle())
                 .category(progressItem.getItem().getCategory().getCategory())
                 .tradingMethod(progressItem.getItem().getTradingMethod().getTradingMethod())
@@ -31,6 +33,7 @@ public record ProgressItemsDto(
 
     public static ProgressItemsDto fromCompletionEntity(AuctionCompleteItem completeItem) {
         return ProgressItemsDto.builder()
+                .itemId(completeItem.getItem().getItemId())
                 .itemTitle(completeItem.getItemTitle())
                 .category(completeItem.getItem().getCategory().getCategory())
                 .tradingMethod(completeItem.getItem().getTradingMethod().getTradingMethod())
