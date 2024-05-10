@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.SliceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,7 +44,7 @@ class ProgressItemsServiceMockTest {
         Category category = CategoryFixture.createPhoneCategory();
         TradingMethod tradingMethod = TradingMethodFixture.createBothTradingMethod();
         Region region = RegionFixture.createJungRegion();
-        Item item1 = ItemFixture.createProgressItem(category, tradingMethod, region);
+        Item item1 = ItemFixture.createProgressItem(user1, category, tradingMethod, region);
 
         AuctionProgressItem auctionProgressItem = AuctionProgressItemFixture.createAuctionProgressItem(item1, user1);
         List<AuctionProgressItem> auctionProgressItemList = List.of(auctionProgressItem);
@@ -88,8 +89,7 @@ class ProgressItemsServiceMockTest {
         TradingMethod tradingMethod = TradingMethodFixture.createBothTradingMethod();
         Region region = RegionFixture.createJungRegion();
 
-        Item item1 = ItemFixture.createCompleteItem(category, tradingMethod, region);
-
+        Item item1 = ItemFixture.createCompleteItem(user1, category, tradingMethod, region);
 
         AuctionCompleteItem auctionCompleteItem = AuctionCompleteItemFixture.createAuctionCompleteItem(item1, user1);
         List<AuctionCompleteItem> auctionProgressItemList = List.of(auctionCompleteItem);
@@ -99,14 +99,13 @@ class ProgressItemsServiceMockTest {
         SliceImpl result = new SliceImpl(auctionProgressItemList, pageable, false);
 
         // Given 에서 만들어진 예측값
-        when(itemRepository.findByProgressItemWithLocationAndMethodAndRegion("phone", 2, "jung", pageable)).thenReturn(result);
+        when(itemRepository.findByCompleteItemWithLocationAndMethodAndRegion("phone", 2, "jung", pageable)).thenReturn(result);
 
 
         // When -> 실제 serivce 메서드 호출하여 예측값과 비교한다.
         ProgressItemListDto savedProgressItemListDto = progressItemsService.getProgressItems("phone",2,"jung","completion", pageable);
-
-
         ProgressItemsDto progressItemsDto = savedProgressItemListDto.progressItemListDto().get(0);
+
 
         // Then
         assertEquals(item1.getItemId(), progressItemsDto.itemId());
@@ -131,41 +130,57 @@ class ProgressItemsServiceMockTest {
         Category category = CategoryFixture.createPhoneCategory();
         TradingMethod tradingMethod = TradingMethodFixture.createBothTradingMethod();
         Region region = RegionFixture.createJungRegion();
-        Item progressItem = ItemFixture.createProgressItem(category, tradingMethod, region);
-        Item completeItem = ItemFixture.createCompleteItem(category, tradingMethod, region);
+        Item progressItem1 = ItemFixture.createProgressItem(user1, category, tradingMethod, region);
+        Item completeItem1 = ItemFixture.createCompleteItem(user1, category, tradingMethod, region);
 
-        AuctionCompleteItem auctionCompleteItem = AuctionCompleteItemFixture.createAuctionCompleteItem(progressItem, user1);
-        AuctionCompleteItem auctionCompleteItem = AuctionCompleteItemFixture.createAuctionCompleteItem(completeItem, user1);
-        List<AuctionCompleteItem> auctionProgressItemList = List.of(auctionCompleteItem);
+        AuctionProgressItem progressItem = AuctionProgressItemFixture.createAuctionProgressItem(progressItem1, user1);
+        AuctionCompleteItem completeItem = AuctionCompleteItemFixture.createAuctionCompleteItem(completeItem1, user1);
+        List<AuctionProgressItem> auctionProgressItemList = List.of(progressItem);
+        List<AuctionCompleteItem> auctionCompleteItemList = List.of(completeItem);
 
-        String status = "completion";
+        List<Object> itemList = new ArrayList<>();
+        itemList.addAll(auctionProgressItemList);
+        itemList.addAll(auctionCompleteItemList);
+
+        String status = "null";
         Pageable pageable = PageRequest.of(0, 10);
-        SliceImpl result = new SliceImpl(auctionProgressItemList, pageable, false);
+        SliceImpl result = new SliceImpl(itemList, pageable, false);
 
         // Given 에서 만들어진 예측값
         when(itemRepository.findByProgressItemWithLocationAndMethodAndRegion("phone", 2, "jung", pageable)).thenReturn(result);
-
+        when(itemRepository.findByCompleteItemWithLocationAndMethodAndRegion("phone", 2, "jung", pageable)).thenReturn(result);
 
         // When -> 실제 serivce 메서드 호출하여 예측값과 비교한다.
-        ProgressItemListDto savedProgressItemListDto = progressItemsService.getProgressItems("phone",2,"jung","completion", pageable);
-
-
-        ProgressItemsDto progressItemsDto = savedProgressItemListDto.progressItemListDto().get(0);
+        ProgressItemListDto savedProgressItemListDto = progressItemsService.getProgressItems("phone", 2, "jung", "null", pageable);
 
         // Then
-        assertEquals(item1.getItemId(), progressItemsDto.itemId());
-        assertEquals(auctionCompleteItem.getItemTitle(), progressItemsDto.itemTitle());
-        assertEquals(category.getCategory(), progressItemsDto.category());
-        assertEquals(tradingMethod.getTradingMethod(), progressItemsDto.tradingMethod());
-        assertEquals(auctionCompleteItem.getStartPrice(), progressItemsDto.startPrice());
-        assertEquals(auctionCompleteItem.getThumbnail(), progressItemsDto.thumbnail());
-        assertEquals(auctionCompleteItem.getMaxPrice(), progressItemsDto.currentPrice());
-        assertEquals(item1.isAuctionComplete(), progressItemsDto.isAuctionComplete());
+        assertEquals(2, savedProgressItemListDto.progressItemListDto().size()); // 두 개의 아이템이 반환되는지 확인
 
-        verify(itemRepository, times(0)).findByProgressItemWithLocationAndMethodAndRegion("phone", 2, "jung", pageable);
+        ProgressItemsDto progressItemsDto1 = savedProgressItemListDto.progressItemListDto().get(0);
+        assertEquals(progressItem1.getItemId(), progressItemsDto1.itemId());
+        assertEquals(progressItem.getItemTitle(), progressItemsDto1.itemTitle());
+        assertEquals(category.getCategory(), progressItemsDto1.category());
+        assertEquals(tradingMethod.getTradingMethod(), progressItemsDto1.tradingMethod());
+        assertEquals(progressItem.getStartPrice(), progressItemsDto1.startPrice());
+        assertEquals(progressItem.getThumbnail(), progressItemsDto1.thumbnail());
+        assertEquals(progressItem.getMaxPrice(), progressItemsDto1.currentPrice());
+        assertFalse(progressItemsDto1.isAuctionComplete());
+
+        ProgressItemsDto progressItemsDto2 = savedProgressItemListDto.progressItemListDto().get(1);
+        assertEquals(completeItem1.getItemId(), progressItemsDto2.itemId());
+        assertEquals(completeItem.getItemTitle(), progressItemsDto2.itemTitle());
+        assertEquals(category.getCategory(), progressItemsDto2.category());
+        assertEquals(tradingMethod.getTradingMethod(), progressItemsDto2.tradingMethod());
+        assertEquals(completeItem.getStartPrice(), progressItemsDto2.startPrice());
+        assertEquals(completeItem.getThumbnail(), progressItemsDto2.thumbnail());
+        assertEquals(completeItem.getMaxPrice(), progressItemsDto2.currentPrice());
+        assertTrue(progressItemsDto2.isAuctionComplete());
+
+        verify(itemRepository, times(1)).findByProgressItemWithLocationAndMethodAndRegion("phone", 2, "jung", pageable);
         verify(itemRepository, times(1)).findByCompleteItemWithLocationAndMethodAndRegion("phone", 2, "jung", pageable);
-
     }
+
+
 
 
 
