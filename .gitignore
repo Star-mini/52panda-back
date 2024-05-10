@@ -7,7 +7,7 @@ build/
 
 ### Setting ###
 application.properties
-application-private.properties
+
 
 ### STS ###
 .apt_generated

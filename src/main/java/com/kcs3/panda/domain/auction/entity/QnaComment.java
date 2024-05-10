@@ -2,14 +2,21 @@ package com.kcs3.panda.domain.auction.entity;
 
 import com.kcs3.panda.domain.model.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+import java.time.LocalDateTime;
+
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
+
+
 @Entity
+@Table(name = "QnaComment")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "QnaComment")
+@Builder
+@EqualsAndHashCode(callSuper = true)
+@DynamicUpdate
 public class QnaComment extends BaseEntity {
 
     @Id
@@ -17,10 +24,10 @@ public class QnaComment extends BaseEntity {
     @Column(name="qnaCommentId", nullable = false)
     private Long qnaCommentId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "questionId", nullable = false)
-    private ItemQuestion questionId;
+    @OneToOne(fetch = FetchType.LAZY)
+    private ItemQuestion itemQuestion;
+    private LocalDateTime commentTime;
 
-    @Column(nullable = false)
+    @Column(nullable=false)
     private String comment;
 }
