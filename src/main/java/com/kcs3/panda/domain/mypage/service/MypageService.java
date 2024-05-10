@@ -1,18 +1,14 @@
 package com.kcs3.panda.domain.mypage.service;
 
 import com.kcs3.panda.domain.auction.entity.AuctionCompleteItem;
-import com.kcs3.panda.domain.auction.entity.AuctionInfo;
 import com.kcs3.panda.domain.auction.entity.AuctionProgressItem;
 import com.kcs3.panda.domain.auction.entity.Item;
 import com.kcs3.panda.domain.mypage.dto.MypageListDto;
 import com.kcs3.panda.domain.mypage.entity.LikeItem;
-//import com.kcs3.panda.domain.mypage.repository.AuctionItemRepository;
 import com.kcs3.panda.domain.mypage.repository.*;
 import com.kcs3.panda.domain.user.entity.User;
 import com.kcs3.panda.domain.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -95,7 +91,7 @@ public class MypageService {
 
         return auctionItems;
     }
-/*
+
 
 //입찰 참여 조회 (현재 입찰중인 건만 조회)
     public List<MypageListDto> getMyBidByUserId(Long userId){
@@ -103,10 +99,10 @@ public class MypageService {
         User user = new User();
         user = userRepository.findByUserId(userId);
 
-        List<AuctionInfo> auctionInfos = myAuctionlistRepository.findByUser(user);
+        List<Item> Item = myAuctionlistRepository.findByUser(user);
 
         List<MypageListDto> getMyBids = new ArrayList<>();
-        for(Item item: items){
+        for(Item item: Item){
             AuctionProgressItem progressItem = myAuctionProgressRepository.findAuctionProgressItemByItem(item);
 
             if(progressItem !=null)
@@ -116,7 +112,7 @@ public class MypageService {
         //현재 입찰 진행중인것만 조회 하도록 기능 설정
         return getMyBids;
     }
-*/
+
 
 //낙찰 참여 조회
     public List<MypageListDto> getMyCompleteByUserId(Long userId) {
