@@ -38,6 +38,7 @@ public class AuctionBidServiceImpl implements AuctionBidService {
     @Autowired
     private UserRepository userRepository;
 
+    @Override
     @Transactional
     public boolean attemptBid(Long itemId, Long userId, String nickname, int bidPrice) {
         AuctionProgressItem progressItem = auctionProgressItemRepo.findByItemItemId(itemId)
@@ -58,7 +59,7 @@ public class AuctionBidServiceImpl implements AuctionBidService {
         }
 
         Optional<AuctionBidHighestDto> highestBid
-                = auctionProgressItemRepo.findAuctionBidHighestByAuctionProgressItemId(progressItem.getAuctionProgressItemId());
+                = auctionProgressItemRepo.findHighestBidByAuctionProgressItemId(progressItem.getAuctionProgressItemId());
 
         highestBid.ifPresent(bid -> {
             if (bidPrice <= bid.maxPrice()) {
@@ -99,7 +100,7 @@ public class AuctionBidServiceImpl implements AuctionBidService {
         auctionProgressItemRepo.save(progressItem);
     }//end updateAuctionProgressItemMaxBid()
 
-
+    @Override
     @Transactional
     @Scheduled(cron = "0 0 * * * *")  // 매 시간 정각에 실행
     public void finishAuctionsByTime() {

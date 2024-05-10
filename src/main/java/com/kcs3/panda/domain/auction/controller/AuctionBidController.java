@@ -1,6 +1,9 @@
 package com.kcs3.panda.domain.auction.controller;
 
+import com.kcs3.panda.domain.auction.dto.AuctionBidRequestDto;
+import com.kcs3.panda.domain.auction.dto.AuctionInfosDto;
 import com.kcs3.panda.domain.auction.service.AuctionBidService;
+import com.kcs3.panda.domain.auction.service.AuctionInfoService;
 import com.kcs3.panda.global.dto.ResponseDto;
 import com.kcs3.panda.global.exception.CommonException;
 import com.kcs3.panda.global.exception.ErrorCode;
@@ -15,25 +18,45 @@ import org.springframework.web.bind.annotation.*;
 public class AuctionBidController {
 
     @Autowired
+    private AuctionInfoService auctionInfoService;
+    @Autowired
     private AuctionBidService auctionBidService;
 
     /**
-     * 경매 입찰 참여 API
+     * 경매 입찰 내역 표시
      * @return ResponseEntity<ResponseDto<String>> 입찰 결과
      */
-    @PostMapping("/{itemId}/bid")
-    public ResponseEntity<ResponseDto<?>> submitBid(@PathVariable Long itemId,
-                                                        @RequestParam int bidPrice,
-                                                        @RequestParam Long userId,
-                                                        @RequestParam String nickname) {
+    @GetMapping("/{itemId}/bid")
+    public ResponseDto<?> getAuctionBids(@PathVariable Long itemId) {
         try {
-            auctionBidService.attemptBid(itemId, userId, nickname, bidPrice);
-            return ResponseEntity.ok(ResponseDto.ok("입찰에 성공하였습니다."));
+            AuctionInfosDto auctionInfosDto = auctionInfoService.getAuctionInfosDto(itemId)
+                    .orElseThrow(() -> new CommonException(ErrorCode.AUCTION_PRICE_NOT_FOUND));
+
+            return ResponseDto.ok(auctionInfosDto);
         } catch (CommonException e) {
-            return ResponseEntity.status(e.getErrorCode().getHttpStatus()).body(ResponseDto.fail(e));
+            return ResponseDto.fail(e);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError()
-                    .body(ResponseDto.fail(new CommonException(ErrorCode.INTERNAL_SERVER_ERROR)));
+            throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 경매 입찰 참여 API
+     * @return ResponseDto<String> 입찰 결과
+     */
+    @PostMapping("/{itemId}/bid")
+    public ResponseDto<?> submitBid(@PathVariable Long itemId,
+                                    @RequestBody AuctionBidRequestDto auctionBidRequestDto) {
+        try {
+            auctionBidService.attemptBid(itemId,
+                                        auctionBidRequestDto.userId(),
+                                        auctionBidRequestDto.nickname(),
+                                        auctionBidRequestDto.bidPrice());
+            return ResponseDto.ok("입찰에 성공하였습니다.");
+        } catch (CommonException e) {
+            return ResponseDto.fail(e);
+        } catch (Exception e) {
+            throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 }
