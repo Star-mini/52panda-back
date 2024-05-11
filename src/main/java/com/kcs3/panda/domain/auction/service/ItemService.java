@@ -122,6 +122,7 @@ public class ItemService {
         auctionProgressItem.setBuyNowPrice(request.buy_now_price);
         auctionProgressItem.setLocation("전체");  // 여기에 문자열로 "전체" 지정
         auctionProgressItem.setItem(item);
+        auctionProgressItem.setMaxPrice(request.start_price); // startPrice의 값을 maxPrice 초기값으로 설정
 
         // 썸네일 저장하기
         ArrayList<String> imageUrls = this.saveFiles(request.images);

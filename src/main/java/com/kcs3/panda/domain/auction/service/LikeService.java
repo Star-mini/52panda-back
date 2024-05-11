@@ -20,39 +20,37 @@ public class LikeService {
     private final LikeItemRepository likeItemRepository;
     @Autowired
     private final UserRepository userRepository;
-    public void postLike(Long itemId){
+
+
+    public boolean postLike(Long itemId, Long userId) {
+        User user = userRepository.findByUserId(userId);
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException("Invalid item ID"));
+
+        // 중복 체크
+        if (likeItemRepository.existsByUserAndItem(user, item)) {
+            return false; // 이미 찜 목록에 있음
+        }
 
         LikeItem likeItem = new LikeItem();
-
-        likeItem.setItem(this.findById(itemId));
-//        유저수정하삼
-        User user =userRepository.findByUserId(1L);
+        likeItem.setItem(item);
         likeItem.setUser(user);
         likeItemRepository.save(likeItem);
-
-
+        return true; // 찜 목록에 새로 추가됨
     }
 
 
-
-
-    public void deleteLike(Long itemId){
-
-        //유저수정하삼
-        User user =userRepository.findByUserId(1L);
-        Optional<LikeItem> OlikeItem = likeItemRepository.findByLikeIdAndUser(itemId,user);
-        if(OlikeItem.isPresent()){
+    public boolean deleteLike(Long itemId){
+        // 유저 ID를 1로 하드코딩
+        Long userId = 1L;
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+        Optional<LikeItem> OlikeItem = likeItemRepository.findByItem_ItemIdAndUser(itemId, user);
+        if (OlikeItem.isPresent()){
             LikeItem likeItem = OlikeItem.get();
             likeItemRepository.delete(likeItem);
+            return true;
+        } else {
+            return false;
         }
-
-    }
-    private Item findById(long itemId){
-        Optional<Item> Oitem = itemRepository.findById(itemId);
-        if(Oitem.isPresent()){
-            return Oitem.get();
-        }
-        return null;
     }
 
 }
