@@ -33,8 +33,6 @@ public class MypageService {
     @Autowired
     private MyCompleteItemRepository myCompleteItemRepository;
 
-    // private AuctionItemRepository auctionItemRepository;
-
     public List<MypageListDto> getLikedItemByUserId(Long userId) {
         User user = new User();
         user = userRepository.findByUserId(userId);
