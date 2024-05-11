@@ -18,7 +18,7 @@ public class MyPageController {
     private MypageService mypageService;
 
     //User Id 추출
-
+/*
     @GetMapping
     public Long getUserIdFromToken() {
         // 현재 사용자의 인증 정보 가져오기
@@ -30,14 +30,14 @@ public class MyPageController {
         // 사용자 아이디를 이용하여 마이페이지 정보 조회
        return userId;
     }
-
+*/
 
 
     //좋아요 페이지
     @RequestMapping("/like")
     public List<MypageListDto> getMyLike(){
-        Long userId = getUserIdFromToken();
-
+        //Long userId = getUserIdFromToken();
+        Long userId = 2L;
 
         return mypageService.getLikedItemByUserId(userId);
     }
@@ -46,8 +46,8 @@ public class MyPageController {
     @RequestMapping("/auction")
     public List<MypageListDto> getMyAuction(){
 
-       Long userId = getUserIdFromToken();
-
+       //Long userId = getUserIdFromToken();
+        Long userId = 1L;
         return mypageService.getMyAuctionByUserId(userId);
 
     }
@@ -55,8 +55,8 @@ public class MyPageController {
     //입찰 참여 페이지
     @RequestMapping("/bid")
     public List<MypageListDto> getMyBid(){
-        Long userId = getUserIdFromToken();
-
+        //Long userId = getUserIdFromToken();
+        Long userId = 1L;
         return mypageService.getMyBidByUserId(userId);
 
     }
@@ -64,8 +64,8 @@ public class MyPageController {
     //입찰 완료 페이지
     @RequestMapping("/award")
     public List<MypageListDto> getMyAward(){
-        Long userId = getUserIdFromToken();
-
+        //Long userId = getUserIdFromToken();
+        Long userId = 1L;
         return mypageService.getMyCompleteByUserId(userId);
 
     }
