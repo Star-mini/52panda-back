@@ -1,23 +1,39 @@
 package com.kcs3.panda.domain.auction.entity;
 
 import com.kcs3.panda.domain.model.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Table(name = "ItemImage")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@EqualsAndHashCode(callSuper = true)
+@DynamicUpdate
 public class ItemImage extends BaseEntity {
 
-    @ManyToOne
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="itemImage", nullable = false)
+    private Long itemImage;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemDetailId")
     private ItemDetail itemDetail;
-    @Column(nullable = false)
-    private String imageURL;
 
+    @Column(name = "url", nullable = false)
+    private String url;  // URL을 저장하는 필드
+
+    @Override
+    public String toString() {
+        return "ItemImage{" +
+                "id=" + itemImage +  // BaseEntity에서 상속받은 ID
+                ", url='" + url + '\'' +
+                ", itemDetail=" + (itemDetail != null ? "ItemDetail[id=" + itemDetail.getItemDetailId() + "]" : "null") +
+                '}';
+    }
 }

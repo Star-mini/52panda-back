@@ -1,17 +1,26 @@
 package com.kcs3.panda.domain.auction.entity;
 
 import com.kcs3.panda.domain.model.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Table(name = "Category")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@EqualsAndHashCode(callSuper = true)
+@DynamicUpdate
 public class Category extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="categoryId", nullable = false)
+    private Long categoryId;
+
     @Column(nullable = false)
     private String category;
-
 }
