@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface MyAuctionSellRepository extends JpaRepository<Item,Long> {
-
     List<Item> findBySeller(User user);
 }

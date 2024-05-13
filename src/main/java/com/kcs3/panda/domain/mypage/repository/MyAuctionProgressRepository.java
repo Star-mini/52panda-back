@@ -7,6 +7,5 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface MyAuctionProgressRepository extends JpaRepository<AuctionProgressItem,Long> {
     //ItemId -> AuctionProgressItem
-
     AuctionProgressItem findAuctionProgressItemByItem(Item item);
 }
