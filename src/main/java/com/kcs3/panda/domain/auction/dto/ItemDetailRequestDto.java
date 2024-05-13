@@ -18,7 +18,7 @@ public class ItemDetailRequestDto {
     private String itemDetailContent;
     private boolean auctionComplete;
 
-    private String sellerId;
+    private Long sellerId;
     private String userNickname;
 
     private List<ImageDTO> images;

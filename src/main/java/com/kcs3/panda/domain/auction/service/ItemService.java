@@ -221,7 +221,7 @@ public class ItemService {
         dto.setBuyNowPrice(progressItem.getBuyNowPrice());
         dto.setAuctionComplete(item.isAuctionComplete());
         dto.setItemCreateTime(item.getCreatedAt());
-        dto.setSellerId(item.getSeller().getUserId().toString());
+        dto.setSellerId(item.getSeller().getUserId()); // String에서 Long으로 변경
         dto.setUserNickname(item.getSeller().getUserNickname());
         dto.setItemDetailContent(itemDetail.getItemDetailContent());
         dto.setCategoryName(item.getCategory().getCategory());
@@ -249,4 +249,5 @@ public class ItemService {
 
         return dto;
     }
+
 }
