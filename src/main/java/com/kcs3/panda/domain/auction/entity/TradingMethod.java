@@ -6,15 +6,15 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Table(name = "TradingMethod")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@EqualsAndHashCode(callSuper = true)
 @DynamicUpdate
-@Table(name = "TradingMethod")
 public class TradingMethod extends BaseEntity {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,5 +22,5 @@ public class TradingMethod extends BaseEntity {
     private Long tradingMethodId;
 
     @Column(nullable = false)
-    private int traingMethod;
+    private int tradingMethod;
 }

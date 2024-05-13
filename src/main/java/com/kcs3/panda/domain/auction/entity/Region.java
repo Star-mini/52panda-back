@@ -2,20 +2,18 @@ package com.kcs3.panda.domain.auction.entity;
 
 import com.kcs3.panda.domain.model.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Table(name = "region")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@EqualsAndHashCode(callSuper = true)
 @DynamicUpdate
-@Table(name = "Location")
 public class Region extends BaseEntity {
 
     @Id
@@ -24,7 +22,5 @@ public class Region extends BaseEntity {
     private Long regionId;
 
     @Column(nullable = false)
-    private String location;
-
-
+    private String region;
 }

@@ -5,31 +5,30 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Table(name = "QnaComment")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@EqualsAndHashCode(callSuper = true)
 @DynamicUpdate
-@Table(name = "QnaComment")
 public class QnaComment extends BaseEntity {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="qnaCommentId", nullable = false)
     private Long qnaCommentId;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = true)
-    private ItemQuestion itemQuestion;
-    private LocalDateTime commentTime;
-    @Column(nullable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "questionId", nullable = false)
+    private ItemQuestion questionId;
+
+    @Column(nullable = false)
     private String comment;
 }

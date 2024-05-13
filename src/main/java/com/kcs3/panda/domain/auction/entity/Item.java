@@ -1,30 +1,32 @@
 package com.kcs3.panda.domain.auction.entity;
 
 import com.kcs3.panda.domain.model.BaseEntity;
+import com.kcs3.panda.domain.mypage.entity.LikeItem;
 import com.kcs3.panda.domain.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.List;
 
-
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Table(name = "Item")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@EqualsAndHashCode(callSuper = true)
 @DynamicUpdate
-@Table(name = "Item")
 public class Item extends BaseEntity {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="itemId", nullable = false)
     private Long itemId;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.REMOVE) // 찜 삭제 설정
+    private List<LikeItem> likeItems;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sellerId")
@@ -38,22 +40,14 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "tradingMethodId", nullable = false)
     private TradingMethod tradingMethod;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "AuctionProgressItemId", nullable = true)
-    private AuctionProgressItem auctionProgressItem;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "AuctionCompleteItemId", nullable = true)
-    private AuctionCompleteItem auctionCompleteItem;
-
     @ManyToOne
-    @JoinColumn(name = "locationId", nullable = false)
+    @JoinColumn(name = "regionId", nullable = false)
     private Region region;
-
-    @Column(nullable = false)
-    private String thumbnail;
 
     @Column(nullable = false)
     private boolean isAuctionComplete;
 
+    public void endAuction() {
+        this.isAuctionComplete = true;
+    }
 }

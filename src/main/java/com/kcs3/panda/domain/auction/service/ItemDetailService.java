@@ -1,4 +1,4 @@
 package com.kcs3.panda.domain.auction.service;
 
-public class AuctionListService {
+public class ItemDetailService {
 }
