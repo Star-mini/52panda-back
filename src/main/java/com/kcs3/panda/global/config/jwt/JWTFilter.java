@@ -27,9 +27,9 @@ public class JWTFilter extends OncePerRequestFilter {
 
         String accessToken = request.getHeader("access");
 
-        log.info("액세스토큰확인"+accessToken);
+        log.info("액세스토큰확인 :"+accessToken+" 요청확인 :"+ request.getRequestURL().toString());
         if(accessToken == null){
-            response.sendRedirect("http://localhost:3000/login");
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -49,7 +49,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 .email(email)
                 .build());
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(customOAuth2User,null);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(customOAuth2User,null, customOAuth2User.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request,response);

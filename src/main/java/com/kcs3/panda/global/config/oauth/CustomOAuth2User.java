@@ -1,6 +1,7 @@
 package com.kcs3.panda.global.config.oauth;
 
 import com.kcs3.panda.domain.user.dto.UserDTO;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,16 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Collection<GrantedAuthority> collection = new ArrayList<>();
+
+        collection.add(new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return "유저";
+            }
+        });
+
+        return collection;
     }
 
     @Override
