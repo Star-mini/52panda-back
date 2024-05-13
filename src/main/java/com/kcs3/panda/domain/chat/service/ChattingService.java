@@ -6,6 +6,8 @@ import com.kcs3.panda.domain.chat.entity.ChattingContent;
 import com.kcs3.panda.domain.chat.entity.ChattingRoom;
 import com.kcs3.panda.domain.chat.repository.ChattingContentRepository;
 import com.kcs3.panda.domain.chat.repository.ChattingRoomRepository;
+import com.kcs3.panda.domain.user.entity.User;
+import com.kcs3.panda.domain.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class ChattingService {
 
     private final ChattingContentRepository chattingContentRepository;
     private final ChattingRoomRepository chattingRoomRepository;
+    private final UserRepository userRepository;
 
     public void saveChatting(Long roomId,ChatMessageDto chatMessageDto){
 
@@ -43,8 +46,12 @@ public class ChattingService {
 
     }
 
-    public List<ChatRoomDto> getAllChatRooms(Long userId){
-        List<ChattingRoom> chattingRooms = chattingRoomRepository.findByBuyerIdOrSellerId(userId,userId);
+    public List<ChatRoomDto> getAllChatRooms(){
+
+        Long userId = 1L;
+        User user = userRepository.findByUserId(userId);
+        String myNickname = user.getUserNickname();
+        List<ChattingRoom> chattingRooms = chattingRoomRepository.findByBuyerOrSeller(user,user);
 
         return chattingRooms.stream()
                 .map(chattingRoom -> {
@@ -52,8 +59,20 @@ public class ChattingService {
                     String recentContent = recentChattingContent != null ? recentChattingContent.getChatContent() : null;
                     LocalDateTime recentDateTime = recentChattingContent != null ? recentChattingContent.getCreatedAt() : null;
 
+                    String buyerNickname = chattingRoom.getBuyer().getUserNickname();
+                    String sellerNickname = chattingRoom.getSeller().getUserNickname();
+
+                    String opponentNickname;
+
+                    if(buyerNickname.equals(myNickname)){
+                        opponentNickname = sellerNickname;
+                    }else{
+                        opponentNickname = buyerNickname;
+                    }
                     return ChatRoomDto.builder()
-                            .roomId(chattingRoom.getId())
+                            .roomId(chattingRoom.getChattingRoomId())
+                            .chatTitle(chattingRoom.getAuctionCompleteItem().getItemTitle())
+                            .username(opponentNickname)
                             .recentContent(recentContent)
                             .recentDateTime(recentDateTime)
                             .build();
@@ -62,7 +81,8 @@ public class ChattingService {
     }
 
     public List<ChatMessageDto> getChatRoomContents(Long roomId){
-        List<ChattingContent> chattingContents = chattingContentRepository.findByChattingRoomId(roomId);
+        Optional<ChattingRoom> chattingRoom = chattingRoomRepository.findById(roomId);
+        List<ChattingContent> chattingContents = chattingContentRepository.findByChattingRoom(chattingRoom.get());
 
         return chattingContents.stream()
                 .map(chattingContent -> ChatMessageDto.builder()

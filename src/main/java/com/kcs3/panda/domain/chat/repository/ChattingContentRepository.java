@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChattingContentRepository extends JpaRepository<ChattingContent,Long> {
-    List<ChattingContent> findByChattingRoomId(Long roomId);
+    List<ChattingContent> findByChattingRoom(ChattingRoom chattingRoom);
 
     ChattingContent findTopByChattingRoomOrderByCreatedAtDesc(ChattingRoom chattingRoom);
 }
