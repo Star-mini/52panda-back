@@ -11,6 +11,9 @@ RUN mkdir -p resources && \
     mkdir -p resources/logs
     
 
+# Spring 소스 코드를 이미지에 복사
+COPY . .
+
 # gradle 초기화
 RUN gradle init
 
