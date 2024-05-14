@@ -85,6 +85,8 @@ class ProgressItemsServiceMockTest {
     @Test
     @DisplayName("완료된 경매아이템 목록 조회 - 로직 검증")
     public void saveCompleteItem() {
+
+        //Given
         User user1 = UserFixture.createUser();
         Category category = CategoryFixture.createPhoneCategory();
         TradingMethod tradingMethod = TradingMethodFixture.createBothTradingMethod();
