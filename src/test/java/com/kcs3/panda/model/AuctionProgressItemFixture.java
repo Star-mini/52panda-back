@@ -18,8 +18,8 @@ public class AuctionProgressItemFixture {
                 .bidFinishTime(LocalDateTime.now().plusDays(14))
                 .location("jung")
                 .user(user)
-                .maxPersonNickName("경매당첨자1")
-                .maxPrice(700)
+                .maxPersonNickName("user1")
+                .maxPrice(500)
                 .build();
     }
 }
