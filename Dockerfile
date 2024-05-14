@@ -1,4 +1,4 @@
-FROM openjdk:17-alpine
+FROM gradle:8.7.0-jdk17-alpine
 
 # 작업 디렉토리 설정
 WORKDIR /app
