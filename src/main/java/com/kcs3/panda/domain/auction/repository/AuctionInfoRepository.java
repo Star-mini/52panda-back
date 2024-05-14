@@ -30,12 +30,11 @@ public interface AuctionInfoRepository extends JpaRepository<AuctionInfo, Long> 
      * New ItemId 10개 조회
      */
     @Query("SELECT DISTINCT item.itemId " +
-            "FROM AuctionInfo ai " +
-            "JOIN ai.item item " +
+            "FROM Item item " + // 공백 추가
             "WHERE item.isAuctionComplete = false " +
-            "GROUP BY item.itemId " +
             "ORDER BY item.itemId DESC")
     List<Long> findNew10ItemIds(Pageable pageable);
+
 
 
 
