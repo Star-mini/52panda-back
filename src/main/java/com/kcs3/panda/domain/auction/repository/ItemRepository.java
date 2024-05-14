@@ -16,7 +16,8 @@ import java.util.List;
 
 @Repository
 public interface  ItemRepository extends JpaRepository<Item, Long> {
-        Long findSellerIdByItemId(Long itemId);
+        @Query("SELECT i.seller.userId FROM Item i WHERE i.itemId = :itemId")
+        Long findSellerIdByItemId(@Param("itemId") Long itemId);
 
 
 
