@@ -201,24 +201,32 @@ public class ItemService {
     public ItemDetailRequestDto getItemDetail(Long itemId) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("Item not found"));
+
         AuctionProgressItem progressItem = auctionProgressItemRepository.findByItemItemId(itemId)
-                .orElseThrow(() -> new RuntimeException("AuctionProgressItem not found for itemId: " + itemId));
+                .orElse(null);
+
+        AuctionCompleteItem completeItem = null;
+        if (progressItem == null) {
+            completeItem = auctionCompleteItemRepository.findByItemItemId(itemId)
+                    .orElseThrow(() -> new RuntimeException("AuctionProgressItem or AuctionCompleteItem not found for itemId: " + itemId));
+        }
+
         ItemDetail itemDetail = itemDetailRepository.findByItemId(itemId)
                 .orElseThrow(() -> new RuntimeException("ItemDetail not found for itemId: " + itemId));
 
         List<ItemQuestion> itemQuestions = itemQuestionRepository.findByItemDetailId_ItemDetailId(itemDetail.getItemDetailId());
 
-        return toDTO(item, progressItem, itemDetail, itemQuestions);
+        return toDTO(item, progressItem, completeItem, itemDetail, itemQuestions);
     }
 
-    private ItemDetailRequestDto toDTO(Item item, AuctionProgressItem progressItem, ItemDetail itemDetail, List<ItemQuestion> itemQuestions) {
+    private ItemDetailRequestDto toDTO(Item item, AuctionProgressItem progressItem, AuctionCompleteItem completeItem, ItemDetail itemDetail, List<ItemQuestion> itemQuestions) {
         ItemDetailRequestDto dto = new ItemDetailRequestDto();
         dto.setItemId(item.getItemId());
-        dto.setTitle(progressItem.getItemTitle());
-        dto.setBidFinishTime(progressItem.getBidFinishTime());
-        dto.setStartPrice(progressItem.getStartPrice());
-        dto.setMaxPrice(progressItem.getMaxPrice());
-        dto.setBuyNowPrice(progressItem.getBuyNowPrice());
+        dto.setTitle(progressItem != null ? progressItem.getItemTitle() : completeItem.getItemTitle());
+        dto.setBidFinishTime(progressItem != null ? progressItem.getBidFinishTime() : completeItem.getBidFinishTime());
+        dto.setStartPrice(progressItem != null ? progressItem.getStartPrice() : completeItem.getStartPrice());
+        dto.setMaxPrice(progressItem != null ? progressItem.getMaxPrice() : completeItem.getMaxPrice());
+        dto.setBuyNowPrice(progressItem != null ? progressItem.getBuyNowPrice() : completeItem.getBuyNowPrice());
         dto.setAuctionComplete(item.isAuctionComplete());
         dto.setItemCreateTime(item.getCreatedAt());
         dto.setSellerId(item.getSeller().getUserId()); // String에서 Long으로 변경
@@ -249,5 +257,6 @@ public class ItemService {
 
         return dto;
     }
+
 
 }
