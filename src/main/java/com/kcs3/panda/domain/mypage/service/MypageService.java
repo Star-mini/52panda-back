@@ -44,7 +44,6 @@ public class MypageService {
 
         List<MypageListDto> likedItem = new ArrayList<>();
 
-        // DTO 설정이 안되어있어서 error 터짐!
         for (LikeItem likeItem : likedItems) {
             Item item = likeItem.getItem();
             if (item != null & item.isAuctionComplete() == false) {
@@ -61,7 +60,7 @@ public class MypageService {
 
                 log.info("가져온complete아이템" + completeItem.getItemTitle());
             }
-            log.info("가져온아이템" + item.getItemId());
+            
 
         }
 
