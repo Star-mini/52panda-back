@@ -56,7 +56,7 @@ public class AuctionBidController {
         } catch (CommonException e) {
             return ResponseDto.fail(e);
         } catch (Exception e) {
-            log.error("입찰 요청 컨트롤러 에러 - {}", e.getMessage());
+            log.error("컨트롤러 에러 {}", e.getMessage());
             throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
