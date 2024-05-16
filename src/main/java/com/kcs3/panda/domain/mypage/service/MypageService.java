@@ -10,6 +10,9 @@ import com.kcs3.panda.domain.user.entity.User;
 import com.kcs3.panda.domain.user.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,12 +36,11 @@ public class MypageService {
     @Autowired
     private MyCompleteItemRepository myCompleteItemRepository;
 
-    public List<MypageListDto> getLikedItemByUserId(Long userId) {
+    public List<MypageListDto> getLikedItemByUserId(Long userId, Pageable pageable) {
         User user = new User();
         user = userRepository.findByUserId(userId);
-        List<LikeItem> likedItems = mypageLikeRepository.findByUser(user);
+        Slice<LikeItem> likedItems = mypageLikeRepository.findByUser(user,pageable);
 
-        log.info("item size" + likedItems.size());
 
         List<MypageListDto> likedItem = new ArrayList<>();
 
@@ -68,11 +70,11 @@ public class MypageService {
 
 
     //경매 등록한 아이템 조회
-    public List<MypageListDto> getMyAuctionByUserId(Long userId) {
+    public List<MypageListDto> getMyAuctionByUserId(Long userId, Pageable pageable) {
         User user = new User();
         user = userRepository.findByUserId(userId);
         //사용자가 등록한 아이템 조회
-        List<Item> userItems = myAuctionSellRepository.findBySeller(user);
+        Slice<Item> userItems = myAuctionSellRepository.findBySeller(user, pageable);
 
         //입찰 &낙찰 아이템 조회
         List<MypageListDto> auctionItems = new ArrayList<>();
@@ -92,12 +94,12 @@ public class MypageService {
 
 
 //입찰 참여 조회 (현재 입찰중인 건만 조회)
-    public List<MypageListDto> getMyBidByUserId(Long userId){
+    public List<MypageListDto> getMyBidByUserId(Long userId,Pageable pageable){
 
         User user = new User();
         user = userRepository.findByUserId(userId);
 
-        List<Item> Item = myAuctionlistRepository.findByUser(user);
+        Slice<Item> Item = myAuctionlistRepository.findByUser(user,pageable);
 
         List<MypageListDto> getMyBids = new ArrayList<>();
         for(Item item: Item){
@@ -113,11 +115,11 @@ public class MypageService {
 
 
 //낙찰 참여 조회
-    public List<MypageListDto> getMyCompleteByUserId(Long userId) {
+    public List<MypageListDto> getMyCompleteByUserId(Long userId,Pageable pageable) {
         User user = new User();
         user = userRepository.findByUserId(userId);
 
-        List<AuctionCompleteItem> completeItem = myCompleteItemRepository.findByUser(user);
+        Slice<AuctionCompleteItem> completeItem = myCompleteItemRepository.findByUser(user,pageable);
         List<MypageListDto> completeItems = new ArrayList<>();
 
         for(AuctionCompleteItem item : completeItem){
