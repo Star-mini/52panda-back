@@ -8,8 +8,13 @@ import com.kcs3.panda.domain.mypage.entity.LikeItem;
 import com.kcs3.panda.domain.mypage.repository.*;
 import com.kcs3.panda.domain.user.entity.User;
 import com.kcs3.panda.domain.user.repository.UserRepository;
+import com.kcs3.panda.global.config.oauth.CustomOAuth2User;
+import com.kcs3.panda.global.exception.CommonException;
+import com.kcs3.panda.global.exception.ErrorCode;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,9 +38,14 @@ public class MypageService {
     @Autowired
     private MyCompleteItemRepository myCompleteItemRepository;
 
-    public List<MypageListDto> getLikedItemByUserId(Long userId) {
-        User user = new User();
-        user = userRepository.findByUserId(userId);
+    public List<MypageListDto> getLikedItemByUserId() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+
+        User user =  userRepository.findByUserId(customOAuth2User.getUserId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
         List<LikeItem> likedItems = mypageLikeRepository.findByUser(user);
 
         log.info("item size" + likedItems.size());
@@ -68,9 +78,12 @@ public class MypageService {
 
 
     //경매 등록한 아이템 조회
-    public List<MypageListDto> getMyAuctionByUserId(Long userId) {
-        User user = new User();
-        user = userRepository.findByUserId(userId);
+    public List<MypageListDto> getMyAuctionByUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+        User user =  userRepository.findByUserId(customOAuth2User.getUserId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
         //사용자가 등록한 아이템 조회
         List<Item> userItems = myAuctionSellRepository.findBySeller(user);
 
@@ -92,10 +105,14 @@ public class MypageService {
 
 
 //입찰 참여 조회 (현재 입찰중인 건만 조회)
-    public List<MypageListDto> getMyBidByUserId(Long userId){
+    public List<MypageListDto> getMyBidByUserId(){
 
-        User user = new User();
-        user = userRepository.findByUserId(userId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+
+        User user =  userRepository.findByUserId(customOAuth2User.getUserId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
 
         List<Item> Item = myAuctionlistRepository.findByUser(user);
 
@@ -113,9 +130,13 @@ public class MypageService {
 
 
 //낙찰 참여 조회
-    public List<MypageListDto> getMyCompleteByUserId(Long userId) {
-        User user = new User();
-        user = userRepository.findByUserId(userId);
+    public List<MypageListDto> getMyCompleteByUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+
+        User user =  userRepository.findByUserId(customOAuth2User.getUserId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
 
         List<AuctionCompleteItem> completeItem = myCompleteItemRepository.findByUser(user);
         List<MypageListDto> completeItems = new ArrayList<>();

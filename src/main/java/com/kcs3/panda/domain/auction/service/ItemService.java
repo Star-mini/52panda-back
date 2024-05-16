@@ -12,6 +12,9 @@ import com.kcs3.panda.domain.auction.entity.*;
 import com.kcs3.panda.domain.auction.repository.*;
 import com.kcs3.panda.domain.user.entity.User;
 import com.kcs3.panda.domain.user.repository.UserRepository;
+import com.kcs3.panda.global.config.oauth.CustomOAuth2User;
+import com.kcs3.panda.global.exception.CommonException;
+import com.kcs3.panda.global.exception.ErrorCode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -99,8 +104,11 @@ public class ItemService {
 
 
     public void postItem(AuctionItemRequest request) throws IOException {
-        // 유저 관련해서 수정필요
-        User user = userRepository.findByUserId(1L);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+        User user =  userRepository.findByUserId(customOAuth2User.getUserId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
 
         // "전체" 지역 찾기
         Region region = regionRepository.findByRegion("전체");

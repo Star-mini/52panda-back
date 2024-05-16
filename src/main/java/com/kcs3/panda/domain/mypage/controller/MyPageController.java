@@ -34,39 +34,33 @@ public class MyPageController {
 
 
     //좋아요 페이지
-    @RequestMapping("/like")
+    @GetMapping("/like")
     public List<MypageListDto> getMyLike(){
-        //Long userId = getUserIdFromToken();
-        Long userId = 2L;
 
-        return mypageService.getLikedItemByUserId(userId);
+        return mypageService.getLikedItemByUserId();
     }
 
     //경매 등록 페이지
-    @RequestMapping("/auction")
+    @GetMapping("/auction")
     public List<MypageListDto> getMyAuction(){
 
-       //Long userId = getUserIdFromToken();
-        Long userId = 1L;
-        return mypageService.getMyAuctionByUserId(userId);
+        return mypageService.getMyAuctionByUserId();
 
     }
 
     //입찰 참여 페이지
-    @RequestMapping("/bid")
+    @GetMapping("/bid")
     public List<MypageListDto> getMyBid(){
-        //Long userId = getUserIdFromToken();
-        Long userId = 1L;
-        return mypageService.getMyBidByUserId(userId);
+
+        return mypageService.getMyBidByUserId();
 
     }
 
     //입찰 완료 페이지
-    @RequestMapping("/award")
+    @GetMapping("/award")
     public List<MypageListDto> getMyAward(){
-        //Long userId = getUserIdFromToken();
-        Long userId = 1L;
-        return mypageService.getMyCompleteByUserId(userId);
+
+        return mypageService.getMyCompleteByUserId();
 
     }
 

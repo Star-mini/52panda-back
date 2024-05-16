@@ -8,8 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface MyAuctionCompleteRepository extends JpaRepository<AuctionCompleteItem,Long> {
     //ItemId -> AuctionCompleteItem
-
-    @Query("SELECT af FROM AuctionCompleteItem af WHERE af.item  =: itemId")
     AuctionCompleteItem findCompleteItemByItem(Item item);
 
 }
