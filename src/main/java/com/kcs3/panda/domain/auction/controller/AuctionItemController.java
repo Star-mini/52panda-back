@@ -1,9 +1,6 @@
 package com.kcs3.panda.domain.auction.controller;
 
-import com.kcs3.panda.domain.auction.dto.AuctionItemRequest;
-import com.kcs3.panda.domain.auction.dto.NormalResponse;
-import com.kcs3.panda.domain.auction.dto.QnaPostRequest;
-import com.kcs3.panda.domain.auction.dto.CommentRequest;
+import com.kcs3.panda.domain.auction.dto.*;
 import com.kcs3.panda.domain.auction.entity.Category;
 import com.kcs3.panda.domain.auction.entity.TradingMethod;
 import com.kcs3.panda.domain.auction.service.ItemService;
@@ -122,5 +119,15 @@ public class AuctionItemController {
         String message = isDeleted ? "찜목록 삭제를 성공하였습니다." : "찜목록 삭제를 실패하였습니다.";
         String status = isDeleted ? "success" : "fail";
         return ResponseEntity.status(HttpStatus.OK).body(new NormalResponse(status, message));
+    }
+
+    //물품상세목록 가져오기
+    @GetMapping("/{itemId}")
+    public ResponseEntity<NormalResponse> getItemDetail(@PathVariable Long itemId) {
+        ItemDetailRequestDto itemDetail = itemService.getItemDetail(itemId);
+        String message = "아이템 상세 정보를 성공적으로 가져왔습니다";
+        String status = "success";
+        NormalResponse response = new NormalResponse(status, message, itemDetail);
+        return ResponseEntity.ok(response);
     }
 }

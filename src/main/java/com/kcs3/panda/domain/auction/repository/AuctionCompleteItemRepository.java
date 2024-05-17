@@ -12,4 +12,6 @@ public interface AuctionCompleteItemRepository extends JpaRepository<AuctionComp
             "FROM AuctionCompleteItem aci " +
             "WHERE aci.item.itemId = :itemId")
     Optional<AuctionPriceDto> findPriceByItemItemId(Long itemId);
+
+    Optional<AuctionCompleteItem> findByItemItemId(Long itemId);
 }
