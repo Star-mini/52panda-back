@@ -95,6 +95,14 @@ public class AuctionItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
 
+    @PostMapping("/{itemId}/embedding")
+    public ResponseEntity<Void> updateEmbedding(
+            @PathVariable Long itemId,
+            @RequestBody double[] embedding) {
+        itemService.updateEmbedding(itemId, embedding);
+        return ResponseEntity.ok().build();
+    }
+
     //찜목록에 등록
     @PostMapping("/{itemid}/like/")
     public ResponseEntity<NormalResponse> postItemLike(@PathVariable("itemid") long itemid, @RequestBody LikeRequest likeRequest) {
