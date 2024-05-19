@@ -166,6 +166,10 @@ public class ItemService {
     }
 
     //임베딩값을 위한 저장
+    public Long getLastItemId() {
+        return itemRepository.findTopByOrderByItemIdDesc().getItemId();
+    }
+
     public void updateEmbedding(Long itemId, double[] embedding) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item ID: " + itemId));
