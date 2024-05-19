@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kcs3.panda.domain.auction.dto.AuctionItemRequest;
 import com.kcs3.panda.domain.auction.dto.CommentRequest;
 import com.kcs3.panda.domain.auction.dto.ItemDetailRequestDto;
@@ -25,6 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +58,8 @@ public class ItemService {
 
     @Autowired
     private  ItemImageRepository itemImageRepository;
+
+    private final ObjectMapper objectMapper;
 
     public void postQna(QnaPostRequest request, Long itemId){
 
@@ -159,6 +165,18 @@ public class ItemService {
         }
     }
 
+    //임베딩값을 위한 저장
+    public void updateEmbedding(Long itemId, double[] embedding) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid item ID: " + itemId));
+        try {
+            String embeddingJson = objectMapper.writeValueAsString(embedding);
+            item.setEmbedding(embeddingJson);
+            itemRepository.save(item);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to serialize embedding", e);
+        }
+    }
 
 
 //    이미지저장하고 url 반환
