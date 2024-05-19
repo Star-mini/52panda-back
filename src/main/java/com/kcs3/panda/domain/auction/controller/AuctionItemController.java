@@ -96,12 +96,20 @@ public class AuctionItemController {
     }
     
     //임베딩값저장 컨트롤러
-    @PostMapping("/{itemId}/embedding")
-    public ResponseEntity<Void> updateEmbedding(
-            @PathVariable Long itemId,
-            @RequestBody double[] embedding) {
-        itemService.updateEmbedding(itemId, embedding);
-        return ResponseEntity.ok().build();
+    @PostMapping("/embedding")
+    public ResponseEntity<NormalResponse> saveEmbedding(@RequestBody double[] embedding) {
+        try {
+            Long itemId = itemService.getLastItemId();
+            itemService.updateEmbedding(itemId, embedding);
+
+            String message = "임베딩 저장을 성공하였습니다";
+            String status = "success";
+            return ResponseEntity.status(HttpStatus.OK).body(new NormalResponse(status, message));
+        } catch (Exception e) {
+            String message = "임베딩 저장에 실패하였습니다";
+            String status = "fail";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new NormalResponse(status, message));
+        }
     }
 
     //찜목록에 등록
