@@ -94,7 +94,8 @@ public class AuctionItemController {
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
-
+    
+    //임베딩값저장 컨트롤러
     @PostMapping("/{itemId}/embedding")
     public ResponseEntity<Void> updateEmbedding(
             @PathVariable Long itemId,
