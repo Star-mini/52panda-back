@@ -78,9 +78,7 @@ public interface  ItemRepository extends JpaRepository<Item, Long> {
 
 
 
-
-
-
+        Item findTopByOrderByItemIdDesc();
 
 
 }
