@@ -51,16 +51,13 @@ public class MypageService {
                 AuctionProgressItem progressItem = myAuctionProgressRepository.findAuctionProgressItemByItem(item);
                 likedItem.add(MypageListDto.fromProgressEntity(item, progressItem));
 
-                log.info("가져온progress아이템" + progressItem.getItemTitle());
-
             } else if (item != null & item.isAuctionComplete() == true) {
                 //CompleteItem
                 AuctionCompleteItem completeItem = myAuctionCompleteRepository.findCompleteItemByItem(item);
                 likedItem.add(MypageListDto.fromCompleteEntity(item, completeItem));
 
-                log.info("가져온complete아이템" + completeItem.getItemTitle());
             }
-            
+
 
         }
 
