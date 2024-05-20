@@ -34,6 +34,8 @@ dependencies {
 
 	// Spring Data Redis 의존성
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    testImplementation "com.redis.testcontainers:testcontainers-redis-junit:1.6.4"
+    
 	// Redis 클라이언트인 Lettuce 의존성
 	implementation 'io.lettuce:lettuce-core'
 
@@ -44,17 +46,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+    // Mockito 의존성
+    testImplementation "org.mockito:mockito-core:3.+"
 
-	// Spring Data Redis 의존성
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	testImplementation "com.redis.testcontainers:testcontainers-redis-junit:1.6.4"
-
-	// Mockito 의존성
-	testImplementation "org.mockito:mockito-core:3.+"
-
-	//firebase
-	implementation 'com.google.firebase:firebase-admin:8.1.0'
-
+	//채팅기능을 위한 웹소켓
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {
