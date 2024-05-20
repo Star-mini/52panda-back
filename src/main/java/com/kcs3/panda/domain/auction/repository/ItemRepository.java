@@ -16,6 +16,8 @@ import java.util.List;
 
 @Repository
 public interface  ItemRepository extends JpaRepository<Item, Long> {
+        @Query("SELECT i.seller.userId FROM Item i WHERE i.itemId = :itemId")
+        Long findSellerIdByItemId(@Param("itemId") Long itemId);
 
 
 
@@ -27,7 +29,7 @@ public interface  ItemRepository extends JpaRepository<Item, Long> {
                 "JOIN FETCH item.category category " +
                 "JOIN FETCH item.tradingMethod method " +
                 "JOIN FETCH item.region region " +
-                 "WHERE (:category IS NULL OR category.category = :category) " +
+                "WHERE (:category IS NULL OR category.category = :category) " +
                 "AND (:method IS NULL OR method.tradingMethod = :method) " +
                 "AND (:region IS NULL OR region.region = :region) " +
                 "ORDER BY item.itemId DESC")

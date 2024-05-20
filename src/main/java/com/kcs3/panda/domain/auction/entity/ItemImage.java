@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @Table(name = "ItemImage")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -18,13 +19,21 @@ public class ItemImage extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="itemImageId", nullable = false)
-    private Long itemImageId;
-
+    @Column(name="itemImage", nullable = false)
+    private Long itemImage;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "itemDetailId")
     private ItemDetail itemDetail;
 
-    @Column(nullable = false)
-    private String imageURL;
+    @Column(name = "url", nullable = false)
+    private String url;  // URL을 저장하는 필드
+
+    @Override
+    public String toString() {
+        return "ItemImage{" +
+                "id=" + itemImage +  // BaseEntity에서 상속받은 ID
+                ", url='" + url + '\'' +
+                ", itemDetail=" + (itemDetail != null ? "ItemDetail[id=" + itemDetail.getItemDetailId() + "]" : "null") +
+                '}';
+    }
 }

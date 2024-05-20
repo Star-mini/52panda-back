@@ -67,7 +67,7 @@ public class ProgressItemsController {
 
     @GetMapping("/new-save")
     public void testtNewItemsSaveApi() {
-        progressItemsService.saveHotItems();
+        progressItemsService.saveNewItems();
     }
 
 
