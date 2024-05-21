@@ -9,3 +9,4 @@ COPY ${JAR_FILE} app.jar
 
 # 실행 명령어
 ENTRYPOINT ["nohup", "java", "-jar", "app.jar", "&"]
+CMD ["--spring.profiles.active=dev"]
