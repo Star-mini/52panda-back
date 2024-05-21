@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.kcs3.panda.domain.auction.dto.AuctionItemRequest;
 import com.kcs3.panda.domain.auction.dto.CommentRequest;
+import com.kcs3.panda.domain.auction.dto.ItemDetailRequestDto;
 import com.kcs3.panda.domain.auction.dto.QnaPostRequest;
 import com.kcs3.panda.domain.auction.entity.*;
 import com.kcs3.panda.domain.auction.repository.*;
@@ -19,6 +20,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -203,4 +206,65 @@ public class ItemService {
         Optional<QnaComment> optionalQnaComment = qnaCommentRepository.findById(commentId);
         return optionalQnaComment.orElse(null);
     }
+    public ItemDetailRequestDto getItemDetail(Long itemId) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new RuntimeException("Item not found"));
+
+        AuctionProgressItem progressItem = auctionProgressItemRepository.findByItemItemId(itemId)
+                .orElse(null);
+
+        AuctionCompleteItem completeItem = null;
+        if (progressItem == null) {
+            completeItem = auctionCompleteItemRepository.findByItemItemId(itemId)
+                    .orElseThrow(() -> new RuntimeException("AuctionProgressItem or AuctionCompleteItem not found for itemId: " + itemId));
+        }
+
+        ItemDetail itemDetail = itemDetailRepository.findByItemId(itemId)
+                .orElseThrow(() -> new RuntimeException("ItemDetail not found for itemId: " + itemId));
+
+        List<ItemQuestion> itemQuestions = itemQuestionRepository.findByItemDetailId_ItemDetailId(itemDetail.getItemDetailId());
+
+        return toDTO(item, progressItem, completeItem, itemDetail, itemQuestions);
+    }
+
+    private ItemDetailRequestDto toDTO(Item item, AuctionProgressItem progressItem, AuctionCompleteItem completeItem, ItemDetail itemDetail, List<ItemQuestion> itemQuestions) {
+        ItemDetailRequestDto dto = new ItemDetailRequestDto();
+        dto.setItemId(item.getItemId());
+        dto.setTitle(progressItem != null ? progressItem.getItemTitle() : completeItem.getItemTitle());
+        dto.setBidFinishTime(progressItem != null ? progressItem.getBidFinishTime() : completeItem.getBidFinishTime());
+        dto.setStartPrice(progressItem != null ? progressItem.getStartPrice() : completeItem.getStartPrice());
+        dto.setMaxPrice(progressItem != null ? progressItem.getMaxPrice() : completeItem.getMaxPrice());
+        dto.setBuyNowPrice(progressItem != null ? progressItem.getBuyNowPrice() : completeItem.getBuyNowPrice());
+        dto.setAuctionComplete(item.isAuctionComplete());
+        dto.setItemCreateTime(item.getCreatedAt());
+        dto.setSellerId(item.getSeller().getUserId()); // String에서 Long으로 변경
+        dto.setUserNickname(item.getSeller().getUserNickname());
+        dto.setItemDetailContent(itemDetail.getItemDetailContent());
+        dto.setCategoryName(item.getCategory().getCategory());
+
+        dto.setImages(itemDetail.getImages().stream().map(image -> {
+            ItemDetailRequestDto.ImageDTO imageDTO = new ItemDetailRequestDto.ImageDTO();
+            imageDTO.setImageURL(image.getUrl());
+            return imageDTO;
+        }).collect(Collectors.toList()));
+
+        dto.setQuestions(itemQuestions.stream().map(question -> {
+            ItemDetailRequestDto.QuestionDTO questionDTO = new ItemDetailRequestDto.QuestionDTO();
+            questionDTO.setQuestionId(question.getItemQuestionId());
+            questionDTO.setQuestionContents(question.getQuestionContents());
+            questionDTO.setQuestionTime(question.getCreatedAt());
+            questionDTO.setComments(question.getComments().stream().map(comment -> {
+                ItemDetailRequestDto.QuestionDTO.CommentDTO commentDTO = new ItemDetailRequestDto.QuestionDTO.CommentDTO();
+                commentDTO.setCommentId(comment.getQnaCommentId());
+                commentDTO.setCommentTime(comment.getCreatedAt());
+                commentDTO.setComment(comment.getComment());
+                return commentDTO;
+            }).collect(Collectors.toList()));
+            return questionDTO;
+        }).collect(Collectors.toList()));
+
+        return dto;
+    }
+
+
 }
