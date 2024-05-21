@@ -58,6 +58,8 @@ dependencies {
 
 	//채팅기능을 위한 웹소켓
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 tasks.named('test') {

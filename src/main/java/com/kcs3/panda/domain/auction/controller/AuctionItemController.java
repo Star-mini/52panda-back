@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +28,8 @@ public class AuctionItemController {
     private final ItemService itemService;
     @Autowired
     private final LikeService likeService;
+
+    private final WebClient webClient = WebClient.create("http://localhost:5000");
 
     //문의글 등록
     @PostMapping("/{itemid}/qna/")
@@ -45,7 +48,6 @@ public class AuctionItemController {
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
-
 
     //문의댓글 등록
     @PostMapping("/{itemid}/qna/{questionid}/")
@@ -119,15 +121,5 @@ public class AuctionItemController {
         String message = isDeleted ? "찜목록 삭제를 성공하였습니다." : "찜목록 삭제를 실패하였습니다.";
         String status = isDeleted ? "success" : "fail";
         return ResponseEntity.status(HttpStatus.OK).body(new NormalResponse(status, message));
-    }
-
-    //물품상세목록 가져오기
-    @GetMapping("/{itemId}")
-    public ResponseEntity<NormalResponse> getItemDetail(@PathVariable Long itemId) {
-        ItemDetailRequestDto itemDetail = itemService.getItemDetail(itemId);
-        String message = "아이템 상세 정보를 성공적으로 가져왔습니다";
-        String status = "success";
-        NormalResponse response = new NormalResponse(status, message, itemDetail);
-        return ResponseEntity.ok(response);
     }
 }
