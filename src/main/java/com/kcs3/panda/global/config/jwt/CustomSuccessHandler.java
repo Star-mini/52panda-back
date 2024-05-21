@@ -4,6 +4,8 @@ import com.kcs3.panda.global.config.oauth.CustomOAuth2User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,17 +24,20 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private String frontendUrl;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication){
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+            throws UnsupportedEncodingException {
 
         CustomOAuth2User customUserDetail = (CustomOAuth2User) authentication.getPrincipal();
 
         Long userId = customUserDetail.getUserId();
         String email = customUserDetail.getEmail();
+        String nickname = customUserDetail.getName();
+        String encodedNickname = URLEncoder.encode(nickname, "UTF-8");
 
-        String accessToken = jwtUtil.createJwt("access",userId,email,600000L);
+        String accessToken = jwtUtil.createJwt("access",userId,email,600000000L);
         String refreshToken = jwtUtil.createJwt("refresh",userId,email,86400000L);
 
-        String redirectUrl = frontendUrl + "/login-success?access=Bearer " + accessToken + "&id=" +userId;
+        String redirectUrl = frontendUrl + "/login-success?access=Bearer " + accessToken + "&id=" +userId+"&username="+encodedNickname;
 
         response.setStatus(HttpStatus.OK.value());
 

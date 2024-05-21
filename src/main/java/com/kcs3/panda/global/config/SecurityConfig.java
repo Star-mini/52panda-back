@@ -4,6 +4,8 @@ import com.kcs3.panda.domain.user.service.CustomOAuth2UserService;
 import com.kcs3.panda.global.config.jwt.CustomSuccessHandler;
 import com.kcs3.panda.global.config.jwt.JWTFilter;
 import com.kcs3.panda.global.config.jwt.JWTUtil;
+import com.kcs3.panda.global.exception.CommonException;
+import com.kcs3.panda.global.exception.ErrorCode;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -99,8 +101,8 @@ public class SecurityConfig {
                         .authenticationEntryPoint(new AuthenticationEntryPoint() {
                             @Override
                             public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
-                                    throws IOException, ServletException, IOException {
-                                response.sendRedirect(frontendUrl+"/login");
+                                    throws IOException, ServletException {
+                                throw new CommonException(ErrorCode.ACCESS_DENIED);
                             }
                         }));
 
