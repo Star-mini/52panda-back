@@ -26,7 +26,7 @@ jobs:
         mkdir -p src/main/resources
         cd ./src/main/resources
         touch ./application.properties
-        echo "${{ secrets.application_properties }}" > ./application.properties
+        echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./application.properties
       shell: bash
 
 
