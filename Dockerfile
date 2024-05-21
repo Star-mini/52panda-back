@@ -1,34 +1,24 @@
-FROM gradle:8.7.0-jdk17-alpine
+FROM gradle:8.7.0-jdk17-alpine AS builder
 
-# 작업 디렉토리 설정
 WORKDIR /app
 VOLUME /tmp
 ARG JAR_FILE=/build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 
-RUN mkdir -p resources && \
-    mkdir -p resources/images && \
-    mkdir -p resources/logs
-    
-
 # Spring 소스 코드를 이미지에 복사
 COPY . .
 
-# gradle 초기화
-RUN gradle init
+# Gradle 빌드 단계
+RUN chmod +x ./gradlew && ./gradlew clean build
 
-# gradle wrapper를 프로젝트에 추가
-RUN gradle wrapper
+# 백엔드 서버 실행
+FROM openjdk:17-alpine
 
-# gradlew를 이용한 프로젝트 필드
-RUN chmod +x gradlew
+WORKDIR /app
 
-# gradlew를 이용한 프로젝트 필드
-RUN ./gradlew clean build 
+# 빌더 스테이지에서 JAR 파일 복사
+COPY --from=builder /app/build/libs/*.jar app.jar
 
-# DATABASE_URL을 환경 변수로 삽입
-
-
-# 빌드 결과 jar 파일을 실행
+# 백엔드 서버 실행
 ENTRYPOINT ["nohup", "java", "-jar", "app.jar", "&"]
 CMD ["--spring.profiles.active=dev"]
