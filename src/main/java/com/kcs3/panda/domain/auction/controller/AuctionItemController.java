@@ -50,7 +50,6 @@ public class AuctionItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
 
-
     //문의댓글 등록
     @PostMapping("/{itemid}/qna/{questionid}/")
     public ResponseEntity<NormalResponse> postComment(@RequestBody CommentRequest request, @PathVariable("questionid") long id) {
@@ -98,7 +97,7 @@ public class AuctionItemController {
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
-    
+
     //임베딩값저장 컨트롤러
     @PostMapping("/embedding")
     public ResponseEntity<NormalResponse> saveEmbedding(@RequestBody double[] embedding) {
@@ -140,39 +139,5 @@ public class AuctionItemController {
         String message = isDeleted ? "찜목록 삭제를 성공하였습니다." : "찜목록 삭제를 실패하였습니다.";
         String status = isDeleted ? "success" : "fail";
         return ResponseEntity.status(HttpStatus.OK).body(new NormalResponse(status, message));
-    }
-
-    //물품상세목록 가져오기
-    @GetMapping("/{itemId}")
-    public ResponseEntity<NormalResponse> getItemDetail(@PathVariable Long itemId) {
-        ItemDetailRequestDto itemDetail = itemService.getItemDetail(itemId);
-        String message = "아이템 상세 정보를 성공적으로 가져왔습니다";
-        String status = "success";
-        NormalResponse response = new NormalResponse(status, message, itemDetail);
-        return ResponseEntity.ok(response);
-    }
-
-    // 리액트에서 파이썬으로 임베딩 정보 전달
-    @PostMapping("/Recommendation/Embedding")
-    public ResponseEntity<NormalResponse> postRecommendation(@RequestBody EmbeddingRequest embeddingRequest) {
-        try {
-            Mono<ResponseEntity<String>> response = webClient.post()
-                    .uri("/api/embedding")
-                    .bodyValue(embeddingRequest)
-                    .retrieve()
-                    .toEntity(String.class);
-
-            ResponseEntity<String> result = response.block();
-            if (result != null && result.getStatusCode().is2xxSuccessful()) {
-                String message = "임베딩 추천 정보를 성공적으로 전달했습니다.";
-                return ResponseEntity.ok(new NormalResponse("success", message));
-            } else {
-                String message = "임베딩 추천 정보 전달에 실패했습니다.";
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new NormalResponse("fail", message));
-            }
-        } catch (Exception e) {
-            String message = "임베딩 추천 정보 전달 중 오류가 발생했습니다.";
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new NormalResponse("fail", message));
-        }
     }
 }
