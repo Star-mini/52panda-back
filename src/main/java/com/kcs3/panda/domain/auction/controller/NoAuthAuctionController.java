@@ -3,6 +3,8 @@ package com.kcs3.panda.domain.auction.controller;
 import com.kcs3.panda.domain.auction.dto.EmbeddingRequest;
 import com.kcs3.panda.domain.auction.dto.ItemDetailRequestDto;
 import com.kcs3.panda.domain.auction.dto.NormalResponse;
+import com.kcs3.panda.domain.auction.dto.RecommendDto;
+import com.kcs3.panda.domain.auction.entity.AuctionProgressItem;
 import com.kcs3.panda.domain.auction.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,6 +54,19 @@ public class NoAuthAuctionController {
             }
         } catch (Exception e) {
             String message = "임베딩 추천 정보 전달 중 오류가 발생했습니다.";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new NormalResponse("fail", message));
+        }
+    }
+
+    //플라스크에서 받은 아이템list  dto로 작성
+    @PostMapping("/Recommendation/Embedding/makeDto")
+    public ResponseEntity<NormalResponse> makeDtoFromEmbedding(@RequestBody List<Long> itemIds) {
+        try {
+            List<RecommendDto> itemDetails = itemService.getItemsByIds(itemIds);
+            String message = "DTO 생성을 성공적으로 완료했습니다.";
+            return ResponseEntity.ok(new NormalResponse("success", message, itemDetails));
+        } catch (Exception e) {
+            String message = "DTO 생성 중 오류가 발생했습니다.";
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new NormalResponse("fail", message));
         }
     }
