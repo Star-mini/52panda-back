@@ -6,10 +6,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.kcs3.panda.domain.auction.dto.AuctionItemRequest;
-import com.kcs3.panda.domain.auction.dto.CommentRequest;
-import com.kcs3.panda.domain.auction.dto.ItemDetailRequestDto;
-import com.kcs3.panda.domain.auction.dto.QnaPostRequest;
+import com.kcs3.panda.domain.auction.dto.*;
 import com.kcs3.panda.domain.auction.entity.*;
 import com.kcs3.panda.domain.auction.repository.*;
 import com.kcs3.panda.domain.user.entity.User;
@@ -169,7 +166,7 @@ public class ItemService {
     public Long getLastItemId() {
         return itemRepository.findTopByOrderByItemIdDesc().getItemId();
     }
-
+    //임베딩값 저장하기
     public void updateEmbedding(Long itemId, double[] embedding) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item ID: " + itemId));
@@ -240,7 +237,8 @@ public class ItemService {
 
         return toDTO(item, progressItem, completeItem, itemDetail, itemQuestions);
     }
-
+    
+    //물건상세페이지에서가져오기
     private ItemDetailRequestDto toDTO(Item item, AuctionProgressItem progressItem, AuctionCompleteItem completeItem, ItemDetail itemDetail, List<ItemQuestion> itemQuestions) {
         ItemDetailRequestDto dto = new ItemDetailRequestDto();
         dto.setItemId(item.getItemId());
@@ -278,6 +276,18 @@ public class ItemService {
         }).collect(Collectors.toList()));
 
         return dto;
+    }
+
+    //플라스크에서 받은 아이템list  dto로 작성
+    public List<RecommendDto> getItemsByIds(List<Long> itemIds) {
+        List<AuctionProgressItem> auctionItems = auctionProgressItemRepository.findAllById(itemIds);
+        return auctionItems.stream()
+                .map(item -> new RecommendDto(
+                        item.getItem().getItemId(),
+                        item.getItemTitle(),
+                        item.getThumbnail(),
+                        item.getMaxPrice()))
+                .collect(Collectors.toList());
     }
 
 
