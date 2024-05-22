@@ -2,10 +2,16 @@ package com.kcs3.panda.domain.user.entity;
 
 import com.kcs3.panda.domain.model.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Entity
 public class User extends BaseEntity {

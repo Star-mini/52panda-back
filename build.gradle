@@ -46,11 +46,20 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+	//oauth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'com.google.code.gson:gson:2.10.1'
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
     // Mockito 의존성
     testImplementation "org.mockito:mockito-core:3.+"
 
 	//채팅기능을 위한 웹소켓
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 tasks.named('test') {
