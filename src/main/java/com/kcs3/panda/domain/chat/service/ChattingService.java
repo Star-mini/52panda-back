@@ -8,6 +8,9 @@ import com.kcs3.panda.domain.chat.repository.ChattingContentRepository;
 import com.kcs3.panda.domain.chat.repository.ChattingRoomRepository;
 import com.kcs3.panda.domain.user.entity.User;
 import com.kcs3.panda.domain.user.repository.UserRepository;
+import com.kcs3.panda.global.config.oauth.CustomOAuth2User;
+import com.kcs3.panda.global.exception.CommonException;
+import com.kcs3.panda.global.exception.ErrorCode;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,6 +19,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -48,8 +53,12 @@ public class ChattingService {
 
     public List<ChatRoomDto> getAllChatRooms(){
 
-        Long userId = 1L;
-        User user = userRepository.findByUserId(userId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+        User user =  userRepository.findByUserId(customOAuth2User.getUserId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
+
         String myNickname = user.getUserNickname();
         List<ChattingRoom> chattingRooms = chattingRoomRepository.findByBuyerOrSeller(user,user);
 

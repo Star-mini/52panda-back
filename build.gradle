@@ -55,6 +55,9 @@ dependencies {
 
     // Mockito 의존성
     testImplementation "org.mockito:mockito-core:3.+"
+
+	//채팅기능을 위한 웹소켓
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {
