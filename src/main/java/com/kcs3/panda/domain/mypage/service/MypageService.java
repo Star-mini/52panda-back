@@ -131,7 +131,7 @@ public class MypageService {
 
 
 //낙찰 참여 조회
-    public List<MypageListDto> getMyCompleteByUserId() {
+    public List<MypageListDto> getMyCompleteByUserId(Pageable pageable) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 

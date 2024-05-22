@@ -3,6 +3,8 @@ package com.kcs3.panda.domain.mypage.controller;
 import com.kcs3.panda.domain.mypage.dto.MypageListDto;
 import com.kcs3.panda.domain.mypage.service.MypageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,32 +37,32 @@ public class MyPageController {
 
     //좋아요 페이지
     @GetMapping("/like")
-    public List<MypageListDto> getMyLike(){
+    public List<MypageListDto> getMyLike(@PageableDefault(size =10)Pageable pageable){
 
-        return mypageService.getLikedItemByUserId();
+        return mypageService.getLikedItemByUserId(pageable);
     }
 
     //경매 등록 페이지
     @GetMapping("/auction")
-    public List<MypageListDto> getMyAuction(){
+    public List<MypageListDto> getMyAuction(@PageableDefault(size =10)Pageable pageable){
 
-        return mypageService.getMyAuctionByUserId();
+        return mypageService.getMyAuctionByUserId(pageable);
 
     }
 
     //입찰 참여 페이지
     @GetMapping("/bid")
-    public List<MypageListDto> getMyBid(){
+    public List<MypageListDto> getMyBid(@PageableDefault(size =10)Pageable pageable){
 
-        return mypageService.getMyBidByUserId();
+        return mypageService.getMyBidByUserId(pageable);
 
     }
 
     //입찰 완료 페이지
     @GetMapping("/award")
-    public List<MypageListDto> getMyAward(){
+    public List<MypageListDto> getMyAward(@PageableDefault(size =10) Pageable pageable){
 
-        return mypageService.getMyCompleteByUserId();
+        return mypageService.getMyCompleteByUserId(pageable);
 
     }
 
