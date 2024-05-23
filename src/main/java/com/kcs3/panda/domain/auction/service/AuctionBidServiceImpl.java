@@ -37,6 +37,8 @@ public class AuctionBidServiceImpl implements AuctionBidService {
     private ItemRepository itemRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ProgressItemsService progressItemsService;
 
     @Override
     @Transactional
@@ -113,6 +115,11 @@ public class AuctionBidServiceImpl implements AuctionBidService {
         } else {
             log.info("현재 경매 완료된 물품이 존재하지 않습니다.", now);
         }
+
+        progressItemsService.saveNewItems();
+        progressItemsService.saveHotItems();
+
+
     }//end transferCompletedAuctions()
 
     private void transferItemToComplete(AuctionProgressItem item) {
