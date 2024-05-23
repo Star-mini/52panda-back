@@ -117,9 +117,6 @@ public class AuctionBidServiceImpl implements AuctionBidService {
             log.info("현재 경매 완료된 물품이 존재하지 않습니다.", now);
         }
 
-        progressItemsService.saveNewItems();
-        progressItemsService.saveHotItems();
-
         log.info("new item is empty?"+progressItemsService.getNewItems().toString().length());
 
 
