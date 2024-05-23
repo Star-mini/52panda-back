@@ -46,8 +46,10 @@ public class NoAuthAuctionController {
 
             ResponseEntity<String> result = response.block();
             if (result != null && result.getStatusCode().is2xxSuccessful()) {
+                String responseBody = result.getBody(); // 파이썬 서버로부터 받은 실제 데이터
+                // responseBody를 파싱하여 클라이언트에 반환할 데이터 구성
                 String message = "임베딩 추천 정보를 성공적으로 전달했습니다.";
-                return ResponseEntity.ok(new NormalResponse("success", message));
+                return ResponseEntity.ok(new NormalResponse("success", message, responseBody)); // 실제 데이터 포함하여 반환
             } else {
                 String message = "임베딩 추천 정보 전달에 실패했습니다.";
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new NormalResponse("fail", message));
