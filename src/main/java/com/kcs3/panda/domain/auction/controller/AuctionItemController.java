@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,6 +49,7 @@ public class AuctionItemController {
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
+
 
     //문의댓글 등록
     @PostMapping("/{itemid}/qna/{questionid}/")
@@ -95,6 +97,23 @@ public class AuctionItemController {
         String message = "물품 등록을 성공하였습니다";
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
+    }
+
+    //임베딩값저장 컨트롤러
+    @PostMapping("/embedding")
+    public ResponseEntity<NormalResponse> saveEmbedding(@RequestBody double[] embedding) {
+        try {
+            Long itemId = itemService.getLastItemId();
+            itemService.updateEmbedding(itemId, embedding);
+
+            String message = "임베딩 저장을 성공하였습니다";
+            String status = "success";
+            return ResponseEntity.status(HttpStatus.OK).body(new NormalResponse(status, message));
+        } catch (Exception e) {
+            String message = "임베딩 저장에 실패하였습니다";
+            String status = "fail";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new NormalResponse(status, message));
+        }
     }
 
     //찜목록에 등록
