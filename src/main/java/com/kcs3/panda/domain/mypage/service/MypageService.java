@@ -39,6 +39,7 @@ public class MypageService {
     public List<MypageListDto> getLikedItemByUserId(Long userId, Pageable pageable) {
         User user = new User();
         user = userRepository.findByUserId(userId);
+        log.info("출력된 user"+user);
         Slice<LikeItem> likedItems = mypageLikeRepository.findByUser(user,pageable);
 
 
@@ -46,6 +47,7 @@ public class MypageService {
 
         for (LikeItem likeItem : likedItems) {
             Item item = likeItem.getItem();
+            log.info("가져온 item"+item);
             if (item != null & item.isAuctionComplete() == false) {
                 //ProgressItem
                 AuctionProgressItem progressItem = myAuctionProgressRepository.findAuctionProgressItemByItem(item);

@@ -13,7 +13,8 @@ public record MypageListDto(
             String thumbnail,
             int startPrice,
             int currentPrice,
-            boolean isAuctionComplete
+            boolean isAuctionComplete,
+            Long itemId
  )
 {
     //like & progressitem
@@ -28,10 +29,12 @@ public record MypageListDto(
         return MypageListDto.builder()
                 .itemTitle(progressItem.getItemTitle())
                 .category(item.getCategory().getCategory())
+                .tradingMethod(item.getTradingMethod().getTradingMethod())
                 .thumbnail(progressItem.getThumbnail())
                 .startPrice(progressItem.getStartPrice())
                 .currentPrice(progressItem.getMaxPrice() )
                 .isAuctionComplete(item.isAuctionComplete())
+                .itemId(item.getItemId())
                 .build();
     }
     //like&completeItem
@@ -46,10 +49,12 @@ public record MypageListDto(
         return MypageListDto.builder()
                 .itemTitle(completeItem.getItemTitle())
                 .category(item.getCategory().getCategory())
+                .tradingMethod(item.getTradingMethod().getTradingMethod())
                 .thumbnail(completeItem.getThumbnail())
                 .startPrice(completeItem.getStartPrice())
                 .currentPrice(completeItem.getMaxPrice() )
                 .isAuctionComplete(item.isAuctionComplete())
+                .itemId(item.getItemId())
                 .build();
     }
 
@@ -71,6 +76,7 @@ public record MypageListDto(
                    .startPrice(progressItem.getStartPrice())
                    .currentPrice(progressItem.getMaxPrice())
                    .isAuctionComplete(item.isAuctionComplete())
+                   .itemId(item.getItemId())
                    .build();
     }
     public static MypageListDto fromEntity(AuctionCompleteItem completeItem) {
@@ -88,6 +94,7 @@ public record MypageListDto(
                 .startPrice(completeItem.getStartPrice())
                 .currentPrice(completeItem.getMaxPrice())
                 .isAuctionComplete(item.isAuctionComplete())
+                .itemId(item.getItemId())
                 .build();
     }
 }

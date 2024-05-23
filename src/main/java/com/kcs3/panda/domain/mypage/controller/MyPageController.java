@@ -40,7 +40,7 @@ public class MyPageController {
     @RequestMapping("/like")
     public List<MypageListDto> getMyLike(@PageableDefault(size =10)Pageable pageable){
         //Long userId = getUserIdFromToken();
-        Long userId = 2L;
+        Long userId = 4L;
 
         return mypageService.getLikedItemByUserId(userId,pageable);
     }
@@ -50,7 +50,7 @@ public class MyPageController {
     public List<MypageListDto> getMyAuction(@PageableDefault(size =10)Pageable pageable){
 
        //Long userId = getUserIdFromToken();
-        Long userId = 1L;
+        Long userId = 4L;
         return mypageService.getMyAuctionByUserId(userId,pageable);
 
     }
