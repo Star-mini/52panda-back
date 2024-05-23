@@ -12,5 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface MyAuctionSellRepository extends JpaRepository<Item,Long> {
+    //
     Slice<Item> findBySeller(User user, Pageable pageable);
 }
