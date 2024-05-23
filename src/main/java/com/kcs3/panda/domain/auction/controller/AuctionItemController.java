@@ -1,9 +1,6 @@
 package com.kcs3.panda.domain.auction.controller;
 
-import com.kcs3.panda.domain.auction.dto.AuctionItemRequest;
-import com.kcs3.panda.domain.auction.dto.NormalResponse;
-import com.kcs3.panda.domain.auction.dto.QnaPostRequest;
-import com.kcs3.panda.domain.auction.dto.CommentRequest;
+import com.kcs3.panda.domain.auction.dto.*;
 import com.kcs3.panda.domain.auction.entity.Category;
 import com.kcs3.panda.domain.auction.entity.TradingMethod;
 import com.kcs3.panda.domain.auction.service.ItemService;
@@ -21,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,6 +28,8 @@ public class AuctionItemController {
     private final ItemService itemService;
     @Autowired
     private final LikeService likeService;
+
+    private final WebClient webClient = WebClient.create("http://localhost:5000");
 
     //문의글 등록
     @PostMapping("/{itemid}/qna/")
@@ -48,7 +48,6 @@ public class AuctionItemController {
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
-
 
     //문의댓글 등록
     @PostMapping("/{itemid}/qna/{questionid}/")

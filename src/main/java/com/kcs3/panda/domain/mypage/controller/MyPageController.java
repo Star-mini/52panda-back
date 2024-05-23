@@ -2,7 +2,6 @@ package com.kcs3.panda.domain.mypage.controller;
 
 import com.kcs3.panda.domain.mypage.dto.MypageListDto;
 import com.kcs3.panda.domain.mypage.service.MypageService;
-import com.kcs3.panda.global.dto.ResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -37,39 +36,33 @@ public class MyPageController {
 
 
     //좋아요 페이지
-    @RequestMapping("/like")
+    @GetMapping("/like")
     public List<MypageListDto> getMyLike(@PageableDefault(size =10)Pageable pageable){
-        //Long userId = getUserIdFromToken();
-        Long userId = 4L;
 
-        return mypageService.getLikedItemByUserId(userId,pageable);
+        return mypageService.getLikedItemByUserId(pageable);
     }
 
     //경매 등록 페이지
-    @RequestMapping("/auction")
+    @GetMapping("/auction")
     public List<MypageListDto> getMyAuction(@PageableDefault(size =10)Pageable pageable){
 
-       //Long userId = getUserIdFromToken();
-        Long userId = 4L;
-        return mypageService.getMyAuctionByUserId(userId,pageable);
+        return mypageService.getMyAuctionByUserId(pageable);
 
     }
 
     //입찰 참여 페이지
-    @RequestMapping("/bid")
+    @GetMapping("/bid")
     public List<MypageListDto> getMyBid(@PageableDefault(size =10)Pageable pageable){
-        //Long userId = getUserIdFromToken();
-        Long userId = 1L;
-        return mypageService.getMyBidByUserId(userId,pageable);
+
+        return mypageService.getMyBidByUserId(pageable);
 
     }
 
     //입찰 완료 페이지
-    @RequestMapping("/award")
-    public List<MypageListDto> getMyAward(@PageableDefault(size =10)Pageable pageable){
-        //Long userId = getUserIdFromToken();
-        Long userId = 1L;
-        return mypageService.getMyCompleteByUserId(userId,pageable);
+    @GetMapping("/award")
+    public List<MypageListDto> getMyAward(@PageableDefault(size =10) Pageable pageable){
+
+        return mypageService.getMyCompleteByUserId(pageable);
 
     }
 

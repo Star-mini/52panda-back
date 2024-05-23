@@ -23,7 +23,7 @@ public class LikeService {
 
 
     public boolean postLike(Long itemId, Long userId) {
-        User user = userRepository.findByUserId(userId);
+        User user = userRepository.findByUserId(userId).get();
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException("Invalid item ID"));
 
         // 중복 체크

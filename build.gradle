@@ -34,6 +34,8 @@ dependencies {
 
 	// Spring Data Redis 의존성
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    testImplementation "com.redis.testcontainers:testcontainers-redis-junit:1.6.4"
+    
 	// Redis 클라이언트인 Lettuce 의존성
 	implementation 'io.lettuce:lettuce-core'
 
@@ -43,8 +45,33 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	//oauth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'com.google.code.gson:gson:2.10.1'
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
+    // Mockito 의존성
+    testImplementation "org.mockito:mockito-core:3.+"
+
+	//채팅기능을 위한 웹소켓
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+
+bootJar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    mainClass = 'com.kcs3.panda.Application'
+}
+
+jar {
+    enabled = false
 }

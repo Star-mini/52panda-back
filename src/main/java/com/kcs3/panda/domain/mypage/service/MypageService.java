@@ -8,8 +8,13 @@ import com.kcs3.panda.domain.mypage.entity.LikeItem;
 import com.kcs3.panda.domain.mypage.repository.*;
 import com.kcs3.panda.domain.user.entity.User;
 import com.kcs3.panda.domain.user.repository.UserRepository;
+import com.kcs3.panda.global.config.oauth.CustomOAuth2User;
+import com.kcs3.panda.global.exception.CommonException;
+import com.kcs3.panda.global.exception.ErrorCode;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -36,10 +41,14 @@ public class MypageService {
     @Autowired
     private MyCompleteItemRepository myCompleteItemRepository;
 
-    public List<MypageListDto> getLikedItemByUserId(Long userId, Pageable pageable) {
-        User user = new User();
-        user = userRepository.findByUserId(userId);
-        log.info("출력된 user"+user);
+    public List<MypageListDto> getLikedItemByUserId(Pageable pageable) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+
+        User user =  userRepository.findByUserId(customOAuth2User.getUserId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
         Slice<LikeItem> likedItems = mypageLikeRepository.findByUser(user,pageable);
 
 
@@ -47,7 +56,6 @@ public class MypageService {
 
         for (LikeItem likeItem : likedItems) {
             Item item = likeItem.getItem();
-            log.info("가져온 item"+item);
             if (item != null & item.isAuctionComplete() == false) {
                 //ProgressItem
                 AuctionProgressItem progressItem = myAuctionProgressRepository.findAuctionProgressItemByItem(item);
@@ -68,9 +76,12 @@ public class MypageService {
 
 
     //경매 등록한 아이템 조회
-    public List<MypageListDto> getMyAuctionByUserId(Long userId, Pageable pageable) {
-        User user = new User();
-        user = userRepository.findByUserId(userId);
+    public List<MypageListDto> getMyAuctionByUserId(Pageable pageable) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+        User user =  userRepository.findByUserId(customOAuth2User.getUserId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
         //사용자가 등록한 아이템 조회
         Slice<Item> userItems = myAuctionSellRepository.findBySeller(user, pageable);
 
@@ -92,10 +103,14 @@ public class MypageService {
 
 
 //입찰 참여 조회 (현재 입찰중인 건만 조회)
-    public List<MypageListDto> getMyBidByUserId(Long userId,Pageable pageable){
+    public List<MypageListDto> getMyBidByUserId(Pageable pageable){
 
-        User user = new User();
-        user = userRepository.findByUserId(userId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+
+        User user =  userRepository.findByUserId(customOAuth2User.getUserId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
 
         Slice<Item> Item = myAuctionlistRepository.findByUser(user,pageable);
 
@@ -113,9 +128,13 @@ public class MypageService {
 
 
 //낙찰 참여 조회
-    public List<MypageListDto> getMyCompleteByUserId(Long userId,Pageable pageable) {
-        User user = new User();
-        user = userRepository.findByUserId(userId);
+    public List<MypageListDto> getMyCompleteByUserId(Pageable pageable) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+
+        User user =  userRepository.findByUserId(customOAuth2User.getUserId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
 
         Slice<AuctionCompleteItem> completeItem = myCompleteItemRepository.findByUser(user,pageable);
         List<MypageListDto> completeItems = new ArrayList<>();
