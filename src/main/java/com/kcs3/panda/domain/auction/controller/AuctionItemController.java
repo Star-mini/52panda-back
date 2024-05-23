@@ -50,6 +50,7 @@ public class AuctionItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
 
+
     //문의댓글 등록
     @PostMapping("/{itemid}/qna/{questionid}/")
     public ResponseEntity<NormalResponse> postComment(@RequestBody CommentRequest request, @PathVariable("questionid") long id) {
