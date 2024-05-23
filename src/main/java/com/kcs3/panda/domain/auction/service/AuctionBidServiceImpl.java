@@ -109,7 +109,7 @@ public class AuctionBidServiceImpl implements AuctionBidService {
         LocalDateTime now = LocalDateTime.now();
         Optional<List<AuctionProgressItem>> completedItemsOptional = auctionProgressItemRepo.findAllByBidFinishTimeBefore(now);
 
-        log.info("스케쥴러 test scheduler"+completedItemsOptional.isPresent());
+        log.info("스케쥴러 test scheduler"+completedItemsOptional.isPresent()+"현재시간"+now);
         if (completedItemsOptional.isPresent()) {
             List<AuctionProgressItem> completedItems = completedItemsOptional.get();
             completedItems.forEach(this::transferItemToComplete);
