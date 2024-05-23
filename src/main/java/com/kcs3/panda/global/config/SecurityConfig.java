@@ -96,15 +96,15 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/no-auth/**","/swagger-ui/**","/v3/api-docs/**","/ws/**").permitAll()
                         .anyRequest().authenticated());
 
-        http
-                .exceptionHandling(authenticationManager -> authenticationManager
-                        .authenticationEntryPoint(new AuthenticationEntryPoint() {
-                            @Override
-                            public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
-                                    throws IOException, ServletException {
-                                throw new CommonException(ErrorCode.ACCESS_DENIED);
-                            }
-                        }));
+//        http
+//                .exceptionHandling(authenticationManager -> authenticationManager
+//                        .authenticationEntryPoint(new AuthenticationEntryPoint() {
+//                            @Override
+//                            public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
+//                                    throws IOException, ServletException {
+//                                throw new CommonException(ErrorCode.ACCESS_DENIED);
+//                            }
+//                        }));
 
         //세션 설정 : STATELESS
         http

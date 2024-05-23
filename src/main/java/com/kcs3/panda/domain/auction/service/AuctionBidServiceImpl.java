@@ -104,11 +104,12 @@ public class AuctionBidServiceImpl implements AuctionBidService {
 
     @Override
     @Transactional
-    @Scheduled(cron = "0 0 * * * *")  // 매 시간 정각에 실행
+    @Scheduled(cron = "30 * * * * *")  // 매 시간 정각에 실행
     public void finishAuctionsByTime() {
         LocalDateTime now = LocalDateTime.now();
         Optional<List<AuctionProgressItem>> completedItemsOptional = auctionProgressItemRepo.findAllByBidFinishTimeBefore(now);
 
+        log.info("스케쥴러 test scheduler"+completedItemsOptional.isPresent());
         if (completedItemsOptional.isPresent()) {
             List<AuctionProgressItem> completedItems = completedItemsOptional.get();
             completedItems.forEach(this::transferItemToComplete);
@@ -118,6 +119,8 @@ public class AuctionBidServiceImpl implements AuctionBidService {
 
         progressItemsService.saveNewItems();
         progressItemsService.saveHotItems();
+
+        log.info("new item is empty?"+progressItemsService.getNewItems().toString().length());
 
 
     }//end transferCompletedAuctions()
