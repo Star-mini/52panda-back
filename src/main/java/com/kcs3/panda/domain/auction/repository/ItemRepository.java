@@ -30,7 +30,7 @@ public interface  ItemRepository extends JpaRepository<Item, Long> {
                 "JOIN FETCH item.tradingMethod method " +
                 "JOIN FETCH item.region region " +
                 "WHERE (:category IS NULL OR category.category = :category) " +
-                "AND (:method IS NULL OR method.tradingMethod = :method) " +
+                "AND (:method IS NULL OR method.tradingMethod = :method OR method.tradingMethod = 3) " +
                 "AND (:region IS NULL OR region.region = :region) " +
                 "ORDER BY item.itemId DESC")
         Slice<AuctionProgressItem> findByProgressItemWithLocationAndMethodAndRegion(
@@ -55,7 +55,7 @@ public interface  ItemRepository extends JpaRepository<Item, Long> {
                 "JOIN FETCH item.tradingMethod method " +
                 "JOIN FETCH item.region region " +
                 "WHERE (:category IS NULL OR category.category = :category) " +
-                "AND (:method IS NULL OR method.tradingMethod = :method) " +
+                "AND (:method IS NULL OR method.tradingMethod = :method OR method.tradingMethod = 3) " +
                 "AND (:region IS NULL OR region.region = :region) " +
                 "ORDER BY item.itemId DESC")
         Slice<AuctionCompleteItem> findByCompleteItemWithLocationAndMethodAndRegion(
