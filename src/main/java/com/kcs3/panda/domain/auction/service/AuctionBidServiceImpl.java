@@ -115,7 +115,11 @@ public class AuctionBidServiceImpl implements AuctionBidService {
             completedItems.forEach(this::transferItemToComplete);
         } else {
             log.info("현재 경매 완료된 물품이 존재하지 않습니다.", now);
+
         }
+
+        progressItemsService.saveNewItems();
+        progressItemsService.saveHotItems();
 
     }//end transferCompletedAuctions()
 
