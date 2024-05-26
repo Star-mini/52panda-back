@@ -16,6 +16,7 @@ public record ProgressItemsDto(
         String thumbnail,
         int startPrice,
         int currentPrice,
+        int buyNowPrice,
         boolean isAuctionComplete
 ) {
     public static ProgressItemsDto fromProgressEntity(AuctionProgressItem progressItem) {
@@ -26,7 +27,8 @@ public record ProgressItemsDto(
                 .tradingMethod(progressItem.getItem().getTradingMethod().getTradingMethod())
                 .thumbnail(progressItem.getThumbnail())
                 .startPrice(progressItem.getStartPrice())
-                .currentPrice(progressItem.getMaxPrice())
+                .currentPrice((progressItem.getMaxPersonNickName() != null)?progressItem.getMaxPrice():0)
+                .buyNowPrice(progressItem.getBuyNowPrice())
                 .isAuctionComplete(progressItem.getItem().isAuctionComplete())
                 .build();
     }
@@ -39,7 +41,8 @@ public record ProgressItemsDto(
                 .tradingMethod(completeItem.getItem().getTradingMethod().getTradingMethod())
                 .thumbnail(completeItem.getThumbnail())
                 .startPrice(completeItem.getStartPrice())
-                .currentPrice(completeItem.getMaxPrice())
+                .currentPrice((completeItem.getMaxPersonNickName() != null)?completeItem.getMaxPrice():0)
+                .buyNowPrice(completeItem.getBuyNowPrice())
                 .isAuctionComplete(completeItem.getItem().isAuctionComplete())
                 .build();
     }
