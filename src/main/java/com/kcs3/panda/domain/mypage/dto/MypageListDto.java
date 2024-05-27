@@ -14,6 +14,7 @@ public record MypageListDto(
             int startPrice,
             int currentPrice,
             boolean isAuctionComplete,
+            boolean isBidComplete,
             Long itemId
  )
 {
@@ -94,7 +95,9 @@ public record MypageListDto(
                 .startPrice(completeItem.getStartPrice())
                 .currentPrice(completeItem.getMaxPrice())
                 .isAuctionComplete(item.isAuctionComplete())
+                .isBidComplete(completeItem.isBidComplete())
                 .itemId(item.getItemId())
                 .build();
+
     }
 }
