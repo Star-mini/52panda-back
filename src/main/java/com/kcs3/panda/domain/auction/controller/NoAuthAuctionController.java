@@ -25,14 +25,14 @@ public class NoAuthAuctionController {
     private WebClient webClient;
 
     // @Value 어노테이션을 사용하여 application.properties에서 값을 주입
-    @Value("${flask.url}")
-    private String flaskUrl;
-
-    // @PostConstruct를 사용하여 WebClient 초기화
-    @PostConstruct
-    private void initWebClient() {
-        this.webClient = WebClient.create(flaskUrl);
-    }
+//    @Value("${flask.url}")
+//    private String flaskUrl;
+//
+//    // @PostConstruct를 사용하여 WebClient 초기화
+//    @PostConstruct
+//    private void initWebClient() {
+//        this.webClient = WebClient.create(flaskUrl);
+//    }
 
     // 물품 상세 목록 가져오기
     @GetMapping("/{itemId}")
