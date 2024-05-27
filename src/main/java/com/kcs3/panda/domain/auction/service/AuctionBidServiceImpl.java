@@ -64,11 +64,13 @@ public class AuctionBidServiceImpl implements AuctionBidService {
                 = auctionProgressItemRepo.findHighestBidByAuctionProgressItemId(progressItem.getAuctionProgressItemId());
 
         highestBid.ifPresent(bid -> {
-            if (bidPrice <= bid.maxPrice()) {
-                throw new CommonException(ErrorCode.BID_NOT_HIGHER);
-            }
-            if (userId.equals(bid.userId())) {
+            if (bid.userId() != null && userId.equals(bid.userId())) {
                 throw new CommonException(ErrorCode.BIDDER_IS_SAME);
+            }
+
+            if ((bid.userId() != null && bidPrice <= bid.maxPrice()) ||
+                    (bid.userId() == null && bidPrice < bid.maxPrice())) {
+                throw new CommonException(ErrorCode.BID_NOT_HIGHER);
             }
         });
 
