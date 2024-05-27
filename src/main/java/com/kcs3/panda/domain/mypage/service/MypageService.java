@@ -74,6 +74,23 @@ public class MypageService {
         return likedItem;
     }
 
+    public boolean getIsLikedItem(Long itemId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+        User user =  userRepository.findByUserId(customOAuth2User.getUserId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
+
+        Item item = myAuctionSellRepository.findByItemId(itemId)
+                .orElseThrow(() -> new CommonException(ErrorCode.ITEM_NOT_FOUND));
+
+        if(mypageLikeRepository.findByUserAndItem(user,item).isPresent()){
+            return true;
+        }
+
+        return false;
+
+    }
 
     //경매 등록한 아이템 조회
     public List<MypageListDto> getMyAuctionByUserId(Pageable pageable) {

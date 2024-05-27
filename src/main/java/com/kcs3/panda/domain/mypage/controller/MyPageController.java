@@ -2,6 +2,7 @@ package com.kcs3.panda.domain.mypage.controller;
 
 import com.kcs3.panda.domain.mypage.dto.MypageListDto;
 import com.kcs3.panda.domain.mypage.service.MypageService;
+import com.kcs3.panda.global.dto.ResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -40,6 +41,12 @@ public class MyPageController {
     public List<MypageListDto> getMyLike(@PageableDefault(size =10)Pageable pageable){
 
         return mypageService.getLikedItemByUserId(pageable);
+    }
+
+
+    @GetMapping("/item-like")
+    public ResponseDto<Boolean> getItemLike(Long itemId){
+        return ResponseDto.ok(mypageService.getIsLikedItem(itemId));
     }
 
     //경매 등록 페이지
