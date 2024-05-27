@@ -2,6 +2,7 @@ package com.kcs3.panda.domain.mypage.repository;
 
 import com.kcs3.panda.domain.auction.entity.Item;
 import com.kcs3.panda.domain.user.entity.User;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -14,4 +15,6 @@ import java.util.List;
 public interface MyAuctionSellRepository extends JpaRepository<Item,Long> {
     //
     Slice<Item> findBySeller(User user, Pageable pageable);
+
+    Optional<Item> findByItemId(Long itemId);
 }
