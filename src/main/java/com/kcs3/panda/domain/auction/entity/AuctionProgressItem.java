@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-
 @Entity
 @Table(name = "AuctionProgressItem")
 @Getter
@@ -38,7 +37,9 @@ public class AuctionProgressItem extends BaseEntity {
 
     @Column(nullable = false)
     private int startPrice;
-    private int buyNowPrice;
+
+    @Column(nullable = true)
+    private Integer buyNowPrice;
 
     @Column(nullable = false)
     private LocalDateTime bidFinishTime;
@@ -49,9 +50,10 @@ public class AuctionProgressItem extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
+
     private String maxPersonNickName;
 
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private Integer maxPrice;
 
     public static class AuctionProgressItemBuilder {

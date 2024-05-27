@@ -16,7 +16,7 @@ public record ProgressItemsDto(
         String thumbnail,
         int startPrice,
         int currentPrice,
-        int buyNowPrice,
+        Integer  buyNowPrice,
         boolean isAuctionComplete
 ) {
     public static ProgressItemsDto fromProgressEntity(AuctionProgressItem progressItem) {

@@ -13,7 +13,7 @@ public class ItemDetailRequestDto {
     private LocalDateTime bidFinishTime;
     private int startPrice;
     private int maxPrice;
-    private int buyNowPrice;
+    private Integer buyNowPrice;
     private LocalDateTime itemCreateTime;
     private String itemDetailContent;
     private boolean auctionComplete;

@@ -8,6 +8,7 @@ import com.kcs3.panda.domain.auction.service.LikeService;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import com.kcs3.panda.domain.mypage.dto.LikeRequest;
 import lombok.RequiredArgsConstructor;
@@ -77,7 +78,7 @@ public class AuctionItemController {
             @RequestParam("category") Category category,
             @RequestParam("trading_method") TradingMethod tradingMethod,
             @RequestParam("start_price") int startPrice,
-            @RequestParam("buy_now_price") int buyNowPrice,
+            @RequestParam(value = "buy_now_price", required = false) Integer buyNowPrice,  // Optional 제거
             @RequestParam("contents") String contents,
             @RequestParam("finish_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishTime
     ) throws IOException {
@@ -88,7 +89,7 @@ public class AuctionItemController {
         request.category = category;
         request.trading_method = tradingMethod;
         request.start_price = startPrice;
-        request.buy_now_price = buyNowPrice;
+        request.buy_now_price = buyNowPrice;  // Integer 타입
         request.contents = contents;
         request.finish_time = finishTime;
 
@@ -98,6 +99,7 @@ public class AuctionItemController {
         String status = "success";
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
+
 
     //임베딩값저장 컨트롤러
     @PostMapping("/embedding")

@@ -18,8 +18,7 @@ public class AuctionItemRequest {
     public TradingMethod trading_method;
     @NotBlank
     public int start_price;
-    @NotBlank
-    public int buy_now_price;
+    public Integer  buy_now_price;
     @NotBlank
     public String contents;
 
