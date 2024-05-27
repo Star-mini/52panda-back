@@ -7,9 +7,14 @@ import com.kcs3.panda.domain.mypage.entity.LikeItem;
 import com.kcs3.panda.domain.user.entity.User;
 import com.kcs3.panda.domain.user.repository.UserRepository;
 import java.util.Optional;
+
+import com.kcs3.panda.global.config.oauth.CustomOAuth2User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 @Service
 @RequiredArgsConstructor
@@ -39,12 +44,18 @@ public class LikeService {
     }
 
 
-    public boolean deleteLike(Long itemId){
-        // 유저 ID를 1로 하드코딩
-        Long userId = 1L;
+    public boolean deleteLike(Long itemId) {
+        // SecurityContextHolder에서 인증된 유저 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+        // 인증된 유저의 ID를 가져오기
+        Long userId = customOAuth2User.getUserId();
+
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
         Optional<LikeItem> OlikeItem = likeItemRepository.findByItem_ItemIdAndUser(itemId, user);
-        if (OlikeItem.isPresent()){
+
+        if (OlikeItem.isPresent()) {
             LikeItem likeItem = OlikeItem.get();
             likeItemRepository.delete(likeItem);
             return true;
@@ -52,5 +63,4 @@ public class LikeService {
             return false;
         }
     }
-
 }

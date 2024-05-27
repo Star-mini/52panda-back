@@ -4,15 +4,15 @@ import com.kcs3.panda.domain.auction.dto.EmbeddingRequest;
 import com.kcs3.panda.domain.auction.dto.ItemDetailRequestDto;
 import com.kcs3.panda.domain.auction.dto.NormalResponse;
 import com.kcs3.panda.domain.auction.dto.RecommendDto;
-import com.kcs3.panda.domain.auction.entity.AuctionProgressItem;
 import com.kcs3.panda.domain.auction.service.ItemService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +22,17 @@ import java.util.stream.Collectors;
 public class NoAuthAuctionController {
 
     private final ItemService itemService;
-    private final WebClient webClient = WebClient.create("http://localhost:5000");
+    private WebClient webClient;
+
+    // @Value 어노테이션을 사용하여 application.properties에서 값을 주입
+    @Value("${flask.url}")
+    private String flaskUrl;
+
+    // @PostConstruct를 사용하여 WebClient 초기화
+    @PostConstruct
+    private void initWebClient() {
+        this.webClient = WebClient.create(flaskUrl);
+    }
 
     // 물품 상세 목록 가져오기
     @GetMapping("/{itemId}")
@@ -60,7 +70,7 @@ public class NoAuthAuctionController {
         }
     }
 
-    //플라스크에서 받은 아이템list  dto로 작성
+    // 플라스크에서 받은 아이템list dto로 작성
     @PostMapping("/Recommendation/Embedding/makeDto")
     public ResponseEntity<NormalResponse> makeDtoFromEmbedding(@RequestBody List<Long> itemIds) {
         try {
