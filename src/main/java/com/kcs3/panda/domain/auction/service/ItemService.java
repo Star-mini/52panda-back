@@ -228,6 +228,7 @@ public class ItemService {
         Optional<QnaComment> optionalQnaComment = qnaCommentRepository.findById(commentId);
         return optionalQnaComment.orElse(null);
     }
+
     public ItemDetailRequestDto getItemDetail(Long itemId) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("Item not found"));
@@ -255,10 +256,15 @@ public class ItemService {
         dto.setTitle(progressItem != null ? progressItem.getItemTitle() : completeItem.getItemTitle());
         dto.setBidFinishTime(progressItem != null ? progressItem.getBidFinishTime() : completeItem.getBidFinishTime());
         dto.setStartPrice(progressItem != null ? progressItem.getStartPrice() : completeItem.getStartPrice());
-        dto.setMaxPrice( (progressItem != null && progressItem.getMaxPersonNickName() == null) ? 0 :
+        dto.setMaxPrice((progressItem != null && progressItem.getMaxPersonNickName() == null) ? 0 :
                 ((progressItem != null) ? progressItem.getMaxPrice() :
                         ((completeItem.getMaxPersonNickName() == null) ? 0 : completeItem.getMaxPrice())));
-        dto.setBuyNowPrice(progressItem != null ? progressItem.getBuyNowPrice() : completeItem.getBuyNowPrice());
+
+        // Optional을 사용하여 null 체크 및 값 설정
+        Integer buyNowPrice = Optional.ofNullable(progressItem != null ? progressItem.getBuyNowPrice() : completeItem != null ? completeItem.getBuyNowPrice() : null)
+                .orElse(null);
+        dto.setBuyNowPrice(buyNowPrice);
+
         dto.setAuctionComplete(item.isAuctionComplete());
         dto.setItemCreateTime(item.getCreatedAt());
         dto.setSellerId(item.getSeller().getUserId());
@@ -289,6 +295,7 @@ public class ItemService {
 
         return dto;
     }
+
 
 
     //플라스크에서 받은 아이템list  dto로 작성
