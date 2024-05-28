@@ -12,7 +12,7 @@ public record HotItemsDto(
         String category,
         String thumbnail,
         int startPrice,
-        int buyNowPrice
+        Integer buyNowPrice
 
 ) {
 

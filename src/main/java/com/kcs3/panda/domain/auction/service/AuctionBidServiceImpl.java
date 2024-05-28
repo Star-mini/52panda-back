@@ -51,7 +51,7 @@ public class AuctionBidServiceImpl implements AuctionBidService {
             throw new CommonException(ErrorCode.BIDDER_IS_SELLER);
         }
 
-        if (bidPrice >= progressItem.getBuyNowPrice()) {
+        if (progressItem.getBuyNowPrice() !=null && bidPrice >= progressItem.getBuyNowPrice()) {
             log.debug("User {}가 Item {}을 즉시 구매 - 가격: {}", itemId, userId, bidPrice);
 
             saveAuctionInfo(itemId, userId, bidPrice);
