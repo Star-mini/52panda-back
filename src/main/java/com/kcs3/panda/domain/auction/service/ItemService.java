@@ -255,8 +255,10 @@ public class ItemService {
         dto.setTitle(progressItem != null ? progressItem.getItemTitle() : completeItem.getItemTitle());
         dto.setBidFinishTime(progressItem != null ? progressItem.getBidFinishTime() : completeItem.getBidFinishTime());
         dto.setStartPrice(progressItem != null ? progressItem.getStartPrice() : completeItem.getStartPrice());
-        dto.setMaxPrice(progressItem != null ? progressItem.getMaxPrice() : completeItem.getMaxPrice());
-        dto.setBuyNowPrice(progressItem != null ? progressItem.getBuyNowPrice() : completeItem != null ? completeItem.getBuyNowPrice() : null);
+        dto.setMaxPrice( (progressItem != null && progressItem.getMaxPersonNickName() == null) ? 0 :
+                ((progressItem != null) ? progressItem.getMaxPrice() :
+                        ((completeItem.getMaxPersonNickName() == null) ? 0 : completeItem.getMaxPrice())));
+        dto.setBuyNowPrice(progressItem != null ? progressItem.getBuyNowPrice() : completeItem.getBuyNowPrice());
         dto.setAuctionComplete(item.isAuctionComplete());
         dto.setItemCreateTime(item.getCreatedAt());
         dto.setSellerId(item.getSeller().getUserId());
