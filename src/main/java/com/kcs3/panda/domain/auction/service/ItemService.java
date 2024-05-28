@@ -113,10 +113,9 @@ public class ItemService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
-        User user =  userRepository.findByUserId(customOAuth2User.getUserId())
+        User user = userRepository.findByUserId(customOAuth2User.getUserId())
                 .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
 
-        // "전체" 지역 찾기
         Region region = regionRepository.findByRegion("전체");
         if (region == null) {
             throw new RuntimeException("Region '전체' not found");
@@ -127,21 +126,27 @@ public class ItemService {
         item.setTradingMethod(request.trading_method);
         item.setAuctionComplete(false);
         item.setSeller(user);
-        item.setRegion(region);  // 지역 설정
+        item.setRegion(region);
 
         AuctionProgressItem auctionProgressItem = new AuctionProgressItem();
         auctionProgressItem.setItemTitle(request.title);
         auctionProgressItem.setBidFinishTime(request.finish_time);
         auctionProgressItem.setStartPrice(request.start_price);
-        auctionProgressItem.setBuyNowPrice(request.buy_now_price);
-        auctionProgressItem.setLocation("전체");  // 여기에 문자열로 "전체" 지정
-        auctionProgressItem.setItem(item);
-        auctionProgressItem.setMaxPrice(request.start_price); // startPrice의 값을 maxPrice 초기값으로 설정
 
-        // 썸네일 저장하기
+        // Null 체크 후 설정
+        if (request.buy_now_price != null) {
+            auctionProgressItem.setBuyNowPrice(request.buy_now_price);
+        } else {
+            auctionProgressItem.setBuyNowPrice(null); // null 값 설정
+        }
+
+        auctionProgressItem.setLocation("전체");
+        auctionProgressItem.setItem(item);
+        auctionProgressItem.setMaxPrice(request.start_price);
+
         ArrayList<String> imageUrls = this.saveFiles(request.images);
         if (!imageUrls.isEmpty()) {
-            auctionProgressItem.setThumbnail(imageUrls.get(0));  // 첫 번째 이미지 URL을 썸네일로 설정
+            auctionProgressItem.setThumbnail(imageUrls.get(0));
         } else {
             throw new IOException("이미지가 제공되지 않았습니다.");
         }
@@ -150,23 +155,21 @@ public class ItemService {
         itemDetail.setItem(item);
         itemDetail.setItemDetailContent(request.contents);
 
-        // URL 리스트를 ItemImage 객체 리스트로 변환
         List<ItemImage> itemImages = new ArrayList<>();
         for (String url : imageUrls) {
             ItemImage itemImage = new ItemImage();
-            itemImage.setUrl(url);  // 각 ItemImage 객체에 URL 설정
-            itemImage.setItemDetail(itemDetail);  // ItemDetail 객체 설정
-            itemImages.add(itemImage);  // 생성된 ItemImage 객체를 리스트에 추가
+            itemImage.setUrl(url);
+            itemImage.setItemDetail(itemDetail);
+            itemImages.add(itemImage);
         }
 
-        // ItemDetail에 이미지 리스트 설정
         itemDetail.setImages(itemImages);
 
-        itemRepository.save(item); // Item 저장
-        auctionProgressItemRepository.save(auctionProgressItem); // AuctionProgressItem 저장
-        itemDetailRepository.save(itemDetail); // ItemDetail 저장
+        itemRepository.save(item);
+        auctionProgressItemRepository.save(auctionProgressItem);
+        itemDetailRepository.save(itemDetail);
         for (ItemImage itemImage : itemImages) {
-            itemImageRepository.save(itemImage); // 각 ItemImage 저장
+            itemImageRepository.save(itemImage);
         }
     }
 
@@ -245,8 +248,7 @@ public class ItemService {
 
         return toDTO(item, progressItem, completeItem, itemDetail, itemQuestions);
     }
-    
-    //물건상세페이지에서가져오기
+
     private ItemDetailRequestDto toDTO(Item item, AuctionProgressItem progressItem, AuctionCompleteItem completeItem, ItemDetail itemDetail, List<ItemQuestion> itemQuestions) {
         ItemDetailRequestDto dto = new ItemDetailRequestDto();
         dto.setItemId(item.getItemId());
@@ -259,7 +261,7 @@ public class ItemService {
         dto.setBuyNowPrice(progressItem != null ? progressItem.getBuyNowPrice() : completeItem.getBuyNowPrice());
         dto.setAuctionComplete(item.isAuctionComplete());
         dto.setItemCreateTime(item.getCreatedAt());
-        dto.setSellerId(item.getSeller().getUserId()); // String에서 Long으로 변경
+        dto.setSellerId(item.getSeller().getUserId());
         dto.setUserNickname(item.getSeller().getUserNickname());
         dto.setItemDetailContent(itemDetail.getItemDetailContent());
         dto.setCategoryName(item.getCategory().getCategory());
@@ -287,6 +289,7 @@ public class ItemService {
 
         return dto;
     }
+
 
     //플라스크에서 받은 아이템list  dto로 작성
     public List<RecommendDto> getItemsByIds(List<Long> itemIds) {
