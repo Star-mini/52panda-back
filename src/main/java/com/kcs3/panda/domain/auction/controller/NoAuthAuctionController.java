@@ -71,7 +71,7 @@ public class NoAuthAuctionController {
     }
 
     // 플라스크에서 받은 아이템list dto로 작성
-    @PostMapping("/Recommendation/Embedding/makeDto")
+    @PostMapping("/Recommendation/makeDto")
     public ResponseEntity<NormalResponse> makeDtoFromEmbedding(@RequestBody List<Long> itemIds) {
         try {
             List<RecommendDto> itemDetails = itemService.getItemsByIds(itemIds);
