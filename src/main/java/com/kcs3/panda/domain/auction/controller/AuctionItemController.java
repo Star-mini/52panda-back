@@ -5,6 +5,7 @@ import com.kcs3.panda.domain.auction.entity.Category;
 import com.kcs3.panda.domain.auction.entity.TradingMethod;
 import com.kcs3.panda.domain.auction.service.ItemService;
 import com.kcs3.panda.domain.auction.service.LikeService;
+import com.kcs3.panda.global.dto.ResponseDto;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,7 +32,10 @@ public class AuctionItemController {
     @Autowired
     private final LikeService likeService;
 
-    private final WebClient webClient = WebClient.create("http://localhost:5000");
+    @GetMapping("/alarm")
+    public ResponseDto<List<String>> getAlarm(){
+        return ResponseDto.ok(itemService.getAlarm());
+    }
 
     //문의글 등록
     @PostMapping("/{itemid}/qna/")

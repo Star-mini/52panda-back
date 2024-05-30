@@ -1,9 +1,11 @@
 package com.kcs3.panda.domain.auction.service;
 
+import com.kcs3.panda.domain.auction.entity.Alarm;
 import com.kcs3.panda.domain.auction.entity.AuctionCompleteItem;
 import com.kcs3.panda.domain.auction.entity.AuctionInfo;
 import com.kcs3.panda.domain.auction.entity.AuctionProgressItem;
 import com.kcs3.panda.domain.auction.entity.Item;
+import com.kcs3.panda.domain.auction.repository.AlarmRepository;
 import com.kcs3.panda.domain.auction.repository.AuctionCompleteItemRepository;
 import com.kcs3.panda.domain.user.entity.User;
 import com.kcs3.panda.domain.auction.repository.AuctionInfoRepository;
@@ -38,7 +40,10 @@ public class AuctionBidServiceImpl implements AuctionBidService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private AlarmRepository alarmRepository;
+    @Autowired
     private ProgressItemsService progressItemsService;
+
 
     @Override
     @Transactional
@@ -133,6 +138,7 @@ public class AuctionBidServiceImpl implements AuctionBidService {
             Item auctionItem = item.getItem();
             auctionItem.endAuction();
 
+            saveAlarm(isComplete,completeItem);
             itemRepository.save(auctionItem);
             auctionCompleteItemRepo.save(completeItem);
             auctionProgressItemRepo.delete(item);
@@ -144,6 +150,25 @@ public class AuctionBidServiceImpl implements AuctionBidService {
             throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }//end transferItemToComplete()
+
+    private void saveAlarm(boolean isComplete,AuctionCompleteItem item) {
+        if(isComplete){
+            alarmRepository.save(Alarm.builder()
+                    .alarmContent(item.getItemTitle() + "이(가) 낙찰되었습니다.")
+                    .user(item.getItem().getSeller())
+                    .build());
+
+            alarmRepository.save(Alarm.builder()
+                    .alarmContent(item.getItemTitle() + "을 낙찰하셨습니다.")
+                    .user(item.getUser())
+                    .build());
+        }else{
+            alarmRepository.save(Alarm.builder()
+                    .alarmContent(item.getItemTitle() + "이(가) 경매완료되었습니다.")
+                    .user(item.getItem().getSeller())
+                    .build());
+        }
+    }
 
     private boolean checkBidCompletionStatus(AuctionProgressItem item) throws CommonException {
         boolean maxPersonNickNameIsNull = item.getMaxPersonNickName() == null;
