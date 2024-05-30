@@ -37,8 +37,6 @@ public class AuctionProgressItem extends BaseEntity {
 
     @Column(nullable = false)
     private Integer startPrice;
-
-    @Column(nullable = true)
     private Integer buyNowPrice;
 
     @Column(nullable = false)
@@ -55,6 +53,10 @@ public class AuctionProgressItem extends BaseEntity {
 
     @Column(nullable = false)
     private Integer maxPrice;
+
+    @Version
+    private Integer version;
+
 
     public static class AuctionProgressItemBuilder {
         public AuctionProgressItemBuilder startPrice(int startPrice) {
