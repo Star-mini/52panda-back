@@ -63,16 +63,21 @@ public class AuctionBidServiceImpl implements AuctionBidService {
         Optional<AuctionBidHighestDto> highestBid
                 = auctionProgressItemRepo.findHighestBidByAuctionProgressItemId(progressItem.getAuctionProgressItemId());
 
-        highestBid.ifPresent(bid -> {
-            if (bid.userId() != null && userId.equals(bid.userId())) {
-                throw new CommonException(ErrorCode.BIDDER_IS_SAME);
-            }
+        highestBid.ifPresentOrElse(
+                hbid -> {
+                    if (hbid.userId() != null && userId.equals(hbid.userId())) {
+                        throw new CommonException(ErrorCode.BIDDER_IS_SAME);
+                    }
 
-            if ((bid.userId() != null && bidPrice <= bid.maxPrice()) ||
-                    (bid.userId() == null && bidPrice < bid.maxPrice())) {
-                throw new CommonException(ErrorCode.BID_NOT_HIGHER);
-            }
-        });
+                    if ((hbid.userId() != null && bidPrice <= hbid.maxPrice()) ||
+                            (hbid.userId() == null && bidPrice < hbid.maxPrice())) {
+                        throw new CommonException(ErrorCode.BID_NOT_HIGHER);
+                    }
+                },
+                () -> {
+                    throw new CommonException(ErrorCode.AUCTION_PRICE_NOT_FOUND);
+                }
+        );
 
         saveAuctionInfo(itemId, userId, bidPrice);
         updateAuctionProgressItemMaxBid(progressItem, userId, nickname, bidPrice);
