@@ -50,6 +50,9 @@ public class Item extends BaseEntity {
     @Column(columnDefinition = "TEXT") // 임베딩 값 속성 추가
     private String embedding;
 
+    @Column(columnDefinition = "TEXT") // thEmbedding 값 속성 추가
+    private String thEmbedding;
+
     public void endAuction() {
         this.isAuctionComplete = true;
     }
