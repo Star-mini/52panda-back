@@ -177,13 +177,15 @@ public class ItemService {
     public Long getLastItemId() {
         return itemRepository.findTopByOrderByItemIdDesc().getItemId();
     }
-    //임베딩값 저장하기
-    public void updateEmbedding(Long itemId, double[] embedding) {
+
+    public void updateEmbedding(Long itemId, double[] embedding, double[] thEmbedding) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item ID: " + itemId));
         try {
             String embeddingJson = objectMapper.writeValueAsString(embedding);
+            String thEmbeddingJson = objectMapper.writeValueAsString(thEmbedding);
             item.setEmbedding(embeddingJson);
+            item.setThEmbedding(thEmbeddingJson);
             itemRepository.save(item);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to serialize embedding", e);
