@@ -61,6 +61,9 @@ public class ItemService {
     @Autowired
     private  ItemImageRepository itemImageRepository;
 
+    @Autowired
+    private RecommendRepository recommendRepository;
+
     private final ObjectMapper objectMapper;
 
     public void postQna(QnaPostRequest request, Long itemId){
@@ -173,7 +176,7 @@ public class ItemService {
         }
     }
 
-    //임베딩값을 위한 저장
+    // 임베딩값을 위한 저장
     public Long getLastItemId() {
         return itemRepository.findTopByOrderByItemIdDesc().getItemId();
     }
@@ -184,8 +187,20 @@ public class ItemService {
         try {
             String embeddingJson = objectMapper.writeValueAsString(embedding);
             String thEmbeddingJson = objectMapper.writeValueAsString(thEmbedding);
-            item.setEmbedding(embeddingJson);
-            item.setThEmbedding(thEmbeddingJson);
+
+            Recommend recommend = item.getRecommend();
+            if (recommend == null) {
+                recommend = new Recommend();
+                recommend.setEmbedding(embeddingJson);
+                recommend.setThEmbedding(thEmbeddingJson);
+                recommendRepository.save(recommend);
+                item.setRecommend(recommend);
+            } else {
+                recommend.setEmbedding(embeddingJson);
+                recommend.setThEmbedding(thEmbeddingJson);
+                recommendRepository.save(recommend);
+            }
+
             itemRepository.save(item);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to serialize embedding", e);
