@@ -103,10 +103,10 @@ public class AuctionItemController {
 
     //임베딩값저장 컨트롤러
     @PostMapping("/embedding")
-    public ResponseEntity<NormalResponse> saveEmbedding(@RequestBody double[] embedding) {
+    public ResponseEntity<NormalResponse> saveEmbedding(@RequestBody EmbeddingRequest embeddingRequest) {
         try {
             Long itemId = itemService.getLastItemId();
-            itemService.updateEmbedding(itemId, embedding);
+            itemService.updateEmbedding(itemId, embeddingRequest.getEmbedding(), embeddingRequest.getThEmbedding());
 
             String message = "임베딩 저장을 성공하였습니다";
             String status = "success";

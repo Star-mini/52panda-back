@@ -44,11 +44,12 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "regionId", nullable = false)
     private Region region;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recommendId")
+    private Recommend recommend;
+
     @Column(nullable = false)
     private boolean isAuctionComplete;
-
-    @Column(columnDefinition = "TEXT") // 임베딩 값 속성 추가
-    private String embedding;
 
     public void endAuction() {
         this.isAuctionComplete = true;

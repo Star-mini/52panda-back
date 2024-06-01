@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class EmbeddingRequest {
-    private long id;
+    private double[] embedding;
+    private double[] thEmbedding;
 }
