@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Builder
@@ -29,4 +31,9 @@ public class User extends BaseEntity {
 
     @Column(nullable = false, columnDefinition = "int default 0")
     private int userPoint;
+
+    @ElementCollection  // 리스트 매핑
+    @CollectionTable(name = "user_cookies", joinColumns = @JoinColumn(name = "userId"))
+    @Column(name = "cookie")
+    private List<Long> cookies = new ArrayList<>();  // 유저가 클릭한 물품 ID 리스트
 }
