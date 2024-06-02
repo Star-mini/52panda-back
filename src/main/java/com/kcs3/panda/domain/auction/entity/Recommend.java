@@ -31,6 +31,9 @@ public class Recommend extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String detailEmbedding;
 
+    @Column(columnDefinition = "TEXT")
+    private String representEmbedding;
+
     @OneToOne(mappedBy = "recommend")
     private Item item;
 }
