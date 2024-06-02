@@ -111,7 +111,7 @@ public class ItemService {
 
 
 
-
+    //물품저장 서비스
     public void postItem(AuctionItemRequest request) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
@@ -175,29 +175,35 @@ public class ItemService {
             itemImageRepository.save(itemImage);
         }
     }
-
-    // 임베딩값을 위한 저장
+    
+    //임베딩값저장 시작
     public Long getLastItemId() {
         return itemRepository.findTopByOrderByItemIdDesc().getItemId();
     }
 
-    public void updateEmbedding(Long itemId, double[] embedding, double[] thEmbedding) {
+    public void updateEmbedding(Long itemId, double[] embedding, double[] thEmbedding, double[] categoryEmbedding, double[] detailEmbedding) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item ID: " + itemId));
         try {
             String embeddingJson = objectMapper.writeValueAsString(embedding);
             String thEmbeddingJson = objectMapper.writeValueAsString(thEmbedding);
+            String categoryEmbeddingJson = objectMapper.writeValueAsString(categoryEmbedding);
+            String detailEmbeddingJson = objectMapper.writeValueAsString(detailEmbedding);
 
             Recommend recommend = item.getRecommend();
             if (recommend == null) {
                 recommend = new Recommend();
                 recommend.setEmbedding(embeddingJson);
                 recommend.setThEmbedding(thEmbeddingJson);
+                recommend.setCategoryEmbedding(categoryEmbeddingJson);
+                recommend.setDetailEmbedding(detailEmbeddingJson);
                 recommendRepository.save(recommend);
                 item.setRecommend(recommend);
             } else {
                 recommend.setEmbedding(embeddingJson);
                 recommend.setThEmbedding(thEmbeddingJson);
+                recommend.setCategoryEmbedding(categoryEmbeddingJson);
+                recommend.setDetailEmbedding(detailEmbeddingJson);
                 recommendRepository.save(recommend);
             }
 
