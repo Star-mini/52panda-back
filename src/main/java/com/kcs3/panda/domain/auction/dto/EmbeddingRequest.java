@@ -6,4 +6,6 @@ import lombok.Data;
 public class EmbeddingRequest {
     private double[] embedding;
     private double[] thEmbedding;
+    private double[] categoryEmbedding;
+    private double[] detailEmbedding;
 }
