@@ -112,6 +112,7 @@ public class AuctionItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
 
+    //임베딩 저장
     @PostMapping("/embedding")
     public ResponseEntity<NormalResponse> saveEmbedding(@RequestBody SaveEmbeddingRequest saveEmbeddingRequest) {
         try {
