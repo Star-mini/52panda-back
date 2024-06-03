@@ -54,6 +54,8 @@ public class ItemService {
     private final QnaCommentRepository qnaCommentRepository;
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private final AlarmRepository alarmRepository;
 
     @Autowired
     private RegionRepository regionRepository;
@@ -66,6 +68,20 @@ public class ItemService {
 
     private final ObjectMapper objectMapper;
 
+    public List<String> getAlarm(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+
+        User user = userRepository.findByUserId(customOAuth2User.getUserId())
+                .orElseThrow(() -> new CommonException(ErrorCode.NOT_FOUND_USER));
+
+        List<Alarm> alarms = alarmRepository.findTop4ByUserOrderByCreatedAtDesc(user);
+
+        return alarms.stream()
+                .map(Alarm::getAlarmContent)
+                .collect(Collectors.toList());
+
+    }
     public void postQna(QnaPostRequest request, Long itemId){
 
         ItemQuestion itemQuestion = new ItemQuestion();
