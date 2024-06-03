@@ -33,6 +33,7 @@ public class AuctionItemController {
     private final ItemService itemService;
     @Autowired
     private final LikeService likeService;
+    
     @GetMapping("/alarm")
     public ResponseDto<List<String>> getAlarm(){
         return ResponseDto.ok(itemService.getAlarm());
