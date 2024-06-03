@@ -63,6 +63,9 @@ public class ItemService {
     @Autowired
     private  ItemImageRepository itemImageRepository;
 
+    @Autowired
+    private RecommendRepository recommendRepository;
+
     private final ObjectMapper objectMapper;
 
     public List<String> getAlarm(){
@@ -124,7 +127,7 @@ public class ItemService {
 
 
 
-
+    //물품저장 서비스
     public void postItem(AuctionItemRequest request) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
@@ -189,22 +192,42 @@ public class ItemService {
         }
     }
 
-    //임베딩값을 위한 저장
+    // 임베딩 값 저장 서비스 메서드 수정
     public Long getLastItemId() {
         return itemRepository.findTopByOrderByItemIdDesc().getItemId();
     }
-    //임베딩값 저장하기
-    public void updateEmbedding(Long itemId, double[] embedding) {
+
+    public void updateEmbedding(Long itemId, double[] embedding, double[] thEmbedding, double[] categoryEmbedding, double[] detailEmbedding) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item ID: " + itemId));
         try {
             String embeddingJson = objectMapper.writeValueAsString(embedding);
-            item.setEmbedding(embeddingJson);
-            itemRepository.save(item);
+            String thEmbeddingJson = objectMapper.writeValueAsString(thEmbedding);
+            String categoryEmbeddingJson = objectMapper.writeValueAsString(categoryEmbedding);
+            String detailEmbeddingJson = objectMapper.writeValueAsString(detailEmbedding);
+
+            Recommend recommend = recommendRepository.findByItemId(itemId);
+            if (recommend == null) {
+                recommend = new Recommend();
+                recommend.setItemId(itemId);
+                recommend.setEmbedding(embeddingJson);
+                recommend.setThEmbedding(thEmbeddingJson);
+                recommend.setCategoryEmbedding(categoryEmbeddingJson);
+                recommend.setDetailEmbedding(detailEmbeddingJson);
+                recommendRepository.save(recommend);
+            } else {
+                recommend.setEmbedding(embeddingJson);
+                recommend.setThEmbedding(thEmbeddingJson);
+                recommend.setCategoryEmbedding(categoryEmbeddingJson);
+                recommend.setDetailEmbedding(detailEmbeddingJson);
+                recommendRepository.save(recommend);
+            }
+
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to serialize embedding", e);
         }
     }
+
 
 
 //    이미지저장하고 url 반환
@@ -266,6 +289,7 @@ public class ItemService {
         return toDTO(item, progressItem, completeItem, itemDetail, itemQuestions);
     }
 
+    // DTO 생성 메서드
     private ItemDetailRequestDto toDTO(Item item, AuctionProgressItem progressItem, AuctionCompleteItem completeItem, ItemDetail itemDetail, List<ItemQuestion> itemQuestions) {
         ItemDetailRequestDto dto = new ItemDetailRequestDto();
         dto.setItemId(item.getItemId());
@@ -312,9 +336,7 @@ public class ItemService {
         return dto;
     }
 
-
-
-    //플라스크에서 받은 아이템list  dto로 작성
+    // 플라스크에서 받은 아이템 list dto로 작성
     public List<RecommendDto> getItemsByIds(List<Long> itemIds) {
         List<AuctionProgressItem> auctionItems = auctionProgressItemRepository.findAllById(itemIds);
         return auctionItems.stream()

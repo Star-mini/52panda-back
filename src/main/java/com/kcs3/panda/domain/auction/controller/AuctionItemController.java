@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.kcs3.panda.domain.mypage.dto.LikeRequest;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import org.springframework.beans.factory.annotation.Value;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,11 +33,22 @@ public class AuctionItemController {
     private final ItemService itemService;
     @Autowired
     private final LikeService likeService;
-
+    
     @GetMapping("/alarm")
     public ResponseDto<List<String>> getAlarm(){
         return ResponseDto.ok(itemService.getAlarm());
     }
+    private WebClient webClient;
+
+    @Value("${flask.url}")
+    private String flaskUrl;
+
+
+    @PostConstruct
+    private void initWebClient() {
+        this.webClient = WebClient.create(flaskUrl);
+    }
+
 
     //문의글 등록
     @PostMapping("/{itemid}/qna/")
@@ -104,23 +117,36 @@ public class AuctionItemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new NormalResponse(status, message));
     }
 
-
-    //임베딩값저장 컨트롤러
+    //임베딩 저장
     @PostMapping("/embedding")
-    public ResponseEntity<NormalResponse> saveEmbedding(@RequestBody double[] embedding) {
+    public ResponseEntity<NormalResponse> saveEmbedding(@RequestBody SaveEmbeddingRequest saveEmbeddingRequest) {
         try {
             Long itemId = itemService.getLastItemId();
-            itemService.updateEmbedding(itemId, embedding);
+            itemService.updateEmbedding(itemId, saveEmbeddingRequest.getEmbedding(), saveEmbeddingRequest.getThEmbedding(), saveEmbeddingRequest.getCategoryEmbedding(), saveEmbeddingRequest.getDetailEmbedding());
 
-            String message = "임베딩 저장을 성공하였습니다";
-            String status = "success";
-            return ResponseEntity.status(HttpStatus.OK).body(new NormalResponse(status, message));
+            // 파이썬 서버로 요청 보내기
+            Mono<ResponseEntity<String>> response = webClient.get()
+                    .uri("/api/MakeRepresentEmbedding")
+                    .retrieve()
+                    .toEntity(String.class);
+
+            ResponseEntity<String> result = response.block();
+            if (result != null && result.getStatusCode().is2xxSuccessful()) {
+                String message = "임베딩 저장을 성공하였습니다";
+                String status = "success";
+                return ResponseEntity.status(HttpStatus.OK).body(new NormalResponse(status, message));
+            } else {
+                String message = "임베딩 저장에 실패하였습니다";
+                String status = "fail";
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new NormalResponse(status, message));
+            }
         } catch (Exception e) {
             String message = "임베딩 저장에 실패하였습니다";
             String status = "fail";
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new NormalResponse(status, message));
         }
     }
+
 
     //찜목록에 등록
     @PostMapping("/{itemid}/like/")
