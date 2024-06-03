@@ -1,3 +1,4 @@
+// Recommend 엔티티 수정
 package com.kcs3.panda.domain.auction.entity;
 
 import com.kcs3.panda.domain.model.BaseEntity;
@@ -34,6 +35,6 @@ public class Recommend extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String representEmbedding;
 
-    @OneToOne(mappedBy = "recommend")
-    private Item item;
+    @Column(name = "item_id", nullable = false)
+    private Long itemId;
 }

@@ -44,10 +44,6 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "regionId", nullable = false)
     private Region region;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recommendId")
-    private Recommend recommend;
-
     @Column(nullable = false)
     private boolean isAuctionComplete;
 
