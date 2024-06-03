@@ -175,8 +175,8 @@ public class ItemService {
             itemImageRepository.save(itemImage);
         }
     }
-    
-    //임베딩값저장 시작
+
+    // 임베딩 값 저장 서비스 메서드 수정
     public Long getLastItemId() {
         return itemRepository.findTopByOrderByItemIdDesc().getItemId();
     }
@@ -190,15 +190,15 @@ public class ItemService {
             String categoryEmbeddingJson = objectMapper.writeValueAsString(categoryEmbedding);
             String detailEmbeddingJson = objectMapper.writeValueAsString(detailEmbedding);
 
-            Recommend recommend = item.getRecommend();
+            Recommend recommend = recommendRepository.findByItemId(itemId);
             if (recommend == null) {
                 recommend = new Recommend();
+                recommend.setItemId(itemId);
                 recommend.setEmbedding(embeddingJson);
                 recommend.setThEmbedding(thEmbeddingJson);
                 recommend.setCategoryEmbedding(categoryEmbeddingJson);
                 recommend.setDetailEmbedding(detailEmbeddingJson);
                 recommendRepository.save(recommend);
-                item.setRecommend(recommend);
             } else {
                 recommend.setEmbedding(embeddingJson);
                 recommend.setThEmbedding(thEmbeddingJson);
@@ -207,11 +207,11 @@ public class ItemService {
                 recommendRepository.save(recommend);
             }
 
-            itemRepository.save(item);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to serialize embedding", e);
         }
     }
+
 
 
 //    이미지저장하고 url 반환
@@ -273,6 +273,7 @@ public class ItemService {
         return toDTO(item, progressItem, completeItem, itemDetail, itemQuestions);
     }
 
+    // DTO 생성 메서드
     private ItemDetailRequestDto toDTO(Item item, AuctionProgressItem progressItem, AuctionCompleteItem completeItem, ItemDetail itemDetail, List<ItemQuestion> itemQuestions) {
         ItemDetailRequestDto dto = new ItemDetailRequestDto();
         dto.setItemId(item.getItemId());
@@ -319,9 +320,7 @@ public class ItemService {
         return dto;
     }
 
-
-
-    //플라스크에서 받은 아이템list  dto로 작성
+    // 플라스크에서 받은 아이템 list dto로 작성
     public List<RecommendDto> getItemsByIds(List<Long> itemIds) {
         List<AuctionProgressItem> auctionItems = auctionProgressItemRepository.findAllById(itemIds);
         return auctionItems.stream()
