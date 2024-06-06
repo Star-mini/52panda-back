@@ -22,5 +22,5 @@ public class TradingMethod extends BaseEntity {
     private Long tradingMethodId;
 
     @Column(nullable = false)
-    private int tradingMethod;
+    private Integer tradingMethod;
 }
