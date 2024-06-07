@@ -105,7 +105,6 @@ public class AuctionBidServiceImpl implements AuctionBidService {
     }//end updateAuctionProgressItemMaxBid()
 
     @Override
-    @Transactional
     @Scheduled(cron = "30 * * * * *")  // 매 시간 정각에 실행
     public void finishAuctionsByTime() {
         LocalDateTime now = LocalDateTime.now();
@@ -125,22 +124,23 @@ public class AuctionBidServiceImpl implements AuctionBidService {
 
     }//end transferCompletedAuctions()
 
-    private void transferItemToComplete(AuctionProgressItem item) {
+    @Transactional
+    protected void transferItemToComplete(AuctionProgressItem auctionProgressItem) {
         try {
-            boolean isComplete = checkBidCompletionStatus(item);
-            AuctionCompleteItem completeItem = buildAuctionCompleteItem(item, isComplete);
+            boolean isComplete = checkBidCompletionStatus(auctionProgressItem);
+            AuctionCompleteItem completeItem = buildAuctionCompleteItem(auctionProgressItem, isComplete);
 
-            Item auctionItem = item.getItem();
+            Item auctionItem = auctionProgressItem.getItem();
             auctionItem.endAuction();
 
             itemRepository.save(auctionItem);
             auctionCompleteItemRepo.save(completeItem);
-            auctionProgressItemRepo.delete(item);
+            auctionProgressItemRepo.delete(auctionProgressItem);
         } catch (CommonException e) {
-            log.error("에러 발생 물품 {}: {}", item.getAuctionProgressItemId(), e.getMessage());
+            log.error("에러 발생 물품 {}: {}", auctionProgressItem.getAuctionProgressItemId(), e.getMessage());
             throw e;
         } catch (Exception e) {
-            log.error("에러 발생 물품 {}: {}", item.getAuctionProgressItemId(), e.getMessage());
+            log.error("에러 발생 물품 {}: {}", auctionProgressItem.getAuctionProgressItemId(), e.getMessage());
             throw new CommonException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }//end transferItemToComplete()
