@@ -22,7 +22,7 @@ public interface AuctionProgressItemRepository extends JpaRepository<AuctionProg
     @Query("SELECT new com.kcs3.panda.domain.auction.dto.AuctionBidHighestDto(" +
                 "api.auctionProgressItemId, user.userId, user.userNickname, api.maxPrice) " +
             "FROM AuctionProgressItem api " +
-            "JOIN api.user user " +
+            "LEFT JOIN api.user user " +
             "WHERE api.auctionProgressItemId = :auctionProgressItemId")
     Optional<AuctionBidHighestDto> findHighestBidByAuctionProgressItemId(@Param("auctionProgressItemId") Long auctionProgressItemId);
 

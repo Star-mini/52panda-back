@@ -45,11 +45,11 @@ public class NoAuthAuctionController {
     }
 
     // 리액트에서 파이썬으로 임베딩 정보 전달
-    @PostMapping("/Recommendation/Embedding")
+    @PostMapping("/Recommendation")
     public ResponseEntity<NormalResponse> postRecommendation(@RequestBody EmbeddingRequest embeddingRequest) {
         try {
             Mono<ResponseEntity<String>> response = webClient.post()
-                    .uri("/api/embedding")
+                    .uri("/api/Recommend")
                     .bodyValue(embeddingRequest)
                     .retrieve()
                     .toEntity(String.class);
@@ -70,8 +70,8 @@ public class NoAuthAuctionController {
         }
     }
 
-    // 플라스크에서 받은 아이템list dto로 작성
-    @PostMapping("/Recommendation/Embedding/makeDto")
+    // 플라스크에서 받은 아이템 list dto로 작성
+    @PostMapping("/Recommendation/makeDto")
     public ResponseEntity<NormalResponse> makeDtoFromEmbedding(@RequestBody List<Long> itemIds) {
         try {
             List<RecommendDto> itemDetails = itemService.getItemsByIds(itemIds);
