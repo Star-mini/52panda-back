@@ -8,8 +8,9 @@
 <br/>
       
 ## :family_man_man_boy_boy: 팀원 소개
+![20240716180542](https://github.com/user-attachments/assets/f1719046-449d-4c9b-a1a6-33c7a13239ee)
 
-![image](https://github.com/user-attachments/assets/9a4ffb7c-6b0b-4aca-a73a-fa4dfc971bd5)
+
 
 
 <br/>
@@ -46,8 +47,7 @@
 ![image](https://github.com/user-attachments/assets/7a1f9a9e-ba3e-4f08-8a2a-fb4a152c630e)
 
 ### 아키텍쳐
-
-![image](https://github.com/user-attachments/assets/dd3f77a5-6d90-4e56-84cc-6ff992b5b24e)
+![최종아키텍처](https://github.com/user-attachments/assets/fb3b0e32-ea51-4971-842f-d81d37cb21ae)
 ![image](https://github.com/user-attachments/assets/cec5d342-67aa-4a0d-89ea-711f90b89ed2)
 
 
