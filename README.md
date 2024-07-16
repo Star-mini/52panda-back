@@ -1,4 +1,5 @@
 <img width="100%" alt="image" src="https://github.com/user-attachments/assets/42a69bfd-13cb-4406-b7fe-a57207cb9653">
+<img width="100%" alt="image" src="https://github.com/user-attachments/assets/51e41f3a-72c6-4855-81db-41f1823a2516">
 <img width="100%" alt="aboutphoto" src="https://github.com/user-attachments/assets/f490aaaa-29ec-410b-9c39-5fd6edfa4dce">
 
 
@@ -54,10 +55,6 @@
 <br/>
 <br/>
   
-## :bulb: 주요 기능
-
-
-![20240716173850](https://github.com/user-attachments/assets/8413cf0d-d10d-4be3-8139-83d14d8b2d23)
 
 
 
